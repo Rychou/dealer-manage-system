@@ -1,6 +1,5 @@
 import React from 'react';
 import { object, number, func } from 'prop-types';
-import { Link } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 import { Button } from 'antd';
 
@@ -24,11 +23,10 @@ class List extends React.Component {
 
     return (
       <div>
-        <Button>Button</Button>
         <div>JSS demo</div>
         <ul>
           <li>
-            <Link to="/detail">Redirect and lazy load detail page</Link>
+            <Button>Button</Button>
           </li>
         </ul>
         <button onClick={this.handleClick} type="button">
