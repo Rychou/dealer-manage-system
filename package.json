@@ -1,7 +1,7 @@
 {
-  "name": "react-seed-upgraded",
+  "name": "battery-management",
   "version": "0.0.1",
-  "description": "webpack 4.0",
+  "description": "电动车管理平台",
   "main": "index.js",
   "scripts": {
     "build:analyse": "webpack --config ./config/webpack.analyse.js",
@@ -10,11 +10,12 @@
     "build:prod": "webpack --config ./config/webpack.prod.js",
     "start": "webpack-dev-server --config ./config/webpack.local.js --open"
   },
-  "author": "yhhcg",
-  "license": "MIT",
+  "author": "Rychou",
+  "license": "UNLICENSED",
   "dependencies": {
-    "@material-ui/core": "^1.2.2",
+    "antd": "^3.10.0",
     "babel-polyfill": "^6.26.0",
+    "css-loader": "^1.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0",
@@ -25,7 +26,8 @@
     "redux": "^4.0.0",
     "redux-action-boilerplate": "^1.1.0-alpha.1",
     "redux-logger": "^3.0.6",
-    "redux-saga": "^0.16.0"
+    "redux-saga": "^0.16.0",
+    "style-loader": "^0.23.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",
