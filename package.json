@@ -27,7 +27,8 @@
     "redux-action-boilerplate": "^1.1.0-alpha.1",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
-    "style-loader": "^0.23.1"
+    "style-loader": "^0.23.1",
+    "styled-components": "^4.0.2"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

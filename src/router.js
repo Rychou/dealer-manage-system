@@ -33,24 +33,27 @@ class Router extends React.Component {
       },
     });
 
-    // this.DetailPage = lodable({
-    //   loader: () => {
-    //     return import('./Detail');
-    //   },
-    //   loading: () => {
-    //     return <div>Loading...</div>;
-    //   },
-    // });
+    this.DetailPage = lodable({
+      loader: () => {
+        return <div>Detail</div>;
+      },
+      loading: () => {
+        return <div>Loading...</div>;
+      },
+    });
   }
 
   render() {
     return (
-      <Switch>
-        <Route exact path="/" component={Layout}>
-          <Route path="list" component={this.ListPage} />
-        </Route>
-        {/* <Route exact path="/detail" component={this.DetailPage} /> */}
-      </Switch>
+      <div>
+        <Layout>
+          <Switch>
+            <Route exact path="/" component={() => <div>Index</div>} />
+            <Route path="/list" component={this.ListPage} />
+            <Route path="/detail" component={() => <div>123</div>} />
+          </Switch>
+        </Layout>
+      </div>
     );
   }
 }

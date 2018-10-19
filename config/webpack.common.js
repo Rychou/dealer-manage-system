@@ -63,8 +63,9 @@ module.exports = {
       inject: false,
       template: HtmlWebpackTemplate,
 
-      title: 'HtmlWebpackPlugin',
+      title: '杭州公交电动车管理平台',
       appMountId: 'app',
+      links: ['//at.alicdn.com/t/font_881369_p7ak1sxfd9a.css'],
     }),
   ],
 
