@@ -2,6 +2,7 @@ import React from 'react';
 import { object, number, func } from 'prop-types';
 import { hot } from 'react-hot-loader';
 import { Button } from 'antd';
+import network from 'network';
 
 /* List Page. */
 @hot(module)
@@ -26,7 +27,7 @@ class List extends React.Component {
         <div>JSS demo</div>
         <ul>
           <li>
-            <Button>Button</Button>
+            <Button onClick={() => network.get('/example/1539929210949')}>测试网络请求(F12)</Button>
           </li>
         </ul>
         <button onClick={this.handleClick} type="button">

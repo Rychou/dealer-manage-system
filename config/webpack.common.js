@@ -2,6 +2,7 @@ const path = require('./path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackTemplate = require('html-webpack-template');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const fs = require('fs');
 
 module.exports = {
   entry: {
@@ -14,6 +15,11 @@ module.exports = {
     path: path.appDist,
   },
 
+  resolve: {
+    alias: {
+      network: require('path').resolve(fs.realpathSync(process.cwd()), 'src/network/'),
+    },
+  },
   module: {
     rules: [
       {
