@@ -17,6 +17,7 @@ module.exports = {
 
   resolve: {
     alias: {
+      '@': require('path').resolve(fs.realpathSync(process.cwd()), 'src'),
       network: require('path').resolve(fs.realpathSync(process.cwd()), 'src/network/'),
     },
   },
@@ -41,8 +42,22 @@ module.exports = {
         ],
       },
       {
-        test: /\.css$/,
+        test: /\.(css)$/,
         loader: 'style-loader!css-loader',
+      },
+      {
+        test: /\.less$/,
+        use: [
+          {
+            loader: 'style-loader', // creates style nodes from JS strings
+          },
+          {
+            loader: 'css-loader', // translates CSS into CommonJS
+          },
+          {
+            loader: 'less-loader', // compiles Less to CSS
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
