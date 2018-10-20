@@ -1,18 +1,12 @@
-# react-seed-upgraded
+# 杭州公交电动车管理平台项目
 
-Import redux base on [react-seed-simplify](https://github.com/yhhcg/react-seed-simplify)
+# 目录结构
 
-## Developing
-
-``` bash
-$ yarn
-$ yarn start
 ```
-
-## Features:
-
-- Lazy Loading
-- HMR
-- Tree Shaking
-- Code Inspection
-- Code Splitting
++-- src
+|   +-- common 公用组件
+|   +-- layout 页面布局
+|   +-- pages 页面
+|   +-- network 网络请求
++-- static 静态资源
+```
