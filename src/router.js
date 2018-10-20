@@ -23,10 +23,10 @@ class Router extends React.Component {
           /* Reducer name. */
           'list',
           /* Reducer function. */
-          require('./List/reducer').default, // eslint-disable-line global-require
+          require('./pages/List/reducer').default, // eslint-disable-line global-require
         );
 
-        return import('./List/container');
+        return import('./pages/List/container');
       },
       loading: () => {
         return <div>Loading...</div>;
