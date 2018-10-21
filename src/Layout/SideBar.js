@@ -18,7 +18,7 @@ class SideBar extends Component {
         onCollapse={this.props.onCollapse}
       >
         <Logo collapsed={this.props.collapsed} />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+        <Menu theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline">
           <SubMenu
             key="sub1"
             title={
@@ -29,7 +29,7 @@ class SideBar extends Component {
             }
           >
             <Menu.Item key="1">
-              <Link to="/">Option 1</Link>
+              <Link to="/">首页</Link>
             </Menu.Item>
           </SubMenu>
 

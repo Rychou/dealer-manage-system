@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { object } from 'prop-types';
 import lodable from 'react-loadable';
-import Index from './pages/Index/component';
+import { Spin } from 'antd';
 /* Dynamically load reducer. */
 import injectAsyncReducer from './injectAsyncReducer';
 import Layout from './Layout';
@@ -30,17 +30,13 @@ class Router extends React.Component {
         return import('./pages/List/container');
       },
       loading: () => {
-        return <div>Loading...</div>;
+        return <Spin />;
       },
     });
 
-    this.DetailPage = lodable({
-      loader: () => {
-        return <div>Detail</div>;
-      },
-      loading: () => {
-        return <div>Loading...</div>;
-      },
+    this.IndexPage = lodable({
+      loader: () => import('./pages/Index/component'),
+      loading: () => <Spin spinning />,
     });
   }
 
@@ -49,7 +45,7 @@ class Router extends React.Component {
       <div>
         <Layout>
           <Switch>
-            <Route exact path="/" component={Index} />
+            <Route exact path="/" component={this.IndexPage} />
             <Route path="/list" component={this.ListPage} />
             <Route path="/detail" component={() => <div>123</div>} />
           </Switch>

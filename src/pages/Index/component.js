@@ -1,81 +1,146 @@
 import React, { Component } from 'react';
-import { ChartCard, Field, MiniArea, MiniBar, MiniProgress } from 'ant-design-pro/lib/Charts';
-import Trend from 'ant-design-pro/lib/Trend';
-import NumberInfo from 'ant-design-pro/lib/NumberInfo';
-import { Row, Col, Icon, Tooltip } from 'antd';
+import { ChartCard } from 'ant-design-pro/lib/Charts';
+import { Row, Col, Icon, Tooltip, Table, Layout } from 'antd';
 import numeral from 'numeral';
-import moment from 'moment';
+import network from 'network';
+import styled from 'styled-components';
 
-const visitData = [];
-const beginDay = new Date().getTime();
-for (let i = 0; i < 20; i += 1) {
-  visitData.push({
-    x: moment(new Date(beginDay + 1000 * 60 * 60 * 24 * i)).format('YYYY-MM-DD'),
-    y: Math.floor(Math.random() * 100) + 10,
-  });
-}
+const { Content } = Layout;
+const StyledCol = styled(Col)`
+  border-radius: 2px;
+`;
 
+const columns = [
+  {
+    title: '公司',
+    dataIndex: 'name',
+    key: 'name',
+  },
+  {
+    title: '车辆总数',
+    dataIndex: 'carCount',
+    key: 'carCount',
+  },
+  {
+    title: '监控车辆',
+    dataIndex: 'monitoringCount',
+    key: 'monitoringCount',
+  },
+  {
+    title: '监控车辆占比',
+    dataIndex: 'monitoringPercent',
+    key: 'monitoringPercent',
+    render: monitoringPercent => `${monitoringPercent}%`,
+  },
+  {
+    title: '出车总数',
+    dataIndex: 'outCount',
+    key: 'outCount',
+  },
+  {
+    title: '出车总数占比',
+    dataIndex: 'outPercent',
+    key: 'outPercent',
+    render: outPercent => `${outPercent}%`,
+  },
+];
+/**
+ * 首页
+ *
+ * @class Index
+ * @extends {Component}
+ */
 class Index extends Component {
+  state = {
+    companys: [],
+    carCount: 0,
+    outCount: 0,
+    monitoringCount: 0,
+    isLoading: true,
+  };
+
+  componentDidMount() {
+    network.get('/companys').then(res => {
+      this.computeData(res.data.companys);
+    });
+  }
+
+  /**
+   *
+   * 计算company数据，包括车辆总数，出车占比等
+   * @param {*} companys
+   * @memberof Index
+   */
+  computeData(companys) {
+    const temArr = [];
+    let carCount = 0; // 车辆总数
+    let outCount = 0; // 出车总数
+    let monitoringCount = 0; // 监控总数
+    companys.forEach(company => {
+      carCount += company.carCount;
+      outCount += company.outCount;
+      monitoringCount += company.monitoringCount;
+      temArr.push({
+        ...company,
+        outPercent: Math.floor((company.outCount / company.carCount) * 100), // 出车占比
+        monitoringPercent: Math.floor((company.monitoringCount / company.carCount) * 100), // 监控占比
+      });
+    });
+    this.setState({ carCount, outCount, monitoringCount, companys: temArr, isLoading: false });
+  }
+
   render() {
     return (
-      <Row>
-        <Col span={24}>
-          <ChartCard title="搜索用户数量" total={numeral(8846).format('0,0')} contentHeight={134}>
-            <NumberInfo
-              subTitle={<span>本周访问</span>}
-              total={numeral(12321).format('0,0')}
-              status="up"
-              subTotal={17.1}
+      <Layout>
+        <Row gutter={24}>
+          <StyledCol span={6}>
+            <ChartCard
+              title="电动车数量"
+              loading={this.state.isLoading}
+              total={`${numeral(this.state.carCount).format('0,0')}`}
+              action={
+                <Tooltip title="电动车说明">
+                  <Icon type="info-circle-o" />
+                </Tooltip>
+              }
             />
-            <MiniArea line height={45} data={visitData} />
-          </ChartCard>
-        </Col>
-        <Col span={24} style={{ marginTop: 24 }}>
-          <ChartCard
-            title="访问量"
-            action={
-              <Tooltip title="指标说明">
-                <Icon type="info-circle-o" />
-              </Tooltip>
-            }
-            total={numeral(8846).format('0,0')}
-            footer={<Field label="日访问量" value={numeral(1234).format('0,0')} />}
-            contentHeight={46}
-          >
-            <MiniBar height={46} data={visitData} />
-          </ChartCard>
-        </Col>
-        <Col span={24} style={{ marginTop: 24 }}>
-          <ChartCard
-            title="线上购物转化率"
-            action={
-              <Tooltip title="指标说明">
-                <Icon type="info-circle-o" />
-              </Tooltip>
-            }
-            total="78%"
-            footer={
-              <div>
-                <span>
-                  周同比
-                  <Trend flag="up" style={{ marginLeft: 8, color: 'rgba(0,0,0,.85)' }}>
-                    12%
-                  </Trend>
-                </span>
-                <span style={{ marginLeft: 16 }}>
-                  日环比
-                  <Trend flag="down" style={{ marginLeft: 8, color: 'rgba(0,0,0,.85)' }}>
-                    11%
-                  </Trend>
-                </span>
-              </div>
-            }
-            contentHeight={46}
-          >
-            <MiniProgress percent={78} strokeWidth={8} target={80} />
-          </ChartCard>
-        </Col>
-      </Row>
+          </StyledCol>
+          <StyledCol span={6}>
+            <ChartCard
+              title="出车总数"
+              total={`${numeral(this.state.outCount).format('0,0')}`}
+              loading={this.state.isLoading}
+              action={
+                <Tooltip title="出车说明">
+                  <Icon type="info-circle-o" />
+                </Tooltip>
+              }
+            />
+          </StyledCol>
+          <StyledCol span={6}>
+            <ChartCard
+              title="监控总数"
+              total={`${numeral(this.state.monitoringCount).format('0,0')}`}
+              loading={this.state.isLoading}
+              action={
+                <Tooltip title="监控说明">
+                  <Icon type="info-circle-o" />
+                </Tooltip>
+              }
+            />
+          </StyledCol>
+        </Row>
+        <Content
+          style={{ background: '#fff', borderRadius: '2px', padding: '32px', marginTop: '24px' }}
+        >
+          <Table
+            rowKey="name"
+            loading={this.state.isLoading}
+            columns={columns}
+            dataSource={this.state.companys}
+          />
+        </Content>
+      </Layout>
     );
   }
 }
