@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { ChartCard } from 'ant-design-pro/lib/Charts';
 import { Row, Col, Icon, Tooltip, Table, Layout } from 'antd';
 import numeral from 'numeral';
-import network from 'network';
 import styled from 'styled-components';
+import { hot } from 'react-hot-loader';
 
 const { Content } = Layout;
 const StyledCol = styled(Col)`
@@ -50,54 +50,25 @@ const columns = [
  * @class Index
  * @extends {Component}
  */
+@hot(module)
 class Index extends Component {
-  state = {
-    companys: [],
-    carCount: 0,
-    outCount: 0,
-    monitoringCount: 0,
-    isLoading: true,
-  };
-
   componentDidMount() {
-    network.get('/companys').then(res => {
-      this.computeData(res.data.companys);
-    });
-  }
-
-  /**
-   *
-   * 计算company数据，包括车辆总数，出车占比等
-   * @param {*} companys
-   * @memberof Index
-   */
-  computeData(companys) {
-    const temArr = [];
-    let carCount = 0; // 车辆总数
-    let outCount = 0; // 出车总数
-    let monitoringCount = 0; // 监控总数
-    companys.forEach(company => {
-      carCount += company.carCount;
-      outCount += company.outCount;
-      monitoringCount += company.monitoringCount;
-      temArr.push({
-        ...company,
-        outPercent: Math.floor((company.outCount / company.carCount) * 100), // 出车占比
-        monitoringPercent: Math.floor((company.monitoringCount / company.carCount) * 100), // 监控占比
-      });
-    });
-    this.setState({ carCount, outCount, monitoringCount, companys: temArr, isLoading: false });
+    const { isResolve, fetchIndex } = this.props;
+    if (!isResolve) {
+      fetchIndex();
+    }
   }
 
   render() {
+    const { carCount, outCount, monitoringCount, companys } = this.props.companys;
     return (
       <Layout>
         <Row gutter={24}>
           <StyledCol span={6}>
             <ChartCard
               title="电动车数量"
-              loading={this.state.isLoading}
-              total={`${numeral(this.state.carCount).format('0,0')}`}
+              loading={this.props.isFetching}
+              total={`${numeral(carCount).format('0,0')}`}
               action={
                 <Tooltip title="电动车说明">
                   <Icon type="info-circle-o" />
@@ -108,8 +79,8 @@ class Index extends Component {
           <StyledCol span={6}>
             <ChartCard
               title="出车总数"
-              total={`${numeral(this.state.outCount).format('0,0')}`}
-              loading={this.state.isLoading}
+              total={`${numeral(outCount).format('0,0')}`}
+              loading={this.props.isFetching}
               action={
                 <Tooltip title="出车说明">
                   <Icon type="info-circle-o" />
@@ -120,8 +91,8 @@ class Index extends Component {
           <StyledCol span={6}>
             <ChartCard
               title="监控总数"
-              total={`${numeral(this.state.monitoringCount).format('0,0')}`}
-              loading={this.state.isLoading}
+              total={`${numeral(monitoringCount).format('0,0')}`}
+              loading={this.props.isFetching}
               action={
                 <Tooltip title="监控说明">
                   <Icon type="info-circle-o" />
@@ -135,9 +106,9 @@ class Index extends Component {
         >
           <Table
             rowKey="name"
-            loading={this.state.isLoading}
+            loading={this.props.isFetching}
             columns={columns}
-            dataSource={this.state.companys}
+            dataSource={companys}
           />
         </Content>
       </Layout>

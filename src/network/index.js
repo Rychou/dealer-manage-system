@@ -33,7 +33,7 @@ instance.interceptors.response.use(
         default:
       }
     }
-    return Promise.reject(error.response);
+    return Promise.reject(error);
   },
 );
 

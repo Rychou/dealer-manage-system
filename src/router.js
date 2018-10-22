@@ -5,7 +5,7 @@ import lodable from 'react-loadable';
 import { Spin } from 'antd';
 /* Dynamically load reducer. */
 import injectAsyncReducer from './injectAsyncReducer';
-import Layout from './Layout';
+import Layout from './layout';
 
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
@@ -35,7 +35,7 @@ class Router extends React.Component {
     });
 
     this.IndexPage = lodable({
-      loader: () => import('./pages/Index/component'),
+      loader: () => import('./pages/Index/container'),
       loading: () => <Spin spinning />,
     });
   }

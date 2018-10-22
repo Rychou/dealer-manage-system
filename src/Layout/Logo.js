@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import PropTypes from 'prop-types';
-import BIcon from '../Common/BIcon';
+import BIcon from '../common/BIcon';
 
 const LogoTitle = styled.span`
   color: #fff;
