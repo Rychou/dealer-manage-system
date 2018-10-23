@@ -13,6 +13,7 @@ module.exports = {
     filename: 'js/[name].[hash].js',
     chunkFilename: 'js/[name].[chunkhash].js',
     path: path.appDist,
+    publicPath: '/' // 解决地址栏输入url报错BUG，另一种解决方案看 Line 87
   },
 
   resolve: {
@@ -83,7 +84,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: false,
       template: HtmlWebpackTemplate,
-      baseHref: '/', // 相当于<base href="/">，为了解决直接输入'url'出现报错的Bug。参考：https://stackoverflow.com/questions/45133342/nested-react-router-4-routes-not-working-on-webpack-3?answertab=active#tab-top
+      // baseHref: '/', // 相当于<base href="/">，为了解决直接输入'url'出现报错的Bug。参考：https://stackoverflow.com/questions/45133342/nested-react-router-4-routes-not-working-on-webpack-3?answertab=active#tab-top
       title: '杭州公交电动车管理平台',
       appMountId: 'app',
       links: ['http://at.alicdn.com/t/font_881369_p7ak1sxfd9a.css'],
