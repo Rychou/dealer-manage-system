@@ -11,7 +11,14 @@ const StyleIcon = styled(Icon)`
 `;
 
 const AppHeader = ({ collapsed, onCollapse }) => (
-  <Header style={{ background: '#fff', padding: 0, boxShadow: '0 2px 4px 0 rgba(50,64,77,0.2)' }}>
+  <Header
+    style={{
+      background: '#fff',
+      padding: 0,
+      boxShadow: '0 2px 4px 0 rgba(50,64,77,0.2)',
+      zIndex: 9,
+    }}
+  >
     <StyleIcon
       type={collapsed ? 'menu-unfold' : 'menu-fold'}
       onClick={() => onCollapse(!collapsed)}
