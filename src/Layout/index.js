@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 import SideBar from './SideBar';
 import Header from './Header';
 import { GlobalFooter } from 'ant-design-pro';
+import PageHeader from './PageHeader';
+import { withRouter } from 'react-router-dom';
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 const links = [
   {
     key: '帮助',
@@ -33,16 +35,17 @@ class AppLayout extends Component {
   };
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
 
   render() {
+    const isIndex = this.props.location.pathname === '/';
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
         <Layout>
           <Header collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
+          {!isIndex ? <PageHeader /> : ''}
           <Content style={{ margin: '24px 16px 0' }}>{this.props.children}</Content>
           <GlobalFooter links={links} copyright={CopyRight} />
         </Layout>
@@ -51,4 +54,4 @@ class AppLayout extends Component {
   }
 }
 
-export default AppLayout;
+export default withRouter(AppLayout);
