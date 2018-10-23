@@ -2,9 +2,9 @@ import { Layout, Icon } from 'antd';
 import React, { Component } from 'react';
 import SideBar from './SideBar';
 import Header from './Header';
-import { GlobalFooter } from 'ant-design-pro';
-import PageHeader from './PageHeader';
-import { withRouter } from 'react-router-dom';
+import { GlobalFooter, PageHeader } from 'ant-design-pro';
+import { withRouter, Link } from 'react-router-dom';
+import { breadcrumbNameMap } from '@/utils/config';
 
 const { Content } = Layout;
 const links = [
@@ -39,13 +39,24 @@ class AppLayout extends Component {
   };
 
   render() {
-    const isIndex = this.props.location.pathname === '/';
+    const { location } = this.props;
+    const isIndex = location.pathname === '/';
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
         <Layout>
           <Header collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
-          {!isIndex ? <PageHeader /> : ''}
+          {!isIndex ? (
+            <PageHeader
+              home="首页"
+              title={breadcrumbNameMap[location.pathname].name}
+              location={location}
+              breadcrumbNameMap={breadcrumbNameMap}
+              linkElement={Link}
+            />
+          ) : (
+            ''
+          )}
           <Content style={{ margin: '24px 16px 0' }}>{this.props.children}</Content>
           <GlobalFooter links={links} copyright={CopyRight} />
         </Layout>
