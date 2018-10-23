@@ -16,24 +16,6 @@ class Router extends React.Component {
   constructor(props, context) {
     super(props);
 
-    this.ListPage = lodable({
-      loader: () => {
-        /* Aynchronously load reducer. */
-        injectAsyncReducer(
-          context.store,
-          /* Reducer name. */
-          'list',
-          /* Reducer function. */
-          require('./pages/List/reducer').default, // eslint-disable-line global-require
-        );
-
-        return import('./pages/List/container');
-      },
-      loading: () => {
-        return <Spin />;
-      },
-    });
-
     this.IndexPage = lodable({
       loader: () => import('./pages/Index/container'),
       loading: () => <Spin spinning />,
@@ -46,8 +28,8 @@ class Router extends React.Component {
         <Layout>
           <Switch>
             <Route exact path="/" component={this.IndexPage} />
-            <Route path="/list" component={this.ListPage} />
-            <Route path="/detail" component={() => <div>123</div>} />
+            <Route exact path="/carManage" component={() => <div>carManage</div>} />
+            <Route exact path="/carManage/test" component={() => <div>123</div>} />
           </Switch>
         </Layout>
       </div>
