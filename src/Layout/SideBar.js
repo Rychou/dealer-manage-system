@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import Logo from './Logo';
-import BIcon from '../common/BIcon';
+import BIcon from '../Common/BIcon';
 import { menus } from '@/utils/config';
 
 const { Sider } = Layout;

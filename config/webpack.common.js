@@ -13,7 +13,7 @@ module.exports = {
     filename: 'js/[name].[hash].js',
     chunkFilename: 'js/[name].[chunkhash].js',
     path: path.appDist,
-    publicPath: '/' // 解决地址栏输入url报错BUG，另一种解决方案看 Line 87
+    publicPath: '/', // 解决地址栏输入url报错BUG，另一种解决方案看 Line 87
   },
 
   resolve: {

@@ -5,7 +5,7 @@ import lodable from 'react-loadable';
 import { Spin } from 'antd';
 /* Dynamically load reducer. */
 import injectAsyncReducer from './injectAsyncReducer';
-import Layout from './layout';
+import Layout from './Layout';
 
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
