@@ -1,6 +1,7 @@
 import { all } from 'redux-saga/effects';
-import index from './pages/Index/saga';
+import Index from './pages/Index/saga';
+import CarList from './pages/Monitoring/CarList/saga';
 
 export default function* rootSaga() {
-  yield all([index()]);
+  yield all([Index(), CarList()]);
 }

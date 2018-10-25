@@ -2,6 +2,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
 import indexPage from './pages/Index/reducer';
+import CarList from './pages/Monitoring/CarList/reducer';
 /* App reducer maintain states to be shared across modules. */
 const app = (state = { city: 330100 }) => {
   return state;
@@ -25,5 +26,6 @@ export default function createReducer(asyncReducers) {
     /* Aync reducers. */
     ...asyncReducers,
     indexPage,
+    CarList,
   });
 }

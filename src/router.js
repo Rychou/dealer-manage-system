@@ -20,6 +20,10 @@ class Router extends React.Component {
       loader: () => import('./pages/Index/container'),
       loading: () => <Spin spinning />,
     });
+    this.CarListPage = lodable({
+      loader: () => import('./pages/Monitoring/CarList/container'),
+      loading: () => <Spin />,
+    });
   }
 
   render() {
@@ -28,7 +32,7 @@ class Router extends React.Component {
         <Layout>
           <Switch>
             <Route exact path="/" component={this.IndexPage} />
-            <Route exact path="/carManage" component={() => <div>carManage</div>} />
+            <Route exact path="/monitoring/carList" component={this.CarListPage} />
             <Route exact path="/carManage/test" component={() => <div>123</div>} />
           </Switch>
         </Layout>
