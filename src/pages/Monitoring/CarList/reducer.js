@@ -1,10 +1,11 @@
-import { async } from './actions';
+import { async, UPDATE_PAGINATION } from './actions';
 
 const { fetchCars } = async;
 
 const initState = {
   cars: [],
   lowBatteryLimit: 0,
+  pagination: {},
   isFetching: false,
   isRejected: false,
   isResolve: false,
@@ -29,6 +30,11 @@ const cars = (state = initState, action) => {
       return {
         ...state,
         isRejected: true,
+      };
+    case UPDATE_PAGINATION:
+      return {
+        ...state,
+        pagination: action.pagination,
       };
     default:
       return state;

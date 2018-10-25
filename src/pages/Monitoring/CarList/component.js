@@ -8,9 +8,23 @@ class CarList extends Component {
   componentDidMount() {
     const { isResolve, fetchCars } = this.props;
     if (!isResolve) {
-      fetchCars();
+      fetchCars({ results: 10, page: 1 });
     }
   }
+
+  handleChange = (_pagination, filters, sorter) => {
+    const { pagination, fetchCars, updatePagination } = this.props;
+    const pager = { ...pagination };
+    pager.current = _pagination.current;
+    updatePagination(pager);
+    fetchCars({
+      results: 10,
+      page: _pagination.current,
+      sortField: sorter.field,
+      sortOrder: sorter.order,
+      filters: JSON.stringify(filters),
+    });
+  };
 
   render() {
     const columns = [
@@ -39,7 +53,7 @@ class CarList extends Component {
         title: '车辆启用时间',
         dataIndex: 'startTime',
         key: 'startTime',
-        sorter: (a, b) => new Date(a.startTime) - new Date(b.startTime),
+        sorter: true,
       },
       {
         title: '剩余电量',
@@ -51,7 +65,7 @@ class CarList extends Component {
           };
           return <span style={style}>{`${soc}%`}</span>;
         },
-        sorter: (a, b) => a.soc - b.soc,
+        sorter: true,
       },
       {
         title: '状态',
@@ -81,7 +95,6 @@ class CarList extends Component {
             value: -1,
           },
         ],
-        onFilter: (value, record) => record.state === parseInt(value),
       },
       {
         title: '理论续航里程',
@@ -114,6 +127,8 @@ class CarList extends Component {
             loading={this.props.isFetching}
             columns={columns}
             dataSource={this.props.cars}
+            pagination={this.props.pagination}
+            onChange={this.handleChange}
           />
         </Content>
       </Layout>
