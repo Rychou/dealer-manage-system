@@ -20,6 +20,8 @@ module.exports = {
     alias: {
       '@': require('path').resolve(fs.realpathSync(process.cwd()), 'src'),
       request: require('path').resolve(fs.realpathSync(process.cwd()), 'src/utils/request'),
+      Common: require('path').resolve(fs.realpathSync(process.cwd()), 'src/Common'),
+      utils: require('path').resolve(fs.realpathSync(process.cwd()), 'src/utils'),
     },
   },
   module: {
