@@ -1,7 +1,9 @@
-import { FETCH_INDEX, RESOLVE_INDEX, REJECT } from './antions';
+import { async } from './antions';
+
+const { fetchCompanies } = async;
 
 const initState = {
-  data: [],
+  companies: [],
   isFetching: false,
   isRejected: false,
   isResolve: false,
@@ -10,14 +12,14 @@ const initState = {
 /**
  * compute companys data from fetched data
  *
- * @param {*} companys
+ * @param {*} companies
  * @returns
  */
-const computeCompanys = companys => {
+const computeCompanys = companies => {
   let carCount = 0; // 车辆总数
   let outCount = 0; // 出车总数
   let monitoringCount = 0; // 监控总数
-  const temArr = companys.map(company => {
+  const temArr = companies.map(company => {
     carCount += company.carCount;
     outCount += company.outCount;
     monitoringCount += company.monitoringCount;
@@ -33,25 +35,25 @@ const computeCompanys = companys => {
     carCount,
     outCount,
     monitoringCount,
-    companys: temArr,
+    companies: temArr,
   };
 };
 
-const companys = (state = initState, action) => {
+const companies = (state = initState, action) => {
   switch (action.type) {
-    case FETCH_INDEX:
+    case fetchCompanies.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case RESOLVE_INDEX:
+    case fetchCompanies.SUCCESS:
       return {
         ...state,
-        data: computeCompanys(action.companys),
+        companies: computeCompanys(action.payload.companies),
         isFetching: false,
         isResolve: true,
       };
-    case REJECT:
+    case fetchCompanies.FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -62,4 +64,4 @@ const companys = (state = initState, action) => {
   }
 };
 
-export default companys;
+export default companies;

@@ -17,11 +17,11 @@ class Router extends React.Component {
     super(props);
 
     this.IndexPage = lodable({
-      loader: () => import('./pages/Index/container'),
+      loader: () => import('./Index/container'),
       loading: () => <Spin spinning />,
     });
-    this.CarListPage = lodable({
-      loader: () => import('./pages/Monitoring/CarList/container'),
+    this.BusMonitor = lodable({
+      loader: () => import('./BusMonitor/container'),
       loading: () => <Spin />,
     });
   }
@@ -32,7 +32,7 @@ class Router extends React.Component {
         <Layout>
           <Switch>
             <Route exact path="/" component={this.IndexPage} />
-            <Route exact path="/monitoring/carList" component={this.CarListPage} />
+            <Route exact path="/busMonitor" component={this.BusMonitor} />
             <Route exact path="/carManage/test" component={() => <div>123</div>} />
           </Switch>
         </Layout>

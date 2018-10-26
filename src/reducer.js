@@ -1,8 +1,8 @@
 /* This module composes root reducer including react-router. */
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
-import indexPage from './pages/Index/reducer';
-import CarList from './pages/Monitoring/CarList/reducer';
+import companies from './Index/reducer';
+import monitors from './BusMonitor/reducer';
 /* App reducer maintain states to be shared across modules. */
 const app = (state = { city: 330100 }) => {
   return state;
@@ -25,7 +25,7 @@ export default function createReducer(asyncReducers) {
     app,
     /* Aync reducers. */
     ...asyncReducers,
-    indexPage,
-    CarList,
+    companies,
+    monitors,
   });
 }

@@ -1,9 +1,9 @@
 import { async, UPDATE_PAGINATION } from './actions';
 
-const { fetchCars } = async;
+const { fetchMonitors } = async;
 
 const initState = {
-  cars: [],
+  monitors: [],
   lowBatteryLimit: 0,
   pagination: {},
   isFetching: false,
@@ -11,22 +11,22 @@ const initState = {
   isResolve: false,
 };
 
-const cars = (state = initState, action) => {
+const monitors = (state = initState, action) => {
   switch (action.type) {
-    case fetchCars.TYPE:
+    case fetchMonitors.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case fetchCars.SUCCESS:
+    case fetchMonitors.SUCCESS:
       return {
         ...state,
-        cars: action.payload.cars,
+        monitors: action.payload.monitors,
         lowBatteryLimit: action.payload.lowBatteryLimit,
         isFetching: false,
         isResolve: true,
       };
-    case fetchCars.FAILURE:
+    case fetchMonitors.FAILURE:
       return {
         ...state,
         isRejected: true,
@@ -41,4 +41,4 @@ const cars = (state = initState, action) => {
   }
 };
 
-export default cars;
+export default monitors;

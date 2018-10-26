@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { ChartCard } from 'ant-design-pro/lib/Charts';
+import { Charts } from 'ant-design-pro';
 import { Row, Col, Icon, Tooltip, Table, Layout } from 'antd';
 import numeral from 'numeral';
 import styled from 'styled-components';
 import { hot } from 'react-hot-loader';
 
+const { ChartCard } = Charts;
 const { Content } = Layout;
 const StyledCol = styled(Col)`
   border-radius: 2px;
@@ -53,14 +54,15 @@ const columns = [
 @hot(module)
 class Index extends Component {
   componentDidMount() {
-    const { isResolve, fetchIndex } = this.props;
+    const { isResolve, fetchCompanies } = this.props;
     if (!isResolve) {
-      fetchIndex();
+      fetchCompanies();
     }
   }
 
   render() {
-    const { carCount, outCount, monitoringCount, companys } = this.props.companys;
+    console.log(this.props);
+    const { carCount, outCount, monitoringCount, companies } = this.props.companies;
     return (
       <Layout>
         <Row gutter={24}>
@@ -108,7 +110,7 @@ class Index extends Component {
             rowKey="name"
             loading={this.props.isFetching}
             columns={columns}
-            dataSource={companys}
+            dataSource={companies}
           />
         </Content>
       </Layout>

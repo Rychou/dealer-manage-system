@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
-import CarList from './component';
+import Monitors from './component';
 import { async, updatePagination } from './actions';
 
-const { fetchCars } = async;
+const { fetchMonitors } = async;
 
-const mapStateToProps = state => state.CarList;
+const mapStateToProps = state => state.monitors;
 
 const mapDispatchToProps = dispatch => ({
-  fetchCars: payload => dispatch(fetchCars(payload)),
+  fetchMonitors: payload => dispatch(fetchMonitors(payload)),
   updatePagination: payload => dispatch(updatePagination(payload)),
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(CarList);
+)(Monitors);

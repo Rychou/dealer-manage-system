@@ -2,9 +2,9 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
 import { async, updatePagination } from './actions';
 
-const { fetchCars } = async;
+const { fetchMonitors } = async;
 
-export function* fetchCarList(action) {
+export function* doFetchMonitors(action) {
   try {
     const { data } = yield call(request, {
       url: '/monitors',
@@ -12,12 +12,12 @@ export function* fetchCarList(action) {
       params: action.payload,
     });
     yield put(updatePagination({ total: data.totalCount }));
-    yield put(fetchCars.success(data));
+    yield put(fetchMonitors.success(data));
   } catch (err) {
-    yield put(fetchCars.failure(err));
+    yield put(fetchMonitors.failure(err));
   }
 }
 
 export default function* () {
-  yield takeEvery(fetchCars.TYPE, fetchCarList);
+  yield takeEvery(fetchMonitors.TYPE, doFetchMonitors);
 }

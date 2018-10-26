@@ -4,20 +4,20 @@ import { Link } from 'react-router-dom';
 
 const { Content } = Layout;
 
-class CarList extends Component {
+class BusMonitor extends Component {
   componentDidMount() {
-    const { isResolve, fetchCars } = this.props;
+    const { isResolve, fetchMonitors } = this.props;
     if (!isResolve) {
-      fetchCars({ results: 10, page: 1 });
+      fetchMonitors({ results: 10, page: 1 });
     }
   }
 
   handleChange = (_pagination, filters, sorter) => {
-    const { pagination, fetchCars, updatePagination } = this.props;
+    const { pagination, fetchMonitors, updatePagination } = this.props;
     const pager = { ...pagination };
     pager.current = _pagination.current;
     updatePagination(pager);
-    fetchCars({
+    fetchMonitors({
       results: 10,
       page: _pagination.current,
       sortField: sorter.field,
@@ -126,7 +126,7 @@ class CarList extends Component {
             bordered
             loading={this.props.isFetching}
             columns={columns}
-            dataSource={this.props.cars}
+            dataSource={this.props.monitors}
             pagination={this.props.pagination}
             onChange={this.handleChange}
           />
@@ -136,4 +136,4 @@ class CarList extends Component {
   }
 }
 
-export default CarList;
+export default BusMonitor;
