@@ -1,8 +1,12 @@
 import axios from 'axios';
-import config from './config';
 import { message } from 'antd';
 
-const instance = axios.create(config);
+const { BASE_URL } = process.env;
+
+const instance = axios.create({
+  baseURL: BASE_URL,
+  timeout: 3000,
+});
 
 // 请求拦截器
 instance.interceptors.request.use(config => {
