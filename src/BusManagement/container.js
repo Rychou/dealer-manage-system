@@ -1,19 +1,19 @@
 import { connect } from 'react-redux';
-import CarManage from './component';
+import BusManage from './component';
 import { async, updatePagination } from './actions';
 
-const { fetchCarsInfo, changeDrawerVisible, changeCarsInfo } = async;
+const { fetchBusInfo, changeDrawerVisible, changeBusInfo } = async;
 
-const mapStateToProps = state => state.CarManage;
+const mapStateToProps = state => state.buses;
 
 const mapDispatchToProps = dispatch => ({
-    fetchCarsInfo: payload => dispatch(fetchCarsInfo(payload)),
+    fetchBusInfo: payload => dispatch(fetchBusInfo(payload)),
     updatePagination: payload => dispatch(updatePagination(payload)),
     changeDrawerVisible: payload => dispatch(changeDrawerVisible(payload)),
-    changeCarsInfo: payload => dispatch(changeCarsInfo(payload)),
+    changeBusInfo: payload => dispatch(changeBusInfo(payload)),
 });
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(CarManage);
+)(BusManage);

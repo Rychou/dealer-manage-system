@@ -25,7 +25,7 @@ class Router extends React.Component {
       loading: () => <Spin />,
     });
     this.CarManage = lodable({
-        loader: () => import('./pages/CarManage/container'),
+        loader: () => import('./BusManagement/container'),
         loading: () => <Spin />,
     });
   }

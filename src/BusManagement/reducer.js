@@ -1,6 +1,6 @@
 import { async, UPDATE_PAGINATION } from './actions';
 
-const { fetchCarsInfo, changeDrawerVisible, changeCarsInfo } = async;
+const { fetchBusInfo, changeDrawerVisible, changeBusInfo } = async;
 
 const initState = {
     cars: [],
@@ -11,7 +11,7 @@ const initState = {
     isResolve: false,
 };
 
-const filterCarsInfo = (carsInfo) => {
+const filterBusInfo = (carsInfo) => {
     const result = [];
     carsInfo.forEach(car => {
         result.push({
@@ -30,19 +30,19 @@ const filterCarsInfo = (carsInfo) => {
 
 const cars = (state = initState, action) => {
     switch (action.type) {
-        case fetchCarsInfo.TYPE:
+        case fetchBusInfo.TYPE:
             return {
                 ...state,
                 isFetching: true,
             };
-        case fetchCarsInfo.SUCCESS:
+        case fetchBusInfo.SUCCESS:
             return {
                 ...state,
-                cars: filterCarsInfo(action.payload.data),
+                cars: filterBusInfo(action.payload.data),
                 isFetching: false,
                 isResolve: false,
             };
-        case fetchCarsInfo.FAILURE:
+        case fetchBusInfo.FAILURE:
             return {
                 ...state,
                 isRejected: true,
@@ -57,7 +57,7 @@ const cars = (state = initState, action) => {
                 ...state,
                 visible: action.payload,
             };
-        case changeCarsInfo.TYPE:
+        case changeBusInfo.TYPE:
             return {
                 ...state,
                 cars: action.payload,

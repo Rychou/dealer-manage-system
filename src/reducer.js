@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
 import companies from './Index/reducer';
 import monitors from './BusMonitor/reducer';
+import buses from './BusManagement/reducer';
 /* App reducer maintain states to be shared across modules. */
 const app = (state = { city: 330100 }) => {
   return state;
@@ -27,5 +28,6 @@ export default function createReducer(asyncReducers) {
     ...asyncReducers,
     companies,
     monitors,
+    buses,
   });
 }

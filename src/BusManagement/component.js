@@ -6,13 +6,13 @@ const { Content } = Layout;
 
 class CarManage extends Component {
     componentDidMount() {
-        const { isResolve, fetchCarsInfo } = this.props;
+        const { isResolve, fetchBusInfo } = this.props;
         if (!isResolve) {
-            fetchCarsInfo({ row: 10, page: 2 });
+            fetchBusInfo({ row: 10, page: 2 });
         }
     }
 
-    editCarsInfo = () => {
+    editBusInfo = () => {
         const { changeDrawerVisible } = this.props;
         return changeDrawerVisible(true);
     };
@@ -24,9 +24,9 @@ class CarManage extends Component {
 
     handleDelete (selfNum) {
         console.log( selfNum );
-        const { changeCarsInfo } = this.props;
+        const { changeBusInfo } = this.props;
         let carsInfo = this.props.cars;
-        changeCarsInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum))
+        changeBusInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum))
     }
 
 
@@ -68,7 +68,7 @@ class CarManage extends Component {
             dataIndex: 'action',
             render: (text, record) => (
                 <span>
-                    <a onClick={this.editCarsInfo}>编辑</a> |
+                    <a onClick={this.editBusInfo}>编辑</a> |
                     <Popconfirm title="确认删除该车辆?" onConfirm={() => this.handleDelete(record.selfNum)} okText="确认" cancelText="取消">
                         <a href="#">删除</a>
                     </Popconfirm>

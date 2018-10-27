@@ -19,7 +19,7 @@ module.exports = merge(common, {
     new webpack.DefinePlugin({
       'process.env': {
         BASE_URL: JSON.stringify(
-          'http://mock.eolinker.com/uNrvt624c0a75c8cb56b26bfca28ef23c58432f49216be5?uri=',
+          'http://result.eolinker.com/uNrvt624c0a75c8cb56b26bfca28ef23c58432f49216be5?uri=',
         ),
       },
     }),
