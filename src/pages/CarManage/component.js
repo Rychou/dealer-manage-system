@@ -1,6 +1,6 @@
+/* eslint-disable */
 import React, { Component } from 'react';
-import { Layout, Table } from 'antd';
-import { Link } from 'react-router-dom';
+import { Layout, Table, Drawer, Form, Button, Row, Input, Popconfirm } from 'antd';
 
 const { Content } = Layout;
 
@@ -8,9 +8,27 @@ class CarManage extends Component {
     componentDidMount() {
         const { isResolve, fetchCarsInfo } = this.props;
         if (!isResolve) {
-            fetchCarsInfo({ result: 10, page: 1 });
+            fetchCarsInfo({ row: 10, page: 2 });
         }
     }
+
+    editCarsInfo = () => {
+        const { changeDrawerVisible } = this.props;
+        return changeDrawerVisible(true);
+    };
+
+    closeDrawer = () => {
+        const { changeDrawerVisible } = this.props;
+        return changeDrawerVisible(false);
+    };
+
+    handleDelete (selfNum) {
+        console.log( selfNum );
+        const { changeCarsInfo } = this.props;
+        let carsInfo = this.props.cars;
+        changeCarsInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum))
+    }
+
 
     render() {
         const columns = [{
@@ -19,37 +37,42 @@ class CarManage extends Component {
             key: 'useUnit',
         }, {
             title: '车辆自编号',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'selfNum',
+            key: 'selfNum',
         }, {
             title: '车牌号',
-            dataIndex: 'carNumber',
-            key: 'carNumber',
+            dataIndex: 'licenseNum',
+            key: 'licenseNum',
         }, {
             title: 'VIN号',
-            dataIndex: 'VINNumber',
-            key: 'VINNumber',
+            dataIndex: 'vin',
+            key: 'vin',
         }, {
             title: '车辆型号',
-            dataIndex: 'type',
-            key: 'type',
+            dataIndex: 'vehModel',
+            key: 'vehModel',
         }, {
             title: '持续里程',
-            dataIndex: 'distance',
-            key: 'distance',
+            dataIndex: 'workMileage',
+            key: 'workMileage',
         }, {
             title: '修理公司',
-            dataIndex: 'fixCompany',
-            key: 'fixCompany',
+            dataIndex: 'repairUnit',
+            key: 'repairUnit',
         }, {
             title: '时间',
-            dataIndex: 'time',
-            key: 'time',
+            dataIndex: 'driveLicenceRegDate',
+            key: 'driveLicenceRegDate',
         }, {
             title: '操作',
             dataIndex: 'action',
             render: (text, record) => (
-                <span><a href="#">编辑</a> | <a href="#">删除</a> </span>
+                <span>
+                    <a onClick={this.editCarsInfo}>编辑</a> |
+                    <Popconfirm title="确认删除该车辆?" onConfirm={() => this.handleDelete(record.selfNum)} okText="确认" cancelText="取消">
+                        <a href="#">删除</a>
+                    </Popconfirm>
+                </span>
             ),
         }];
 
@@ -63,15 +86,28 @@ class CarManage extends Component {
                         marginTop: '24px',
                     }}>
                     <Table
-                    rowKey="id"
-                    bordered
-                    loading={this.props.isFetching}
-                    columns={columns}
-                    dataSource={this.props.cars}
-                    pagination={this.props.pagination}
-                    // onChange={this.handleChange}
-                />
+                        rowKey="selfNum"
+                        bordered
+                        loading={this.props.isFetching}
+                        columns={columns}
+                        dataSource={this.props.cars}
+                        pagination={this.props.pagination}
+                        // onChange={this.handleChange}
+                    />
                 </Content>
+                <Drawer
+                    title="Create"
+                    width={720}
+                    placement="right"
+                    onClose={this.closeDrawer}
+                    maskClosable={false}
+                    visible={this.props.visible}
+                    style={{
+                        height: 'calc(100% - 55px)',
+                        overflow: 'auto',
+                        paddingBottom: 53,
+                    }}
+                />
             </Layout>
         );
     }

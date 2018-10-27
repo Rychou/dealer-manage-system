@@ -6,8 +6,8 @@ const { fetchCarsInfo } = async;
 
 export function* fetchCarList(action) {
     try {
-        const { data } = yield call(fetch, { url: '/carManageList', method: 'get', params: action.payload });
-        yield put(updatePagination({ total: data.totalCount }));
+        const { data } = yield call(fetch, { url: '/buses', method: 'get', params: action.payload });
+        yield put(updatePagination({ total: data.row }));
         yield put(fetchCarsInfo.success(data));
     } catch (e) {
         yield put(fetchCarsInfo.failure(e));
