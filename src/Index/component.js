@@ -19,8 +19,8 @@ const columns = [
   },
   {
     title: '车辆总数',
-    dataIndex: 'carCount',
-    key: 'carCount',
+    dataIndex: 'busCount',
+    key: 'busCount',
   },
   {
     title: '监控车辆',
@@ -62,7 +62,7 @@ class Index extends Component {
 
   render() {
     console.log(this.props);
-    const { carCount, outCount, monitoringCount, companies } = this.props.companies;
+    const { busCount, outCount, monitoringCount, companies } = this.props.companies;
     return (
       <Layout>
         <Row gutter={24}>
@@ -70,7 +70,7 @@ class Index extends Component {
             <ChartCard
               title="电动车数量"
               loading={this.props.isFetching}
-              total={`${numeral(carCount).format('0,0')}`}
+              total={`${numeral(busCount).format('0,0')}`}
               action={
                 <Tooltip title="电动车说明">
                   <Icon type="info-circle-o" />

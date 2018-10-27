@@ -32,7 +32,7 @@ class BusMonitor extends Component {
         title: '车辆自编号',
         dataIndex: 'id',
         key: 'id',
-        render: id => <Link to={`/monitoring/detail?id=${id}`}>{id}</Link>,
+        render: id => <Link to={`/buses/monitor/${id}`}>{id}</Link>,
       },
       {
         title: '车辆型号',
@@ -112,7 +112,7 @@ class BusMonitor extends Component {
         title: '操作',
         key: 'action',
         render: (text, record) => (
-          <Link to={`/monitoring/detail?id=${record.id}#chargeRecord`}>充电记录</Link>
+          <Link to={`/buses/monitor/${record.id}#chargeRecord`}>充电记录</Link>
         ),
       },
     ];

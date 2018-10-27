@@ -16,15 +16,15 @@ const initState = {
  * @returns
  */
 const computeCompanys = companies => {
-  let carCount = 0; // 车辆总数
+  let busCount = 0; // 车辆总数
   let outCount = 0; // 出车总数
   let monitoringCount = 0; // 监控总数
   const temArr = companies.map(company => {
-    carCount += company.carCount;
+    busCount += company.busCount;
     outCount += company.outCount;
     monitoringCount += company.monitoringCount;
-    const outPercent = Math.floor((company.outCount / company.carCount) * 100); // 出车占比
-    const monitoringPercent = Math.floor((company.monitoringCount / company.carCount) * 100); // 监控占比
+    const outPercent = Math.floor((company.outCount / company.busCount) * 100); // 出车占比
+    const monitoringPercent = Math.floor((company.monitoringCount / company.busCount) * 100); // 监控占比
     return {
       ...company,
       outPercent,
@@ -32,7 +32,7 @@ const computeCompanys = companies => {
     };
   });
   return {
-    carCount,
+    busCount,
     outCount,
     monitoringCount,
     companies: temArr,

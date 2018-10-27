@@ -1,34 +1,14 @@
-import { Layout, Icon } from 'antd';
+import { Layout } from 'antd';
 import React, { Component } from 'react';
 import SideBar from './SideBar';
 import Header from './Header';
-import { GlobalFooter, PageHeader } from 'ant-design-pro';
+import Footer from './Footer';
+import { PageHeader } from 'ant-design-pro';
 import { withRouter, Link } from 'react-router-dom';
 import { breadcrumbNameMap } from '@/utils/config';
 
 const { Content } = Layout;
-const links = [
-  {
-    key: '帮助',
-    title: '帮助',
-    href: '',
-  },
-  {
-    key: '隐私',
-    title: '隐私',
-    href: '',
-  },
-  {
-    key: '条款',
-    title: '条款',
-    href: '',
-  },
-];
-const CopyRight = (
-  <div>
-    Copyright <Icon type="copyright" /> 2018 公交云体验技术部出品
-  </div>
-);
+
 class AppLayout extends Component {
   state = {
     collapsed: false,
@@ -38,18 +18,50 @@ class AppLayout extends Component {
     this.setState({ collapsed });
   };
 
+  /**
+   * 计算PageHeader组件的Title属性值
+   *
+   * @param {*} location
+   * @returns
+   * @memberof AppLayout
+   */
+  computePageHeaderTitle(location) {
+    // breadcrumbNameMap中有对应路由的值则直接返回
+    if (breadcrumbNameMap.hasOwnProperty(location.pathname)) {
+      return breadcrumbNameMap[location.pathname].name;
+    }
+    // 这种情况针对带参路由，如:'/buses/monitor/:id'
+    const splitPath = location.pathname.split('/');
+    for (let i = splitPath.length - 1; i > 0; i--) {
+      splitPath.pop();
+      const temPath = splitPath.join('/');
+      if (breadcrumbNameMap[temPath]) {
+        const children = breadcrumbNameMap[temPath].children;
+        for (let j = 0; j < children.length; j++) {
+          const splitItemPath = children[j].path.split('/');
+          if (splitItemPath[splitItemPath.length - 1][0] === ':') {
+            return children[j].name;
+          }
+        }
+        break;
+      }
+    }
+    return 404;
+  }
+
   render() {
     const { location } = this.props;
     const isIndex = location.pathname === '/';
+    const showPageHeader = isIndex;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
         <Layout>
           <Header collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
-          {!isIndex ? (
+          {!showPageHeader ? (
             <PageHeader
               home="首页"
-              title={breadcrumbNameMap[location.pathname].name}
+              title={this.computePageHeaderTitle(location)}
               location={location}
               breadcrumbNameMap={breadcrumbNameMap}
               linkElement={Link}
@@ -58,7 +70,7 @@ class AppLayout extends Component {
             ''
           )}
           <Content style={{ margin: '24px 16px 0' }}>{this.props.children}</Content>
-          <GlobalFooter links={links} copyright={CopyRight} />
+          <Footer />
         </Layout>
       </Layout>
     );

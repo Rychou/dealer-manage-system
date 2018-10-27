@@ -18,7 +18,7 @@ export const menus = [
     isSub: false,
     name: '车辆监控',
     icon: 'anticon-alert',
-    path: '/busMonitor',
+    path: '/buses/monitor',
   },
   {
     isSub: false,
@@ -30,15 +30,24 @@ export const menus = [
 
 // 路由-面包屑映射列表
 export const breadcrumbNameMap = {
-  '/': { path: '/', exact: true, locale: 'menu', redirect: '/list', name: '首页' },
+  '/': { path: '/', exact: true, name: '首页' },
   '/map': {
     name: '地图分布',
     path: '/map',
-    children: {},
   },
-  '/busMonitor': {
+  '/buses/monitor': {
     name: '车辆监控',
-    path: '/busMonitor',
+    path: '/buses/monitor',
+    children: [
+      {
+        name: '车辆详情',
+        path: '/buses/monitor/:id',
+      },
+    ],
+  },
+  '/buses/monitor/:id': {
+    name: '车辆详情',
+    path: '/buses/monitor/:id',
   },
   '/carManage': {
     name: '车辆管理',
