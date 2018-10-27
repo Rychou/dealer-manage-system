@@ -4,10 +4,6 @@ import { routerReducer as router } from 'react-router-redux';
 import companies from './Index/reducer';
 import monitors from './BusMonitor/reducer';
 import buses from './BusManagement/reducer';
-/* App reducer maintain states to be shared across modules. */
-const app = (state = { city: 330100 }) => {
-  return state;
-};
 
 /**
  * This is a create reducer function.
@@ -23,7 +19,6 @@ export default function createReducer(asyncReducers) {
   return combineReducers({
     /* Permanent redux reducers. */
     router,
-    app,
     /* Aync reducers. */
     ...asyncReducers,
     companies,
