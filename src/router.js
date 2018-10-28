@@ -43,7 +43,7 @@ class Router extends React.Component {
             <Route exact path="/" component={this.IndexPage} />
             <Route exact path="/buses/monitor" component={this.BusMonitor} />
             <Route path="/buses/monitor/:id" component={Test} />
-            <Route exact path="/carManage" component={this.CarManage} />
+            <Route exact path="/buses" component={this.CarManage} />
             <Route component={() => <Exception type="404" />} />
           </Switch>
         </Layout>
