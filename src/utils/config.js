@@ -23,7 +23,7 @@ export const menus = [
   {
     isSub: false,
     name: '车辆管理',
-    path: '/carManage',
+    path: '/buses',
     icon: 'anticon-deploymentunit',
   },
 ];
@@ -49,8 +49,8 @@ export const breadcrumbNameMap = {
     name: '车辆详情',
     path: '/buses/monitor/:id',
   },
-  '/carManage': {
+  '/buses': {
     name: '车辆管理',
-    path: '/carManage',
+    path: '/buses',
   },
 };
