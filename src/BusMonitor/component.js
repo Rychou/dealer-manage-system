@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Layout, Table, Badge } from 'antd';
+import { Layout, Table, Badge, Button } from 'antd';
 import { Link } from 'react-router-dom';
+import Filters from './Filters';
+import request from 'request';
 
 const { Content } = Layout;
 
@@ -8,7 +10,7 @@ class BusMonitor extends Component {
   componentDidMount() {
     const { isResolve, fetchMonitors } = this.props;
     if (!isResolve) {
-      fetchMonitors({ results: 10, page: 1 });
+      fetchMonitors({ row: 10, page: 1 });
     }
   }
 
@@ -18,11 +20,30 @@ class BusMonitor extends Component {
     pager.current = _pagination.current;
     updatePagination(pager);
     fetchMonitors({
-      results: 10,
+      row: 10,
       page: _pagination.current,
       sortField: sorter.field,
       sortOrder: sorter.order,
       filters: JSON.stringify(filters),
+    });
+  };
+
+  exportExcel = () => {
+    request({
+      url: '/monitors/export',
+      method: 'GET',
+      responseType: 'arraybuffer',
+    }).then(res => {
+      const url = window.URL.createObjectURL(
+        new Blob([res.data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
+        }),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'file.xls'); // or any other extension
+      document.body.appendChild(link);
+      link.click();
     });
   };
 
@@ -121,6 +142,8 @@ class BusMonitor extends Component {
         <Content
           style={{ background: '#fff', borderRadius: '2px', padding: '32px', marginTop: '24px' }}
         >
+          <Filters />
+          <Button onClick={this.exportExcel}>导出</Button>
           <Table
             rowKey="id"
             bordered
