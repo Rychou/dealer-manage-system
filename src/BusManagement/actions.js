@@ -2,7 +2,12 @@ import { Async } from 'redux-action-boilerplate';
 
 export const async = new Async({
     prefix: 'bus',
-    actions: ['fetchBusInfo', 'changeDrawerVisible', 'changeBusInfo'],
+    actions: [
+        'fetchBusInfo',
+        'changeDrawerVisible',
+        'changeBusInfo',
+        'postSpecialBusInfo',
+    ],
 });
 
 export const UPDATE_PAGINATION = 'UPDATE_PAGE';

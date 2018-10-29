@@ -1,10 +1,11 @@
 import { async, UPDATE_PAGINATION } from './actions';
 
-const { fetchBusInfo, changeDrawerVisible, changeBusInfo } = async;
+const { fetchBusInfo, changeDrawerVisible, changeBusInfo, postSpecialBusInfo } = async;
 
 const initState = {
     cars: [],
     pagination: {},
+    specialBusInfo: {},
     visible: false,
     isFetching: false,
     isRejected: false,
@@ -30,6 +31,11 @@ const filterBusInfo = (carsInfo) => {
 
 const cars = (state = initState, action) => {
     switch (action.type) {
+        case postSpecialBusInfo.TYPE:
+            return {
+                ...state,
+                specialBusInfo: action.payload,
+            };
         case fetchBusInfo.TYPE:
             return {
                 ...state,

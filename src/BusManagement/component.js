@@ -8,24 +8,25 @@ const WarppedbusInfoEditForm = Form.create()(busInfoEditForm);
 
 class CarManage extends Component {
     componentDidMount() {
-        const {isResolve, fetchBusInfo} = this.props;
+        const { isResolve, fetchBusInfo } = this.props;
         if (!isResolve) {
             fetchBusInfo({row: 10, page: 2});
         }
     }
 
-    editBusInfo = () => {
-        const {changeDrawerVisible} = this.props;
+    editBusInfo = (record) => {
+        const { changeDrawerVisible, postSpecialBusInfo } = this.props;
+        postSpecialBusInfo(record);
         return changeDrawerVisible(true);
     };
 
     closeDrawer = () => {
-        const {changeDrawerVisible} = this.props;
+        const { changeDrawerVisible } = this.props;
         return changeDrawerVisible(false);
     };
 
     handleDelete(selfNum) {
-        const {changeBusInfo} = this.props;
+        const { changeBusInfo } = this.props;
         let carsInfo = this.props.cars;
         changeBusInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum))
     }
@@ -68,7 +69,7 @@ class CarManage extends Component {
             dataIndex: 'action',
             render: (text, record) => (
                 <span>
-                    <a onClick={this.editBusInfo}>编辑</a> |
+                    <a onClick={(e) => this.editBusInfo(record)}>编辑</a> |
                     <Popconfirm title="确认删除该车辆?" onConfirm={() => this.handleDelete(record.selfNum)} okText="确认"
                                 cancelText="取消">
                         <a href="#">删除</a>
@@ -101,12 +102,12 @@ class CarManage extends Component {
                     title="新建/编辑车辆"
                     width={559}
                     placement="right"
-                    onClose={this.closeDrawer}
+              子应用      onClose={this.closeDrawer}
                     maskClosable={false}
                     visible={this.props.visible}
                     style={{height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53,}}
                 >
-                    <WarppedbusInfoEditForm/>
+                    <WarppedbusInfoEditForm {...this.props }/>
                 </Drawer>
             </Layout>
         );

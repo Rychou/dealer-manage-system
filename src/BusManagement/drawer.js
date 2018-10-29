@@ -6,6 +6,7 @@ const FormItem = Form.Item;
 class BusInfoEditForm extends Component {
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { changeDrawerVisible } = this.props;
 
         const formItemLayout = {
             labelCol: {
@@ -25,6 +26,7 @@ class BusInfoEditForm extends Component {
                             rules: [{
                                 required: true, message: '请输入车辆自编号',
                             }],
+                            initialValue: this.props.specialBusInfo.selfNum || '',
                         })(
                             <Input placeholder="请输入车辆自编号" />,
                         )}
@@ -34,6 +36,7 @@ class BusInfoEditForm extends Component {
                             rules: [{
                                 required: true, message: '请输入车牌号',
                             }],
+                            initialValue: this.props.specialBusInfo.licenseNum || '',
                         })(
                             <Input placeholder="请输入车牌号" />,
                         )}
@@ -43,6 +46,7 @@ class BusInfoEditForm extends Component {
                             rules: [{
                                 required: true, message: '请输入车牌号',
                             }],
+                            initialValue: this.props.specialBusInfo.licenseNum || '',
                         })(
                             <Input placeholder="请输入车牌号" />,
                         )}
@@ -52,12 +56,15 @@ class BusInfoEditForm extends Component {
                             rules: [{
                                 required: true, message: '请输入VIN号',
                             }],
+                            initialValue: this.props.specialBusInfo.vin || '',
                         })(
                             <Input placeholder="请输入VIN号" />,
                         )}
                     </FormItem>
                     <FormItem label="工程里程" {...formItemLayout}>
-                        {getFieldDecorator('workMileage')(
+                        {getFieldDecorator('workMileage', {
+                            initialValue: this.props.specialBusInfo.workMileage || '',
+                        })(
                             <Input placeholder="请输入工程里程" />,
                         )}
                     </FormItem>
@@ -66,6 +73,7 @@ class BusInfoEditForm extends Component {
                             rules: [{
                                 required: true, message: '请输入VIN号',
                             }],
+                            initialValue: this.props.specialBusInfo.vehModel || '',
                         })(
                             <Input placeholder="请输入车型" />,
                         )}
@@ -75,12 +83,15 @@ class BusInfoEditForm extends Component {
                             rules: [{
                                 required: true, message: '请输入归属公司',
                             }],
+                            initialValue: this.props.specialBusInfo.useUnit || '',
                         })(
                             <Input placeholder="请输入归属公司" />,
                         )}
                     </FormItem>
                     <FormItem label="承修公司" {...formItemLayout}>
-                        {getFieldDecorator('repairUnit')(
+                        {getFieldDecorator('repairUnit', {
+                            initialValue: this.props.specialBusInfo.repairUnit || '',
+                        })(
                             <Input placeholder="请输入归属公司" />,
                         )}
                     </FormItem>
@@ -91,6 +102,7 @@ class BusInfoEditForm extends Component {
                                 type: 'object',
                                 message: '请输入启用时间',
                             }],
+                            initialValue: this.props.specialBusInfo.driveLicenceRegDate || null,
                         })(
                             <DatePicker />,
                         )}
@@ -99,7 +111,11 @@ class BusInfoEditForm extends Component {
                         <Col span={6} offset={8}>
                             <Button type="primary" htmlType="submit">提交</Button>
                         </Col>
-                        <Col span={5} offset={0}><Button>取消</Button></Col>
+                        <Col span={5} offset={0}>
+                            <Button onClick={
+                            () => changeDrawerVisible(false)}>取消
+                            </Button>
+                        </Col>
                     </Row>
                 </Form>
             </div>
