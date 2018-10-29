@@ -1,7 +1,8 @@
 /* eslint-disable */
 import React, { Component } from 'react';
-import busInfoEditForm from './drawer';
 import {Layout, Table, Drawer, Form, Popconfirm} from 'antd';
+import busInfoEditForm from './drawer';
+import BusFilter from './Filters';
 const { Content } = Layout;
 const WarppedbusInfoEditForm = Form.create()(busInfoEditForm);
 
@@ -24,7 +25,6 @@ class CarManage extends Component {
     };
 
     handleDelete(selfNum) {
-        console.log(selfNum);
         const {changeBusInfo} = this.props;
         let carsInfo = this.props.cars;
         changeBusInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum))
@@ -86,6 +86,7 @@ class CarManage extends Component {
                         padding: '32px',
                         marginTop: '24px',
                     }}>
+                    <BusFilter/>
                     <Table
                         rowKey="selfNum"
                         bordered
@@ -93,6 +94,7 @@ class CarManage extends Component {
                         columns={columns}
                         dataSource={this.props.cars}
                         pagination={this.props.pagination}
+                        style={{marginTop: 30}}
                     />
                 </Content>
                 <Drawer
@@ -102,11 +104,7 @@ class CarManage extends Component {
                     onClose={this.closeDrawer}
                     maskClosable={false}
                     visible={this.props.visible}
-                    style={{
-                        height: 'calc(100% - 55px)',
-                        overflow: 'auto',
-                        paddingBottom: 53,
-                    }}
+                    style={{height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53,}}
                 >
                     <WarppedbusInfoEditForm/>
                 </Drawer>
