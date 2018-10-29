@@ -89,10 +89,10 @@ class BusMonitor extends Component {
       },
       {
         title: '状态',
-        dataIndex: 'state',
-        key: 'state',
-        render: state => {
-          switch (state) {
+        dataIndex: 'status',
+        key: 'status',
+        render: status => {
+          switch (status) {
             case -1:
               return <Badge status="error" text="异常" />;
             case 0:
