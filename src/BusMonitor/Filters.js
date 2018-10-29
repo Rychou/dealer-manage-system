@@ -11,7 +11,17 @@ class Filters extends Component {
   handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
+      const { pagination, fetchMonitors } = this.props;
+      const filters = {};
+      Object.keys(values).forEach(key => {
+        filters[key] = values[key];
+      });
+      console.log(filters);
+      fetchMonitors({
+        row: pagination.row,
+        page: pagination.page,
+        filters: JSON.stringify(filters),
+      });
     });
   };
 

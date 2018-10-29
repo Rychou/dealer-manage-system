@@ -5,7 +5,10 @@ const { fetchMonitors } = async;
 const initState = {
   monitors: [],
   lowBatteryLimit: 0,
-  pagination: {},
+  pagination: {
+    row: 10,
+    page: 1,
+  },
   isFetching: false,
   isRejected: false,
   isResolve: false,
@@ -34,7 +37,7 @@ const monitors = (state = initState, action) => {
     case UPDATE_PAGINATION:
       return {
         ...state,
-        pagination: action.pagination,
+        pagination: { ...state.pagination, ...action.pagination },
       };
     default:
       return state;

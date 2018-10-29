@@ -8,7 +8,7 @@ const { Content } = Layout;
 
 class BusMonitor extends Component {
   componentDidMount() {
-    const { isResolve, fetchMonitors } = this.props;
+    const { isResolve, fetchMonitors, updatePagination } = this.props;
     if (!isResolve) {
       fetchMonitors({ row: 10, page: 1 });
     }
@@ -16,8 +16,7 @@ class BusMonitor extends Component {
 
   handleChange = (_pagination, filters, sorter) => {
     const { pagination, fetchMonitors, updatePagination } = this.props;
-    const pager = { ...pagination };
-    pager.current = _pagination.current;
+    const pager = { ...pagination, page: _pagination.current, row: _pagination.pageSize };
     updatePagination(pager);
     fetchMonitors({
       row: 10,
@@ -142,7 +141,7 @@ class BusMonitor extends Component {
         <Content
           style={{ background: '#fff', borderRadius: '2px', padding: '32px', marginTop: '24px' }}
         >
-          <Filters />
+          <Filters {...this.props} />
           <Button onClick={this.exportExcel}>导出</Button>
           <Table
             rowKey="id"

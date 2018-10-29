@@ -38,6 +38,7 @@ export const breadcrumbNameMap = {
   '/buses/monitor': {
     name: '车辆监控',
     path: '/buses/monitor',
+    component: '@/BusMonitor/container',
     children: [
       {
         name: '车辆详情',
