@@ -4,7 +4,7 @@ import { routerReducer as router } from 'react-router-redux';
 import companies from './Index/reducer';
 import monitors from './BusMonitor/reducer';
 import buses from './BusManagement/reducer';
-
+import busDetail from './BusDetail/reducer';
 /**
  * This is a create reducer function.
  * It returns current permanent and asynchronously loaded reducers.
@@ -24,5 +24,6 @@ export default function createReducer(asyncReducers) {
     companies,
     monitors,
     buses,
+    busDetail,
   });
 }

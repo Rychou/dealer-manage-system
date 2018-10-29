@@ -7,7 +7,6 @@ import { Spin } from 'antd';
 import injectAsyncReducer from './injectAsyncReducer';
 import Layout from './Layout';
 import { Exception } from 'ant-design-pro';
-
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
   static contextTypes = {
@@ -25,6 +24,10 @@ class Router extends React.Component {
       loader: () => import('./BusMonitor/container'),
       loading: () => <Spin />,
     });
+    this.BusDetail = lodable({
+      loader: () => import('./BusDetail/container'),
+      loading: () => <Spin />,
+    });
     this.CarManage = lodable({
       loader: () => import('./BusManagement/container'),
       loading: () => <Spin />,
@@ -32,17 +35,13 @@ class Router extends React.Component {
   }
 
   render() {
-    const Test = ({ match }) => {
-      console.log(match);
-      return <div>123</div>;
-    };
     return (
       <div>
         <Layout>
           <Switch>
             <Route exact path="/" component={this.IndexPage} />
             <Route exact path="/buses/monitor" component={this.BusMonitor} />
-            <Route path="/buses/monitor/:id" component={Test} />
+            <Route exact path="/buses/monitor/:id" component={this.BusDetail} />
             <Route exact path="/carManage" component={this.CarManage} />
             <Route component={() => <Exception type="404" />} />
           </Switch>
