@@ -112,9 +112,10 @@ class Filters extends Component {
             formItems.map(Item => {
                 if (Item.isShow) {
                     return (
-                        <Col span={6} key={Item.label}>
+                        <Col span={5} key={Item.label}>
                             <FormItem
-                                label={Item.label}
+                                colon={false}
+                                label={<div style={{ float: 'left' }}>{`${Item.label}:`}</div>}
                                 {...formItemLayout}
                                 style={{ display: 'block', height: 32 }}
                             >
@@ -127,22 +128,28 @@ class Filters extends Component {
                 }
             });
         return (
-            <Form layout="inline" onSubmit={this.handleSearch}>
-                <Row type="flex" justify="start" align="middle" gutter={6}>
-                    {renderForm()}
-                    <Col span={6} style={{ height: 32 }}>
-                        <Button type="primary" htmlType="submit">
-                            查询
-                        </Button>
-                        <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
-                            重置
-                        </Button>
-                        <a style={{ marginLeft: 15, fontSize: 12 }} onClick={this.toggle}>
-                            展开 <Icon type={this.state.expand ? 'up' : 'down'} />
-                        </a>
-                    </Col>
+            <div>
+                <Form layout="inline" onSubmit={this.handleSearch}>
+                    <Row type="flex" justify="start" align="middle" gutter={6}>
+                        {renderForm()}
+                        <Col span={6} style={{ height: 32 }}>
+                            <Button type="primary" htmlType="submit">
+                                查询
+                            </Button>
+                            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+                                重置
+                            </Button>
+                            <a style={{ marginLeft: 15, fontSize: 12 }} onClick={this.toggle}>
+                                展开 <Icon type={this.state.expand ? 'up' : 'down'} />
+                            </a>
+                        </Col>
+                    </Row>
+                </Form>
+                <Row style={{ width: 200, marginTop: 29 }}>
+                    <Col span={12}><Button type="primary">新建</Button></Col>
+                    <Col span={12}><Button>导入</Button></Col>
                 </Row>
-            </Form>
+            </div>
         );
     }
 }
