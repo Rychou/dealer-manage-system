@@ -8,6 +8,19 @@ class Filters extends Component {
         expand: false,
     };
 
+    createBusInfo = () => {
+        const {
+            changeDrawerVisible,
+            postSpecialBusInfo,
+            isNewBusInfo,
+            changeIsNewBus,
+            specialBusInfo,
+        } = this.props;
+        postSpecialBusInfo(isNewBusInfo ? specialBusInfo : {});
+        changeIsNewBus(true);
+        return changeDrawerVisible(true);
+    };
+
     handleSearch = e => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
@@ -26,14 +39,18 @@ class Filters extends Component {
 
     render() {
         const { getFieldDecorator } = this.props.form;
+        const { changeDrawerVisible } = this.props;
+
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
-                sm: { span: 8 },
+                sm: { span: 12 },
+                xxl: { span: 8 },
             },
             wrapperCol: {
                 xs: { span: 24 },
-                sm: { span: 13 },
+                sm: { span: 12 },
+                xxl: { span: 16 },
             },
         };
         const formItems = [
@@ -146,7 +163,12 @@ class Filters extends Component {
                     </Row>
                 </Form>
                 <Row style={{ width: 200, marginTop: 29 }}>
-                    <Col span={12}><Button type="primary">新建</Button></Col>
+                    <Col span={12}>
+                        <Button
+                            type="primary"
+                            onClick={this.createBusInfo}>新建
+                        </Button>
+                    </Col>
                     <Col span={12}><Button>导入</Button></Col>
                 </Row>
             </div>

@@ -7,6 +7,7 @@ export const async = new Async({
         'changeDrawerVisible',
         'changeBusInfo',
         'postSpecialBusInfo',
+        'changeIsNewBus',
     ],
 });
 

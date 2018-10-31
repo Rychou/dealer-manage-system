@@ -1,11 +1,18 @@
 import { async, UPDATE_PAGINATION } from './actions';
 
-const { fetchBusInfo, changeDrawerVisible, changeBusInfo, postSpecialBusInfo } = async;
+const {
+    fetchBusInfo,
+    changeDrawerVisible,
+    changeBusInfo,
+    postSpecialBusInfo,
+    changeIsNewBus,
+} = async;
 
 const initState = {
     cars: [],
     pagination: {},
     specialBusInfo: {},
+    isNewBusInfo: false, // 用来判断是否是新建一个车辆信息
     visible: false,
     isFetching: false,
     isRejected: false,
@@ -31,6 +38,11 @@ const filterBusInfo = (carsInfo) => {
 
 const cars = (state = initState, action) => {
     switch (action.type) {
+        case changeIsNewBus.TYPE:
+            return {
+                ...state,
+                isNewBusInfo: action.payload,
+            };
         case postSpecialBusInfo.TYPE:
             return {
                 ...state,

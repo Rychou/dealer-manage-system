@@ -4,7 +4,18 @@ import {Layout, Table, Drawer, Form, Popconfirm} from 'antd';
 import busInfoEditForm from './drawer';
 import BusFilter from './Filters';
 const { Content } = Layout;
-const WarppedbusInfoEditForm = Form.create()(busInfoEditForm);
+
+const WarppedbusInfoEditForm = Form.create({
+    mapPropsToFields(props) {
+        let formInit = {};
+        for(let item in props.specialBusInfo) {
+            formInit[item] = Form.createFormField({
+                value: props.specialBusInfo[item]
+            })
+        }
+        return formInit;
+    }
+})(busInfoEditForm);
 
 class CarManage extends Component {
     componentDidMount() {
@@ -13,17 +24,13 @@ class CarManage extends Component {
             fetchBusInfo({row: 10, page: 2});
         }
     }
-
     editBusInfo = (record) => {
-        const { changeDrawerVisible, postSpecialBusInfo } = this.props;
+        const { changeDrawerVisible, postSpecialBusInfo, changeIsNewBus } = this.props;
+        changeIsNewBus(false);
         postSpecialBusInfo(record);
         return changeDrawerVisible(true);
     };
 
-    closeDrawer = () => {
-        const { changeDrawerVisible } = this.props;
-        return changeDrawerVisible(false);
-    };
 
     handleDelete(selfNum) {
         const { changeBusInfo } = this.props;
@@ -87,7 +94,7 @@ class CarManage extends Component {
                         padding: '32px',
                         marginTop: '24px',
                     }}>
-                    <BusFilter/>
+                    <BusFilter { ...this.props }/>
                     <Table
                         rowKey="selfNum"
                         bordered
@@ -102,8 +109,8 @@ class CarManage extends Component {
                     title="新建/编辑车辆"
                     width={559}
                     placement="right"
-              子应用      onClose={this.closeDrawer}
                     maskClosable={false}
+                    closable={false}
                     visible={this.props.visible}
                     style={{height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53,}}
                 >
