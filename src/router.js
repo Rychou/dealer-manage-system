@@ -21,7 +21,7 @@ class Router extends React.Component {
       loader: () => {
         injectAsyncReducer(
           context.store,
-          'companies',
+          'Index',
           require('./Index/reducer').default,
         );
         return import('./Index/container');
@@ -32,7 +32,7 @@ class Router extends React.Component {
       loader: () => {
         injectAsyncReducer(
           context.store,
-          'busMonitor',
+          'BusMonitor',
           require('./BusMonitor/reducer').default,
         );
         return import('./BusMonitor/container');
@@ -43,7 +43,7 @@ class Router extends React.Component {
       loader: () => {
         injectAsyncReducer(
           context.store,
-          'busDetail',
+          'BusDetail',
           require('./BusDetail/reducer').default,
         );
         return import('./BusDetail/container');
