@@ -1,46 +1,54 @@
-/* eslint-disable */
-import React, {Component} from 'react';
-import {Layout, Table, Drawer, Form, Popconfirm} from 'antd';
+import React, { Component } from 'react';
+import { Layout, Table, Drawer, Form, Popconfirm } from 'antd';
+import { object, func, bool, array } from 'prop-types';
 import busInfoEditForm from './drawer';
 import BusFilter from './Filters';
 
-const {Content} = Layout;
+
+const { Content } = Layout;
+
 
 const WarppedbusInfoEditForm = Form.create({
   mapPropsToFields(props) {
-    let formInit = {};
-    for (let item in props.specialBusInfo) {
+    const formInit = {};
+    const { specialBusInfo } = props;
+    const propertyName = Object.getOwnPropertyNames(specialBusInfo); // 获取每个属性的名字
+    propertyName.forEach(item => {
       formInit[item] = Form.createFormField({
-        value: props.specialBusInfo[item]
-      })
-    }
+        value: specialBusInfo[item],
+      });
+    });
     return formInit;
-  }
+  },
 })(busInfoEditForm);
 
 class CarManage extends Component {
   componentDidMount() {
-    const {isResolve, fetchBusInfo} = this.props;
+    const { isResolve, fetchBusInfo } = this.props;
     if (!isResolve) {
-      fetchBusInfo({row: 10, page: 2});
+      fetchBusInfo({ row: 10, page: 2 });
     }
   }
 
   editBusInfo = (record) => {
-    const {changeDrawerVisible, postSpecialBusInfo, changeIsNewBus} = this.props;
+    const {
+      changeDrawerVisible,
+      postSpecialBusInfo,
+      changeIsNewBus,
+    } = this.props;
     changeIsNewBus(false);
     postSpecialBusInfo(record);
     return changeDrawerVisible(true);
   };
 
-
   handleDelete(selfNum) {
-    const {changeBusInfo} = this.props;
-    let carsInfo = this.props.cars;
-    changeBusInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum))
+    const { changeBusInfo, cars } = this.props;
+    const carsInfo = cars;
+    changeBusInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum));
   }
 
   render() {
+    const { isFetching, cars, pagination, visible } = this.props;
     const columns = [{
       title: '使用单位',
       dataIndex: 'useUnit',
@@ -78,12 +86,17 @@ class CarManage extends Component {
       dataIndex: 'action',
       render: (text, record) => (
         <span>
-                    <a onClick={(e) => this.editBusInfo(record)}>编辑</a> |
-                    <Popconfirm title="确认删除该车辆?" onConfirm={() => this.handleDelete(record.selfNum)} okText="确认"
-                                cancelText="取消">
-                        <a href="#">删除</a>
-                    </Popconfirm>
-                </span>
+          <a onClick={(e) => this.editBusInfo(record)}>编辑</a>|
+          <Popconfirm
+            title="确认删除该车辆?"
+            onConfirm={
+              () => this.handleDelete(record.selfNum)
+            }
+            okText="确认"
+            cancelText="取消">
+          <a href="#">删除</a>
+          </Popconfirm>
+        </span>
       ),
     }];
 
@@ -96,15 +109,15 @@ class CarManage extends Component {
             padding: '32px',
             marginTop: '24px',
           }}>
-          <BusFilter {...this.props}/>
+          <BusFilter {...this.props} />
           <Table
             rowKey="selfNum"
             bordered
-            loading={this.props.isFetching}
+            loading={isFetching}
             columns={columns}
-            dataSource={this.props.cars}
-            pagination={this.props.pagination}
-            style={{marginTop: 30}}
+            dataSource={cars}
+            pagination={pagination}
+            style={{ marginTop: 30 }}
           />
         </Content>
         <Drawer
@@ -113,14 +126,28 @@ class CarManage extends Component {
           placement="right"
           maskClosable={false}
           closable={false}
-          visible={this.props.visible}
-          style={{height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53,}}
+          visible={visible}
+          style={{ height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53 }}
         >
-          <WarppedbusInfoEditForm {...this.props}/>
+          <WarppedbusInfoEditForm {...this.props} />
         </Drawer>
       </Layout>
     );
   }
 }
+CarManage.propTypes = {
+  cars: array.isRequired,
+  pagination: object.isRequired,
+  specialBusInfo: object,
+  isNewBusInfo: bool, // 用来判断是否是新建一个车辆信息
+  visible: bool,
+  isFetching: bool.isRequired,
+  isRejected: bool.isRequired,
+  isResolve: bool.isRequired,
+  fetchBusInfo: func.isRequired,
+  changeDrawerVisible: func,
+  changeBusInfo: func,
+  changeIsNewBus: func,
+};
 
 export default CarManage;
