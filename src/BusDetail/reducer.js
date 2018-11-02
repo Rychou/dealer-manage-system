@@ -3,7 +3,9 @@ import { async } from './actions';
 const { fetchBusDetail } = async;
 
 const initState = {
-  basic: {},
+  basic: {
+    staticObject: {},
+  },
   chargeRecord: {},
   isFetching: false,
   isRejected: false,

@@ -7,11 +7,11 @@ const { fetchBusDetail } = async;
 export function* doFetchBusDetail(action) {
   try {
     const basic = yield call(request, {
-      url: `/buses/${action.payload.id}`,
+      url: `/buses/${action.payload.vin}`,
       method: 'get',
     });
     const chargeRecord = yield call(request, {
-      url: `/buses/${action.payload.id}/chargeRecord`,
+      url: `/buses/${action.payload.vin}/chargeRecord`,
       method: 'get',
     });
     yield put(fetchBusDetail.success({ basic: basic.data, chargeRecord: chargeRecord.data }));

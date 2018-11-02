@@ -81,7 +81,7 @@ class Router extends React.Component {
           <Switch>
             <Route exact path="/" component={this.IndexPage} />
             <Route exact path="/buses/monitor" component={this.BusMonitor} />
-            <Route exact path="/buses/monitor/:id" component={this.BusDetail} />
+            <Route exact path="/buses/monitor/:vin" component={this.BusDetail} />
             <Route exact path="/buses" component={this.CarManage} />
             <Route exact path="/buses/report" component={this.BusReport} />
             <Route component={() => <Exception type="404" />} />
