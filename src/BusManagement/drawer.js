@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Col, DatePicker, Form, Input, Row } from 'antd';
+import request from 'request';
 
 const FormItem = Form.Item;
 
@@ -8,11 +9,22 @@ class BusInfoEditForm extends Component {
         const { changeDrawerVisible, isNewBusInfo, postSpecialBusInfo } = this.props;
         const { getFieldsValue } = this.props.form;
         let newBusInfo = {};
-        if (isNewBusInfo) newBusInfo = getFieldsValue();
-        postSpecialBusInfo(newBusInfo);
+        if (isNewBusInfo) {
+            newBusInfo = getFieldsValue();
+            postSpecialBusInfo(newBusInfo);
+        }
         return changeDrawerVisible(false);
     };
 
+    handleSubmit = (e) => {
+        // e.preventDefault();
+        // const { getFieldsValue } = this.props.form;
+        // let busInfo = getFieldsValue();
+        // console.log(busInfo);
+        // request({
+        //     url: '/'
+        // })
+    };
     render() {
         const { getFieldDecorator } = this.props.form;
 
@@ -28,7 +40,7 @@ class BusInfoEditForm extends Component {
         };
         return (
             <div style={{ marginTop: 50 }}>
-                <Form>
+                <Form onSubmit={this.handleSubmit}>
                     <FormItem label="车辆自编号" {...formItemLayout}>
                         {getFieldDecorator('selfNum', {
                             rules: [{

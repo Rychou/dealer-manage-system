@@ -32,6 +32,10 @@ class Router extends React.Component {
       loader: () => import('./BusManagement/container'),
       loading: () => <Spin />,
     });
+    this.BusReport = lodable({
+        loader: () => import('./BusReport/container'),
+        loading: () => <Spin />,
+    });
   }
 
   render() {
@@ -42,8 +46,8 @@ class Router extends React.Component {
             <Route exact path="/" component={this.IndexPage} />
             <Route exact path="/buses/monitor" component={this.BusMonitor} />
             <Route exact path="/buses/monitor/:id" component={this.BusDetail} />
-            <Route exact path="/carManage" component={this.CarManage} />
             <Route exact path="/buses" component={this.CarManage} />
+            <Route exact path="/buses/report" component={this.BusReport} />
             <Route component={() => <Exception type="404" />} />
           </Switch>
         </Layout>

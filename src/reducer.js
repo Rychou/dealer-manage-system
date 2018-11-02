@@ -5,6 +5,8 @@ import companies from './Index/reducer';
 import monitors from './BusMonitor/reducer';
 import buses from './BusManagement/reducer';
 import busDetail from './BusDetail/reducer';
+import busReport from './BusReport/reducer';
+
 /**
  * This is a create reducer function.
  * It returns current permanent and asynchronously loaded reducers.
@@ -25,5 +27,6 @@ export default function createReducer(asyncReducers) {
     monitors,
     buses,
     busDetail,
+    busReport,
   });
 }
