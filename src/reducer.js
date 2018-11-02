@@ -1,11 +1,6 @@
 /* This module composes root reducer including react-router. */
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
-import companies from './Index/reducer';
-import monitors from './BusMonitor/reducer';
-import buses from './BusManagement/reducer';
-import busDetail from './BusDetail/reducer';
-import busReport from './BusReport/reducer';
 
 /**
  * This is a create reducer function.
@@ -23,10 +18,5 @@ export default function createReducer(asyncReducers) {
     router,
     /* Aync reducers. */
     ...asyncReducers,
-    companies,
-    monitors,
-    buses,
-    busDetail,
-    busReport,
   });
 }

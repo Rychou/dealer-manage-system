@@ -7,6 +7,7 @@ import { Spin } from 'antd';
 import injectAsyncReducer from './injectAsyncReducer';
 import Layout from './Layout';
 import { Exception } from 'ant-design-pro';
+
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
   static contextTypes = {
@@ -17,24 +18,59 @@ class Router extends React.Component {
     super(props);
 
     this.IndexPage = lodable({
-      loader: () => import('./Index/container'),
+      loader: () => {
+        injectAsyncReducer(
+          context.store,
+          'companies',
+          require('./Index/reducer').default,
+        );
+        return import('./Index/container');
+      },
       loading: () => <Spin spinning />,
     });
     this.BusMonitor = lodable({
-      loader: () => import('./BusMonitor/container'),
+      loader: () => {
+        injectAsyncReducer(
+          context.store,
+          'busMonitor',
+          require('./BusMonitor/reducer').default,
+        );
+        return import('./BusMonitor/container');
+      },
       loading: () => <Spin />,
     });
     this.BusDetail = lodable({
-      loader: () => import('./BusDetail/container'),
+      loader: () => {
+        injectAsyncReducer(
+          context.store,
+          'busDetail',
+          require('./BusDetail/reducer').default,
+        );
+        return import('./BusDetail/container');
+      },
       loading: () => <Spin />,
     });
     this.CarManage = lodable({
-      loader: () => import('./BusManagement/container'),
+      loader: () => {
+        injectAsyncReducer(
+          context.store,
+          'buses',
+          require('./BusManagement/reducer').default,
+        );
+        return import('./BusManagement/container');
+      },
       loading: () => <Spin />,
     });
     this.BusReport = lodable({
-        loader: () => import('./BusReport/container'),
-        loading: () => <Spin />,
+      loader: () => {
+        injectAsyncReducer(
+          context.store,
+          'busReport',
+          require('./BusReport/reducer'),
+        );
+        return import('./BusReport/container');
+      },
+      loading: () => <Spin />,
     });
   }
 
