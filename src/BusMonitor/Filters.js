@@ -16,11 +16,10 @@ class Filters extends Component {
       Object.keys(values).forEach(key => {
         filters[key] = values[key];
       });
-      console.log(filters);
       fetchMonitors({
         row: pagination.row,
         page: pagination.page,
-        filters: JSON.stringify(filters),
+        filters: JSON.stringify(filters) !== '{}' ? JSON.stringify(filters) : null,
       });
     });
   };

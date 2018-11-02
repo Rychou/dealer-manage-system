@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Filters from './Filters';
 import request from 'request';
 import PropTypes from 'prop-types';
+import { transformStatus } from 'utils';
 
 const { Content } = Layout;
 
@@ -24,7 +25,7 @@ class BusMonitor extends Component {
       page: _pagination.current,
       sortField: sorter.field,
       sortOrder: sorter.order,
-      filters: JSON.stringify(filters),
+      filters: JSON.stringify(filters) !== '{}' ? JSON.stringify(filters) : null,
     });
   };
 
@@ -94,12 +95,18 @@ class BusMonitor extends Component {
         key: 'status',
         render: status => {
           switch (status) {
-            case -1:
-              return <Badge status="error" text="异常" />;
-            case 0:
-              return <Badge status="warning" text="熄火" />;
+            case 1:
+              return <Badge status="processing" text={transformStatus(status)} />;
+            case 2:
+              return <Badge status="warning" text={transformStatus(status)} />;
+            case 3:
+              return <Badge status="default" text={transformStatus(status)} />;
+            case 254:
+              return <Badge status="error" text={transformStatus(status)} />;
+            case 255:
+              return <Badge status="waring" text={transformStatus(status)} />;
             default:
-              return <Badge status="processing" text="启动" />;
+              return '';
           }
         },
         filters: [
@@ -121,19 +128,19 @@ class BusMonitor extends Component {
         title: '理论续航里程',
         dataIndex: 'theoryMileage',
         key: 'theoryMileage',
-        render: theoryMileage => <span>{`${theoryMileage}公里`}</span>,
+        render: theoryMileage => theoryMileage ? <span>{`${theoryMileage}公里`}</span> : null,
       },
       {
         title: '当日行驶里程',
         dataIndex: 'todayMileage',
         key: 'todayMileage',
-        render: todayMileage => <span>{`${todayMileage}公里`}</span>,
+        render: todayMileage => todayMileage ? <span>{`${todayMileage}公里`}</span> : null,
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
-          <Link to={`/buses/monitor/${record.id}#chargeRecord`}>充电记录</Link>
+          <Link to={`/buses/monitor/${record.vin}#chargeRecord`}>充电记录</Link>
         ),
       },
     ];
