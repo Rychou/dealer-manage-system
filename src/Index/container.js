@@ -3,7 +3,7 @@ import { async } from './antions';
 import Index from './component';
 
 const { fetchCompanies } = async;
-const mapStateToProps = state => state.companies;
+const mapStateToProps = state => state.Index;
 
 const mapDispatchToProps = dispatch => ({
   fetchCompanies: () => dispatch(fetchCompanies()),

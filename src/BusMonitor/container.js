@@ -4,7 +4,7 @@ import { async, updatePagination } from './actions';
 
 const { fetchMonitors } = async;
 
-const mapStateToProps = state => state.monitors;
+const mapStateToProps = state => state.BusMonitor;
 
 const mapDispatchToProps = dispatch => ({
   fetchMonitors: payload => dispatch(fetchMonitors(payload)),

@@ -3,7 +3,7 @@ import { async } from './antions';
 const { fetchCompanies } = async;
 
 const initState = {
-  companies: [],
+  companies: {},
   isFetching: false,
   isRejected: false,
   isResolve: false,
@@ -35,7 +35,7 @@ const computeCompanys = companies => {
     busCount,
     outCount,
     monitoringCount,
-    companies: temArr,
+    data: temArr,
   };
 };
 

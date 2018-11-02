@@ -4,6 +4,7 @@ import { Row, Col, Icon, Tooltip, Table, Layout } from 'antd';
 import numeral from 'numeral';
 import styled from 'styled-components';
 import { hot } from 'react-hot-loader';
+import PropTypes from 'prop-types';
 
 const { ChartCard } = Charts;
 const { Content } = Layout;
@@ -61,15 +62,22 @@ class Index extends Component {
   }
 
   render() {
-    console.log(this.props);
-    const { busCount, outCount, monitoringCount, companies } = this.props.companies;
+    const {
+      companies,
+      isFetching,
+    } = this.props;
+    const {
+      busCount,
+      outCount,
+      monitoringCount,
+      data } = companies;
     return (
       <Layout>
         <Row gutter={24}>
           <StyledCol span={6}>
             <ChartCard
               title="电动车数量"
-              loading={this.props.isFetching}
+              loading={isFetching}
               total={`${numeral(busCount).format('0,0')}`}
               action={
                 <Tooltip title="电动车说明">
@@ -82,7 +90,7 @@ class Index extends Component {
             <ChartCard
               title="出车总数"
               total={`${numeral(outCount).format('0,0')}`}
-              loading={this.props.isFetching}
+              loading={isFetching}
               action={
                 <Tooltip title="出车说明">
                   <Icon type="info-circle-o" />
@@ -94,7 +102,7 @@ class Index extends Component {
             <ChartCard
               title="监控总数"
               total={`${numeral(monitoringCount).format('0,0')}`}
-              loading={this.props.isFetching}
+              loading={isFetching}
               action={
                 <Tooltip title="监控说明">
                   <Icon type="info-circle-o" />
@@ -108,14 +116,21 @@ class Index extends Component {
         >
           <Table
             rowKey="name"
-            loading={this.props.isFetching}
+            loading={isFetching}
             columns={columns}
-            dataSource={companies}
+            dataSource={data}
           />
         </Content>
       </Layout>
     );
   }
 }
+
+Index.propTypes = {
+  companies: PropTypes.object.isRequired,
+  fetchCompanies: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  isResolve: PropTypes.bool.isRequired,
+};
 
 export default Index;

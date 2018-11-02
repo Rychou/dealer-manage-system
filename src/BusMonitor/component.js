@@ -3,12 +3,13 @@ import { Layout, Table, Badge, Button } from 'antd';
 import { Link } from 'react-router-dom';
 import Filters from './Filters';
 import request from 'request';
+import PropTypes from 'prop-types';
 
 const { Content } = Layout;
 
 class BusMonitor extends Component {
   componentDidMount() {
-    const { isResolve, fetchMonitors, updatePagination } = this.props;
+    const { isResolve, fetchMonitors } = this.props;
     if (!isResolve) {
       fetchMonitors({ row: 10, page: 1 });
     }
@@ -27,7 +28,7 @@ class BusMonitor extends Component {
     });
   };
 
-  exportExcel = () => {
+  handleExportExcel = () => {
     request({
       url: '/monitors/export',
       method: 'GET',
@@ -50,9 +51,9 @@ class BusMonitor extends Component {
     const columns = [
       {
         title: '车辆自编号',
-        dataIndex: 'id',
-        key: 'id',
-        render: id => <Link to={`/buses/monitor/${id}`}>{id}</Link>,
+        dataIndex: 'vin',
+        key: 'vin',
+        render: vin => <Link to={`/buses/monitor/${vin}`}>{vin}</Link>,
       },
       {
         title: '车辆型号',
@@ -142,7 +143,7 @@ class BusMonitor extends Component {
           style={{ background: '#fff', borderRadius: '2px', padding: '32px', marginTop: '24px' }}
         >
           <Filters {...this.props} />
-          <Button onClick={this.exportExcel}>导出</Button>
+          <Button onClick={this.handleExportExcel}>导出</Button>
           <Table
             rowKey="id"
             bordered
@@ -157,5 +158,15 @@ class BusMonitor extends Component {
     );
   }
 }
+
+BusMonitor.propTypes = {
+  fetchMonitors: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  isRejected: PropTypes.bool.isRequired,
+  isResolve: PropTypes.bool.isRequired,
+  monitors: PropTypes.array.isRequired,
+  pagination: PropTypes.object.isRequired,
+  updatePagination: PropTypes.func.isRequired,
+};
 
 export default BusMonitor;

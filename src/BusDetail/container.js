@@ -4,7 +4,7 @@ import { async } from './actions';
 
 const { fetchBusDetail } = async;
 
-const mapStateToProps = state => state.busDetail;
+const mapStateToProps = state => state.BusDetail;
 
 const mapDispatchToProps = dispatch => ({
   fetchBusDetail: payload => dispatch(fetchBusDetail(payload)),
