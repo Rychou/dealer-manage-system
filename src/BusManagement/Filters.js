@@ -1,5 +1,6 @@
-import {Form, Row, Col, Input, Button, Icon} from 'antd';
-import React, {Component} from 'react';
+import { Form, Row, Col, Input, Button, Icon } from 'antd';
+import { object, bool, func } from 'prop-types';
+import React, { Component } from 'react';
 
 const FormItem = Form.Item;
 
@@ -33,24 +34,23 @@ class Filters extends Component {
   };
 
   toggle = () => {
-    const {expand} = this.state;
-    this.setState({expand: !expand});
+    const { expand } = this.state;
+    this.setState({ expand: !expand });
   };
 
   render() {
-    const {getFieldDecorator} = this.props.form;
-    const {changeDrawerVisible} = this.props;
+    const { getFieldDecorator } = this.props.form;
 
     const formItemLayout = {
       labelCol: {
-        xs: {span: 24},
-        sm: {span: 12},
-        xxl: {span: 8},
+        xs: { span: 24 },
+        sm: { span: 12 },
+        xxl: { span: 8 },
       },
       wrapperCol: {
-        xs: {span: 24},
-        sm: {span: 12},
-        xxl: {span: 16},
+        xs: { span: 24 },
+        sm: { span: 12 },
+        xxl: { span: 16 },
       },
     };
     const formItems = [
@@ -132,13 +132,13 @@ class Filters extends Component {
             <Col span={5} key={Item.label}>
               <FormItem
                 colon={false}
-                label={<div style={{float: 'left'}}>{`${Item.label}:`}</div>}
+                label={<div style={{ float: 'left' }}>{`${Item.label}:`}</div>}
                 {...formItemLayout}
-                style={{display: 'block', height: 32}}
+                style={{ display: 'block', height: 32 }}
               >
                 {getFieldDecorator(Item.fieldDecorator.id, {
                   rules: Item.fieldDecorator.rules,
-                })(<Input placeholder={Item.placeholder}/>)}
+                })(<Input placeholder={Item.placeholder} />)}
               </FormItem>
             </Col>
           );
@@ -149,20 +149,20 @@ class Filters extends Component {
         <Form layout="inline" onSubmit={this.handleSearch}>
           <Row type="flex" justify="start" align="middle" gutter={6}>
             {renderForm()}
-            <Col span={6} style={{height: 32}}>
+            <Col span={6} style={{ height: 32 }}>
               <Button type="primary" htmlType="submit">
                 查询
               </Button>
-              <Button style={{marginLeft: 8}} onClick={this.handleReset}>
+              <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
                 重置
               </Button>
-              <a style={{marginLeft: 15, fontSize: 12}} onClick={this.toggle}>
-                展开 <Icon type={this.state.expand ? 'up' : 'down'}/>
+              <a style={{ marginLeft: 15, fontSize: 12 }} onClick={this.toggle}>
+                展开 <Icon type={this.state.expand ? 'up' : 'down'} />
               </a>
             </Col>
           </Row>
         </Form>
-        <Row style={{width: 200, marginTop: 29}}>
+        <Row style={{ width: 200, marginTop: 29 }}>
           <Col span={12}>
             <Button
               type="primary"

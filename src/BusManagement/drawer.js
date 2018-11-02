@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Button, Col, DatePicker, Form, Input, Row } from 'antd';
-import request from 'request';
+import { object, bool, func } from 'prop-types';
+// import request from 'request';
 
 const FormItem = Form.Item;
 
 class BusInfoEditForm extends Component {
   closeDrawer = () => {
-    const { changeDrawerVisible, isNewBusInfo, postSpecialBusInfo } = this.props;
-    const { getFieldsValue } = this.props.form;
+    const { changeDrawerVisible, isNewBusInfo, postSpecialBusInfo, form } = this.props;
+    const { getFieldsValue } = form;
     let newBusInfo = {};
     if (isNewBusInfo) {
       newBusInfo = getFieldsValue();
@@ -121,5 +122,12 @@ class BusInfoEditForm extends Component {
     );
   }
 }
+
+BusInfoEditForm.propTypes = {
+  changeDrawerVisible: func.isRequired,
+  form: object.isRequired,
+  isNewBusInfo: bool.isRequired,
+  postSpecialBusInfo: func.isRequired,
+};
 
 export default BusInfoEditForm;

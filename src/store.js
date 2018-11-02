@@ -4,7 +4,6 @@
  */
 import { createStore } from 'redux';
 import createReducer from './reducer';
-
 /**
  * Factory composing react store with reducers and middlewares.
  * @param  {Object} initialState - An instance by calling applyMiddleware.
