@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 import BusDetail from './component';
 import { async } from './actions';
 
-const { fetchBusDetail } = async;
+const { fetchBusInfo, fetchChargeRecord } = async;
+
 
 const mapStateToProps = state => state.BusDetail;
 
 const mapDispatchToProps = dispatch => ({
-  fetchBusDetail: payload => dispatch(fetchBusDetail(payload)),
+  fetchBusInfo: payload => dispatch(fetchBusInfo(payload)),
+  fetchChargeRecord: payload => dispatch(fetchChargeRecord(payload)),
 });
 
 export default connect(

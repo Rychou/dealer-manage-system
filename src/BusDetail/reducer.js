@@ -1,32 +1,36 @@
 import { async } from './actions';
+import { combineReducers } from 'redux';
 
-const { fetchBusDetail } = async;
+const { fetchBusInfo, fetchChargeRecord } = async;
 
-const initState = {
-  basic: {
-    staticObject: {},
-  },
-  chargeRecord: {},
+const busInofInitState = {
+  staticInfo: {},
   isFetching: false,
   isRejected: false,
   isResolve: false,
 };
 
-const BusDetail = (state = initState, action) => {
+const chargeRecordInitState = {
+  isFetching: false,
+  isRejected: false,
+  isResolve: false,
+};
+
+const busInfo = (state = busInofInitState, action) => {
   switch (action.type) {
-    case fetchBusDetail.TYPE:
+    case fetchBusInfo.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case fetchBusDetail.SUCCESS:
+    case fetchBusInfo.SUCCESS:
       return {
         ...state,
-        basic: action.payload.basic,
-        chargeRecord: action.payload.chargeRecord,
+        ...action.payload.busInfo,
         isResolve: true,
+        isFetching: false,
       };
-    case fetchBusDetail.FAIL:
+    case fetchBusInfo.FAIL:
       return {
         ...state,
         isRejected: true,
@@ -36,4 +40,32 @@ const BusDetail = (state = initState, action) => {
   }
 };
 
-export default BusDetail;
+const chargeRecord = (state = chargeRecordInitState, action) => {
+  switch (action.type) {
+    case fetchChargeRecord.TYPE:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case fetchChargeRecord.SUCCESS:
+      return {
+        ...state,
+        ...action.payload.chargeRecord,
+        isResolve: true,
+        isFetching: false,
+      };
+    case fetchChargeRecord.FAIL:
+      return {
+        ...state,
+        isRejected: true,
+      };
+    default:
+      return state;
+  }
+};
+
+
+export default combineReducers({
+  busInfo,
+  chargeRecord,
+});

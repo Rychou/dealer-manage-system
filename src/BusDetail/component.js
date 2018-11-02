@@ -11,35 +11,44 @@ const { Description } = DescriptionList;
 
 class BusDetail extends Component {
   componentDidMount() {
-    const { match, location, fetchBusDetail, isResolve } = this.props;
-    if (!isResolve) {
-      fetchBusDetail({ vin: match.params.vin });
+    const {
+      match,
+      location,
+      fetchBusInfo,
+      fetchChargeRecord,
+      busInfo,
+      chargeRecord,
+    } = this.props;
+    if (!busInfo.isResolve) {
+      fetchBusInfo({ vin: match.params.vin });
+    }
+    if (!chargeRecord.isResolve) {
+      fetchChargeRecord({ vin: match.params.vin });
     }
     scrollToAnchor(location);
   }
 
   render() {
-    const { basic, chargeRecord, isFetching } = this.props;
-    const { staticObject } = basic;
+    const { busInfo, busInfo: { staticInfo }, chargeRecord } = this.props;
     return (
       <Layout>
         <Content style={{ background: '#fff', borderRadius: '2px', padding: '32px' }}>
           <DescriptionList size="large" title="车辆信息">
-            <Description term="车辆自编号">{staticObject.selfNum}</Description>
-            <Description term="车牌号">{staticObject.licenseNum}</Description>
-            <Description term="VIN">{staticObject.vin}</Description>
+            <Description term="车辆自编号">{staticInfo.selfNum}</Description>
+            <Description term="车牌号">{staticInfo.licenseNum}</Description>
+            <Description term="VIN">{staticInfo.vin}</Description>
             <Description term="所属公司/承修单位">
-              {`${staticObject.useUnit}/${staticObject.repairUnit}`}
+              {`${staticInfo.useUnit}/${staticInfo.repairUnit}`}
             </Description>
-            <Description term="启用时间">{staticObject.driveLicenceRegDate}</Description>
-            <Description term="车辆状态">{transformStatus(basic.status)}</Description>
-            <Description term="续驶里程">{`${basic.theoryContinuousMileage}km`}</Description>
-            <Description term="电池容量">{`${basic.batteryCapacity}KWh`}</Description>
-            <Description term="额定电压">{`${basic.ratedVoltage}V`}</Description>
+            <Description term="启用时间">{staticInfo.driveLicenceRegDate}</Description>
+            <Description term="车辆状态">{transformStatus(busInfo.status)}</Description>
+            <Description term="续驶里程">{`${busInfo.theoryContinuousMileage}km`}</Description>
+            <Description term="电池容量">{`${busInfo.batteryCapacity}KWh`}</Description>
+            <Description term="额定电压">{`${busInfo.ratedVoltage}V`}</Description>
           </DescriptionList>
           <Divider />
           <DescriptionList size="large" id="chargeRecord" title="充电记录">
-            <ChargeRecord isFetching={isFetching} chargeRecord={chargeRecord} />
+            <ChargeRecord chargeRecord={chargeRecord} />
           </DescriptionList>
         </Content>
       </Layout>
@@ -48,12 +57,10 @@ class BusDetail extends Component {
 }
 
 BusDetail.propTypes = {
-  basic: PropTypes.object.isRequired,
+  busInfo: PropTypes.object.isRequired,
   chargeRecord: PropTypes.object.isRequired,
-  fetchBusDetail: PropTypes.func.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  isRejected: PropTypes.bool.isRequired,
-  isResolve: PropTypes.bool.isRequired,
+  fetchBusInfo: PropTypes.func.isRequired,
+  fetchChargeRecord: PropTypes.func.isRequired,
   location: PropTypes.object,
   match: PropTypes.object,
 };

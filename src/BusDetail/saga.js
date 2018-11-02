@@ -2,24 +2,33 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
 import { async } from './actions';
 
-const { fetchBusDetail } = async;
+const { fetchBusInfo, fetchChargeRecord } = async;
 
-export function* doFetchBusDetail(action) {
+export function* doFetchBusInfo(action) {
   try {
-    const basic = yield call(request, {
+    const busInfo = yield call(request, {
       url: `/buses/${action.payload.vin}`,
       method: 'get',
     });
+    yield put(fetchBusInfo.success({ busInfo: busInfo.data }));
+  } catch (err) {
+    yield put(fetchBusInfo.failure(err));
+  }
+}
+
+export function* doFetchChargeRecord(action) {
+  try {
     const chargeRecord = yield call(request, {
       url: `/buses/${action.payload.vin}/chargeRecord`,
       method: 'get',
     });
-    yield put(fetchBusDetail.success({ basic: basic.data, chargeRecord: chargeRecord.data }));
+    yield put(fetchChargeRecord.success({ chargeRecord: chargeRecord.data }));
   } catch (err) {
-    yield put(fetchBusDetail.failure(err));
+    yield put(fetchChargeRecord.failure(err));
   }
 }
 
 export default function* () {
-  yield takeEvery(fetchBusDetail.TYPE, doFetchBusDetail);
+  yield takeEvery(fetchBusInfo.TYPE, doFetchBusInfo);
+  yield takeEvery(fetchChargeRecord.TYPE, doFetchChargeRecord);
 }

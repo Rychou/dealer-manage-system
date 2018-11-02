@@ -9,7 +9,7 @@ class ChargeRecord extends Component {
   }
 
   render() {
-    const { chargeRecord } = this.props;
+    const { chargeRecord, chargeRecord: { isFetching } } = this.props;
     const columns = [
       {
         title: '日期',
@@ -68,6 +68,7 @@ class ChargeRecord extends Component {
         rowKey="id"
         columns={columns}
         dataSource={chargeRecord.data}
+        loading={isFetching}
       />
     );
   }
