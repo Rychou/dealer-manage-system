@@ -39,7 +39,7 @@ class Filters extends Component {
       {
         label: '车辆自编号',
         fieldDecorator: {
-          id: 'id',
+          id: 'selfNum',
           rules: [
             {
               required: false,
