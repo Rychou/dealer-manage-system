@@ -29,11 +29,16 @@ class BusMonitor extends Component {
     });
   };
 
+  /**
+   * 导出车辆监控列表
+   *
+   * @memberof BusMonitor
+   */
   handleExportExcel = () => {
     request({
       url: '/monitors/export',
       method: 'GET',
-      responseType: 'arraybuffer',
+      responseType: 'blob',
     }).then(res => {
       const url = window.URL.createObjectURL(
         new Blob([res.data], {
@@ -42,7 +47,7 @@ class BusMonitor extends Component {
       );
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', 'file.xls'); // or any other extension
+      link.setAttribute('download', '车辆监控列表.xls'); // or any other extension
       document.body.appendChild(link);
       link.click();
     });
