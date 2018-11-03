@@ -52,9 +52,9 @@ class BusMonitor extends Component {
     const columns = [
       {
         title: '车辆自编号',
-        dataIndex: 'vin',
-        key: 'vin',
-        render: vin => <Link to={`/buses/monitor/${vin}`}>{vin}</Link>,
+        dataIndex: 'selfNum',
+        key: 'selfNum',
+        render: (selfNum, record) => <Link to={`/buses/monitor/${record.vin}`}>{selfNum}</Link>,
       },
       {
         title: '车辆型号',
