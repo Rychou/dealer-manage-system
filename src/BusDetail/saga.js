@@ -21,6 +21,10 @@ export function* doFetchChargeRecord(action) {
     const chargeRecord = yield call(request, {
       url: `/buses/${action.payload.vin}/chargeRecord`,
       method: 'get',
+      params: {
+        page: action.payload.page,
+        row: action.payload.row,
+      },
     });
     yield put(fetchChargeRecord.success({ chargeRecord: chargeRecord.data }));
   } catch (err) {

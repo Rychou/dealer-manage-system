@@ -23,7 +23,13 @@ class BusDetail extends Component {
       fetchBusInfo({ vin: match.params.vin });
     }
     if (!chargeRecord.isResolved) {
-      fetchChargeRecord({ vin: match.params.vin });
+      fetchChargeRecord(
+        {
+          vin: match.params.vin,
+          page: 1,
+          row: 10,
+        },
+      );
     }
     scrollToAnchor(location);
   }
