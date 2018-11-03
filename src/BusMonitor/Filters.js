@@ -19,7 +19,7 @@ class Filters extends Component {
       fetchMonitors({
         row: pagination.row,
         page: pagination.page,
-        filters: JSON.stringify(filters) !== '{}' ? JSON.stringify(filters) : null,
+        ...filters,
       });
     });
   };
