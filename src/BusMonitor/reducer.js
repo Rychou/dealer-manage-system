@@ -11,7 +11,7 @@ const initState = {
   },
   isFetching: false,
   isRejected: false,
-  isResolve: false,
+  isResolved: false,
 };
 
 const monitors = (state = initState, action) => {
@@ -27,7 +27,7 @@ const monitors = (state = initState, action) => {
         monitors: action.payload.monitors,
         lowBatteryLimit: action.payload.lowBatteryLimit,
         isFetching: false,
-        isResolve: true,
+        isResolved: true,
       };
     case fetchMonitors.FAILURE:
       return {

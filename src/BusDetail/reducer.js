@@ -7,13 +7,13 @@ const busInofInitState = {
   staticInfo: {},
   isFetching: false,
   isRejected: false,
-  isResolve: false,
+  isResolved: false,
 };
 
 const chargeRecordInitState = {
   isFetching: false,
   isRejected: false,
-  isResolve: false,
+  isResolved: false,
 };
 
 const busInfo = (state = busInofInitState, action) => {
@@ -27,7 +27,7 @@ const busInfo = (state = busInofInitState, action) => {
       return {
         ...state,
         ...action.payload.busInfo,
-        isResolve: true,
+        isResolved: true,
         isFetching: false,
       };
     case fetchBusInfo.FAIL:
@@ -51,7 +51,7 @@ const chargeRecord = (state = chargeRecordInitState, action) => {
       return {
         ...state,
         ...action.payload.chargeRecord,
-        isResolve: true,
+        isResolved: true,
         isFetching: false,
       };
     case fetchChargeRecord.FAIL:

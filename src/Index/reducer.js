@@ -6,7 +6,7 @@ const initState = {
   companies: {},
   isFetching: false,
   isRejected: false,
-  isResolve: false,
+  isResolved: false,
 };
 
 /**
@@ -51,7 +51,7 @@ const companies = (state = initState, action) => {
         ...state,
         companies: computeCompanys(action.payload.companies),
         isFetching: false,
-        isResolve: true,
+        isResolved: true,
       };
     case fetchCompanies.FAILURE:
       return {

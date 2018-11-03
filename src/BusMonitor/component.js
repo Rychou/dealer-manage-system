@@ -10,8 +10,8 @@ const { Content } = Layout;
 
 class BusMonitor extends Component {
   componentDidMount() {
-    const { isResolve, fetchMonitors } = this.props;
-    if (!isResolve) {
+    const { isResolved, fetchMonitors } = this.props;
+    if (!isResolved) {
       fetchMonitors({ row: 10, page: 1 });
     }
   }
@@ -170,7 +170,7 @@ BusMonitor.propTypes = {
   fetchMonitors: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   isRejected: PropTypes.bool.isRequired,
-  isResolve: PropTypes.bool.isRequired,
+  isResolved: PropTypes.bool.isRequired,
   monitors: PropTypes.array.isRequired,
   pagination: PropTypes.object.isRequired,
   updatePagination: PropTypes.func.isRequired,

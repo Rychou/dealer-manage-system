@@ -19,10 +19,10 @@ class BusDetail extends Component {
       busInfo,
       chargeRecord,
     } = this.props;
-    if (!busInfo.isResolve) {
+    if (!busInfo.isResolved) {
       fetchBusInfo({ vin: match.params.vin });
     }
-    if (!chargeRecord.isResolve) {
+    if (!chargeRecord.isResolved) {
       fetchChargeRecord({ vin: match.params.vin });
     }
     scrollToAnchor(location);

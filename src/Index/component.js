@@ -55,8 +55,8 @@ const columns = [
 @hot(module)
 class Index extends Component {
   componentDidMount() {
-    const { isResolve, fetchCompanies } = this.props;
-    if (!isResolve) {
+    const { isResolved, fetchCompanies } = this.props;
+    if (!isResolved) {
       fetchCompanies();
     }
   }
@@ -130,7 +130,7 @@ Index.propTypes = {
   companies: PropTypes.object.isRequired,
   fetchCompanies: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  isResolve: PropTypes.bool.isRequired,
+  isResolved: PropTypes.bool.isRequired,
 };
 
 export default Index;
