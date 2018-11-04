@@ -1,41 +1,45 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { DescriptionList } from 'ant-design-pro';
-import { Layout, Divider } from 'antd';
+import { Layout, Divider, Col } from 'antd';
 import PropTypes from 'prop-types';
 import ChargeRecord from './ChargeRecord';
 import { transformStatus, scrollToAnchor } from 'utils';
+import SearchForm from './SearchForm';
 
 const { Content } = Layout;
 const { Description } = DescriptionList;
 
 class BusDetail extends Component {
   componentDidMount() {
-    const {
-      match,
-      location,
-      fetchBusInfo,
-      fetchChargeRecord,
-      busInfo,
-      chargeRecord,
-    } = this.props;
+    const { match, location, fetchBusInfo, fetchChargeRecord, busInfo, chargeRecord } = this.props;
     if (!busInfo.isResolved) {
       fetchBusInfo({ vin: match.params.vin });
     }
     if (!chargeRecord.isResolved) {
-      fetchChargeRecord(
-        {
-          vin: match.params.vin,
-          page: 1,
-          row: 10,
-        },
-      );
+      fetchChargeRecord({
+        vin: match.params.vin,
+      });
     }
     scrollToAnchor(location);
   }
 
+  searchByRangeDate = (startTime, endTime) => {
+    const {
+      fetchChargeRecord,
+      match: {
+        params: { vin },
+      },
+    } = this.props;
+    fetchChargeRecord({ vin, startTime, endTime });
+  };
+
   render() {
-    const { busInfo, busInfo: { staticInfo }, chargeRecord } = this.props;
+    const {
+      busInfo,
+      busInfo: { staticInfo },
+      chargeRecord,
+    } = this.props;
     return (
       <Layout>
         <Content style={{ background: '#fff', borderRadius: '2px', padding: '32px' }}>
@@ -53,8 +57,11 @@ class BusDetail extends Component {
             <Description term="额定电压">{`${busInfo.ratedVoltage}V`}</Description>
           </DescriptionList>
           <Divider />
-          <DescriptionList size="large" id="chargeRecord" title="充电记录">
-            <ChargeRecord chargeRecord={chargeRecord} />
+          <DescriptionList size="large" id="chargeRecord" title="充电记录" style={{ margin: 0 }}>
+            <Col span="24">
+              <SearchForm searchByRangeDate={this.searchByRangeDate} />
+              <ChargeRecord chargeRecord={chargeRecord} />
+            </Col>
           </DescriptionList>
         </Content>
       </Layout>
