@@ -33,6 +33,7 @@ const monitors = (state = initState, action) => {
       return {
         ...state,
         isRejected: true,
+        isFetching: false,
       };
     case UPDATE_PAGINATION:
       return {
