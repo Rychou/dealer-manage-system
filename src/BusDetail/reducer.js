@@ -34,6 +34,7 @@ const busInfo = (state = busInofInitState, action) => {
       return {
         ...state,
         isRejected: true,
+        isFetching: false,
       };
     default:
       return state;
