@@ -5,7 +5,7 @@ import { Layout, Divider, Col } from 'antd';
 import PropTypes from 'prop-types';
 import ChargeRecord from './ChargeRecord';
 import { transformStatus, scrollToAnchor } from 'utils';
-import SearchForm from './SearchForm';
+import RangeDatePicker from './RangeDatePicker';
 
 const { Content } = Layout;
 const { Description } = DescriptionList;
@@ -59,7 +59,7 @@ class BusDetail extends Component {
           <Divider />
           <DescriptionList size="large" id="chargeRecord" title="充电记录" style={{ margin: 0 }}>
             <Col span="24">
-              <SearchForm searchByRangeDate={this.searchByRangeDate} />
+              <RangeDatePicker searchByRangeDate={this.searchByRangeDate} />
               <ChargeRecord chargeRecord={chargeRecord} />
             </Col>
           </DescriptionList>
