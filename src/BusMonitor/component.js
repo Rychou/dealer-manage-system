@@ -16,10 +16,19 @@ class BusMonitor extends Component {
     }
   }
 
+  /**
+   * 处理车辆监控列表用户行为
+   * 换页、筛选、排序等
+   *
+   * @memberof BusMonitor
+   */
   handleChange = (_pagination, filters, sorter) => {
     const { pagination, fetchMonitors, updatePagination } = this.props;
     const pager = { ...pagination, page: _pagination.current, row: _pagination.pageSize };
     updatePagination(pager);
+    if (filters.soc) {
+      filters.soc = 'lowPower';
+    }
     fetchMonitors({
       row: 10,
       page: _pagination.current,
@@ -93,6 +102,10 @@ class BusMonitor extends Component {
           return <span style={style}>{`${soc}%`}</span>;
         },
         sorter: true,
+        filters: [{
+          text: '低电量',
+          value: 'lowPower',
+        }],
       },
       {
         title: '状态',
@@ -121,11 +134,19 @@ class BusMonitor extends Component {
           },
           {
             text: '熄火',
-            value: 0,
+            value: 2,
+          },
+          {
+            text: '其他',
+            value: 3,
           },
           {
             text: '异常',
-            value: -1,
+            value: 254,
+          },
+          {
+            text: '无效',
+            value: 255,
           },
         ],
       },
