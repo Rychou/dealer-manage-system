@@ -5,7 +5,6 @@ const { BASE_URL } = process.env;
 
 const instance = axios.create({
   baseURL: BASE_URL,
-  timeout: 3000,
 });
 
 // 请求拦截器
@@ -22,6 +21,8 @@ instance.interceptors.response.use(
     console.group('响应体');
     console.log(response);
     console.groupEnd();
+    if (response.status === 401) {
+    }
     return response;
   },
   error => {
