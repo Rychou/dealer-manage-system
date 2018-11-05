@@ -24,8 +24,8 @@ const WarppedbusInfoEditForm = Form.create({
 
 class CarManage extends Component {
   componentDidMount() {
-    const { isResolve, fetchBusInfo } = this.props;
-    if (!isResolve) {
+    const { isResolved, fetchBusInfo } = this.props;
+    if (!isResolved) {
       fetchBusInfo({ row: 10, page: 2 });
     }
   }
@@ -112,7 +112,6 @@ class CarManage extends Component {
           <BusFilter {...this.props} />
           <Table
             rowKey="selfNum"
-            bordered
             loading={isFetching}
             columns={columns}
             dataSource={cars}
@@ -143,7 +142,7 @@ CarManage.propTypes = {
   visible: bool,
   isFetching: bool.isRequired,
   isRejected: bool.isRequired,
-  isResolve: bool.isRequired,
+  isResolved: bool.isRequired,
   fetchBusInfo: func.isRequired,
   changeDrawerVisible: func,
   changeBusInfo: func,
