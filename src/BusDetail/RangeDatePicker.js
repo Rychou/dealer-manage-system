@@ -30,14 +30,14 @@ class RangeDatePicker extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Form layout="inline" onSubmit={this.handleSubmit} style={{ marginBottom: '24px' }}>
+      <Form layout="inline" onSubmit={this.handleSubmit} style={{ marginBottom: '12px' }}>
         <FormItem>
           {getFieldDecorator('range-picker', {
             rules: [
               {
                 type: 'array',
                 required: true,
-                message: 'Please sel!',
+                message: '请选择日期范围！',
               },
             ],
           })(
