@@ -5620,6 +5620,12 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-amap-binding@^0.0.22:
+  version "0.0.22"
+  resolved "http://registry.npm.taobao.org/react-amap-binding/download/react-amap-binding-0.0.22.tgz#1b0768de440c1469906077a6e700aeb52f7d6168"
+  dependencies:
+    lodash "^4.17.5"
+
 react-container-query@^0.11.0:
   version "0.11.0"
   resolved "http://registry.npm.taobao.org/react-container-query/download/react-container-query-0.11.0.tgz#b07ac2794612499dd8f2d1759b72e9c415e53567"
