@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { DescriptionList } from 'ant-design-pro';
-import { Layout, Divider, Col } from 'antd';
+import { Layout, Divider, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 import ChargeRecord from './ChargeRecord';
 import { transformStatus, scrollToAnchor } from 'utils';
 import RangeDatePicker from './RangeDatePicker';
+import request from 'request';
+import './index.less';
 
 const { Content } = Layout;
 const { Description } = DescriptionList;
@@ -34,6 +36,25 @@ class BusDetail extends Component {
     fetchChargeRecord({ vin, startTime, endTime });
   };
 
+  handleExport = () => {
+    request({
+      method: 'get',
+      url: `/monitors/${this.props.match.params.vin}/chargeRecord/export`,
+      responseType: 'blob',
+    }).then(res => {
+      const url = window.URL.createObjectURL(
+        new Blob([res.data], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8',
+        }),
+      );
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', '车辆充电记录.xls'); // or any other extension
+      document.body.appendChild(link);
+      link.click();
+    });
+  };
+
   render() {
     const {
       busInfo,
@@ -60,6 +81,9 @@ class BusDetail extends Component {
           <DescriptionList size="large" id="chargeRecord" title="充电记录" style={{ margin: 0 }}>
             <Col span="24">
               <RangeDatePicker searchByRangeDate={this.searchByRangeDate} />
+              <Button style={{ marginBottom: '12px' }} onClick={this.handleExport}>
+                导出
+              </Button>
               <ChargeRecord chargeRecord={chargeRecord} />
             </Col>
           </DescriptionList>
