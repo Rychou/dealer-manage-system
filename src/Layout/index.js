@@ -69,7 +69,7 @@ class AppLayout extends Component {
           ) : (
             ''
           )}
-          <Content style={{ margin: '24px 16px 0' }}>{this.props.children}</Content>
+          <Content style={{ margin: '24px 16px 0', height: '100%' }}>{this.props.children}</Content>
           <Footer />
         </Layout>
       </Layout>
