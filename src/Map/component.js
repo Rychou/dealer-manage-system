@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { AMap, MassMarks, Marker } from 'react-amap-binding';
 import PropTypes from 'prop-types';
+import DashBoard from './DashBoard';
+import './index.less';
 
 class Map extends Component {
   constructor(props) {
@@ -19,10 +21,6 @@ class Map extends Component {
     }
   }
 
-  handleClick(map, target, e) {
-    console.log(1);
-  }
-
   handleMouseOver = (map, target, e) => {
     this.setState({
       marker: {
@@ -34,19 +32,26 @@ class Map extends Component {
     });
   };
 
+  handleClick = (map, target, e) => {};
+
   render() {
     return (
-      <AMap appKey={process.env.AMAP_KEY}>
-        <MassMarks
-          data={this.props.points}
-          style={this.props.styles}
-          onClick={this.handleClick}
-          zIndex={99}
-          zooms={[3, 22]}
-          onMouseOver={this.handleMouseOver}
-        />
-        <Marker icon="none" zIndex={100} {...this.state.marker} />
-      </AMap>
+      <div className="map-container">
+        <div className="map-cover">
+          <DashBoard dashboard={this.props.dashboard} />
+        </div>
+        <AMap appKey={process.env.AMAP_KEY}>
+          <MassMarks
+            data={this.props.points}
+            style={this.props.styles}
+            onClick={this.handleClick}
+            zIndex={99}
+            zooms={[3, 22]}
+            onMouseOver={this.handleMouseOver}
+          />
+          <Marker icon="none" zIndex={100} {...this.state.marker} />
+        </AMap>
+      </div>
     );
   }
 }
@@ -54,6 +59,8 @@ class Map extends Component {
 Map.propTypes = {
   fetchMapData: PropTypes.func.isRequired,
   isResolved: PropTypes.bool.isRequired,
+  points: PropTypes.array,
+  styles: PropTypes.array,
 };
 
 export default Map;

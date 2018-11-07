@@ -18,10 +18,29 @@ const initState = {
       size: [12, 12],
     },
   ],
+  dashboard: {},
   isFetching: false,
   isRejected: false,
   isResolved: false,
 };
+
+const computeDashBoard = points => {
+  let todayTotalMileage = 0;
+  const onlineBus = points.length;
+  let lowPowerBus = 0;
+  for (let i = 0; i < onlineBus; i++) {
+    if (points[i].soc < 20) {
+      lowPowerBus++;
+    }
+    todayTotalMileage += points[i].todayMileage;
+  }
+  return {
+    todayTotalMileage,
+    onlineBus,
+    lowPowerBus,
+  };
+};
+
 const Map = (state = initState, action) => {
   switch (action.type) {
     case fetchMapData.TYPE:
@@ -36,6 +55,7 @@ const Map = (state = initState, action) => {
           ...point,
           style: point.soc < 20 ? 1 : 0,
         })),
+        dashboard: computeDashBoard(action.payload.points),
         isFetching: false,
         isResolved: true,
       };
