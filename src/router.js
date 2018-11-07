@@ -53,7 +53,11 @@ class Router extends React.Component {
     });
     this.BusReport = lodable({
       loader: () => {
-        injectAsyncReducer(context.store, 'busReport', require('./BusReport/reducer'));
+        injectAsyncReducer(
+          context.store,
+          'busReport',
+          require('./BusReport/reducer').default,
+        );
         return import('./BusReport/container');
       },
       loading: () => <Spin />,

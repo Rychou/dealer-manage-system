@@ -58,7 +58,7 @@ const cars = (state = initState, action) => {
         ...state,
         cars: filterBusInfo(action.payload.data),
         isFetching: false,
-        isResolved: false,
+        isResolved: true,
       };
     case fetchBusInfo.FAILURE:
       return {
