@@ -19,7 +19,7 @@ class DashBoard extends Component {
         <div className="content">
           <Row>
             <Col span="18">
-              <BIcon type="anticon-bus-yellow" className="bus-icon online-bus" />
+              <BIcon type="anticon-icon" className="bus-icon online-bus" />
               <span>在线车辆</span>
             </Col>
             <Col span="6" className="bus-count">
