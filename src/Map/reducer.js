@@ -2,7 +2,7 @@ import { async } from './actions';
 import blueBus from '../../static/icon/blueBus.png';
 import redBus from '../../static/icon/redBus.png';
 
-const { fetchMapData } = async;
+const { fetchMapData, fetchBusInfo } = async;
 
 const initState = {
   points: [],
@@ -19,6 +19,11 @@ const initState = {
     },
   ],
   dashboard: {},
+  busInfo: {
+    isFetching: false,
+    isRejected: false,
+    isResolved: false,
+  },
   isFetching: false,
   isRejected: false,
   isResolved: false,
@@ -64,6 +69,33 @@ const Map = (state = initState, action) => {
         ...state,
         isFetching: false,
         isRejected: true,
+      };
+    case fetchBusInfo.TYPE:
+      return {
+        ...state,
+        busInfo: {
+          ...state.busInfo,
+          isFetching: true,
+        },
+      };
+    case fetchBusInfo.SUCCESS:
+      return {
+        ...state,
+        busInfo: {
+          ...state.busInfo,
+          data: action.payload.busInfo,
+          isFetching: false,
+          isResolved: true,
+        },
+      };
+    case fetchBusInfo.FAIL:
+      return {
+        ...state,
+        busInfo: {
+          ...state.busInfo,
+          isFetching: false,
+          isRejected: true,
+        },
       };
     default:
       return state;
