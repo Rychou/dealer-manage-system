@@ -129,10 +129,10 @@ class Filters extends Component {
       formItems.map(Item => {
         if (Item.isShow) {
           return (
-            <Col span={5} key={Item.label}>
+            <Col span={6} key={Item.label}>
               <FormItem
                 colon={false}
-                label={<div style={{ float: 'left' }}>{`${Item.label}:`}</div>}
+                label={<div style={{ float: 'right', marginRight: 15 }}>{`${Item.label}:`}</div>}
                 {...formItemLayout}
                 style={{ display: 'block', height: 32 }}
               >
