@@ -26,7 +26,7 @@ class CarManage extends Component {
   componentDidMount() {
     const { isResolved, fetchBusInfo } = this.props;
     if (!isResolved) {
-      fetchBusInfo({ row: 10, page: 2 });
+      fetchBusInfo({ row: 10, page: 1 });
     }
   }
 
@@ -57,10 +57,21 @@ class CarManage extends Component {
     return changeDrawerVisible(true);
   };
 
-  handleDelete(selfNum) {
-    const { changeBusInfo, cars } = this.props;
-    const carsInfo = cars;
-    changeBusInfo(carsInfo.filter(carsInfoItem => carsInfoItem.selfNum !== selfNum));
+  handleDelete(vin) {
+    const { fetchBusInfo, pagination } = this.props;
+    request({
+      url: '/buses',
+      method: 'delete',
+      params: {
+        vin,
+      },
+    }).then(result => {
+      fetchBusInfo({
+        row: pagination.row,
+        page: pagination.page,
+      });
+      console.log(result);
+    });
   }
 
   render() {
@@ -106,7 +117,7 @@ class CarManage extends Component {
           <Popconfirm
             title="确认删除该车辆?"
             onConfirm={
-              () => this.handleDelete(record.selfNum)
+              () => this.handleDelete(record.vin)
             }
             okText="确认"
             cancelText="取消">

@@ -11,7 +11,7 @@ export function* fetchBusList(action) {
       method: 'get',
       params: action.payload,
     });
-    yield put(updatePagination({ total: data.row }));
+    yield put(updatePagination({ total: data.totalCount, ...action.payload }));
     yield put(fetchBusInfo.success(data));
   } catch (e) {
     yield put(fetchBusInfo.failure(e));
