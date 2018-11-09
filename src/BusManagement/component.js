@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Layout, Table, Drawer, Form, Popconfirm } from 'antd';
+import { Layout, Table, Drawer, Form, Popconfirm, LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 import { object, func, bool, array } from 'prop-types';
+import request from 'request';
 import busInfoEditForm from './drawer';
 import BusFilter from './Filters';
 
-
 const { Content } = Layout;
-
 
 const WarppedbusInfoEditForm = Form.create({
   mapPropsToFields(props) {
@@ -28,6 +28,22 @@ class CarManage extends Component {
     if (!isResolved) {
       fetchBusInfo({ row: 10, page: 2 });
     }
+  }
+
+  changePage = (page, pageSize) => {
+    const { updatePagination } = this.props;
+    updatePagination({
+      row: pageSize,
+      page,
+    });
+  }
+
+  changeShowSize = (current, size) => {
+    const { updatePagination } = this.props;
+    updatePagination({
+      row: size,
+      page: current,
+    });
   }
 
   editBusInfo = (record) => {
@@ -101,52 +117,62 @@ class CarManage extends Component {
     }];
 
     return (
-      <Layout>
-        <Content style={
-          {
-            background: '#fff',
-            borderRadius: '2px',
-            padding: '32px',
-            marginTop: '24px',
-          }}>
-          <BusFilter {...this.props} />
-          <Table
-            rowKey="selfNum"
-            loading={isFetching}
-            columns={columns}
-            dataSource={cars}
-            pagination={pagination}
-            style={{ marginTop: 30 }}
-          />
-        </Content>
-        <Drawer
-          title="新建/编辑车辆"
-          width={559}
-          placement="right"
-          maskClosable={false}
-          closable={false}
-          visible={visible}
-          style={{ height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53 }}
-        >
-          <WarppedbusInfoEditForm {...this.props} />
-        </Drawer>
-      </Layout>
+      <LocaleProvider locale={zhCN}>
+        <Layout>
+          <Content style={
+            {
+              background: '#fff',
+              borderRadius: '2px',
+              padding: '32px',
+              marginTop: '24px',
+            }}>
+            <BusFilter {...this.props} />
+            <Table
+              rowKey="vin"
+              loading={isFetching}
+              columns={columns}
+              dataSource={cars}
+              pagination={{
+                ...pagination,
+                defaultCurrent: pagination.page,
+                showQuickJumper: true,
+                showSizeChanger: true,
+                onChange: this.changePage,
+                onShowSizeChange: this.changeShowSize,
+              }}
+              style={{ marginTop: 30 }}
+            />
+          </Content>
+          <Drawer
+            title="新建/编辑车辆"
+            width={559}
+            placement="right"
+            maskClosable={false}
+            closable={false}
+            visible={visible}
+            style={{ height: 'calc(100% - 55px)', overflow: 'auto', paddingBottom: 53 }}
+          >
+            <WarppedbusInfoEditForm {...this.props} />
+          </Drawer>
+        </Layout>
+      </LocaleProvider>
     );
   }
 }
+
 CarManage.propTypes = {
   cars: array.isRequired,
-  pagination: object.isRequired,
-  specialBusInfo: object,
-  isNewBusInfo: bool, // 用来判断是否是新建一个车辆信息
-  visible: bool,
+  changeBusInfo: func,
+  changeDrawerVisible: func,
+  changeIsNewBus: func, // 用来判断是否是新建一个车辆信息
+  fetchBusInfo: func.isRequired,
   isFetching: bool.isRequired,
+  isNewBusInfo: bool,
   isRejected: bool.isRequired,
   isResolved: bool.isRequired,
-  fetchBusInfo: func.isRequired,
-  changeDrawerVisible: func,
-  changeBusInfo: func,
-  changeIsNewBus: func,
+  pagination: object.isRequired,
+  specialBusInfo: object,
+  visible: bool,
 };
 
 export default CarManage;
