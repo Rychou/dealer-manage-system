@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Radio, Layout, Table, Divider } from 'antd';
+import { object, func, bool, array } from 'prop-types';
 
 const { Content } = Layout;
 const RadioButton = Radio.Button;
@@ -26,10 +27,13 @@ class BusReport extends Component {
     }, {
       title: '下载',
       dataIndex: 'download',
-      render: (text, record) => (
+      render: (text, record, index) => (
         <span>
-        <a href="#">车辆报表</a>
-        <Divider type="vertical" />
+          <a href={reports[index].busReport}>车辆报表</a>
+          <Divider type="vertical" />
+          <a href={reports[index].typeReport}>车型报表</a>
+          <Divider type="vertical" />
+          <a href={reports[index].busAndTypeReport}>车辆&车型报表</a>
         </span>
       ),
     }];
@@ -48,7 +52,7 @@ class BusReport extends Component {
             <RadioButton value="year">年报</RadioButton>
           </RadioGroup>
           <Table
-            rowKey="name"
+            rowKey="reportTime"
             columns={columns}
             dataSource={reports}
             pagination={pagination}
@@ -59,5 +63,14 @@ class BusReport extends Component {
     );
   }
 }
+BusReport.propTypes = {
+  isResolved: bool.isRequired,
+  isFetching: bool.isRequired,
+  isRejected: bool.isRequired,
+  reports: array.isRequired,
+  pagination: object.isRequired,
+  fetchReport: func,
+  updatePagination: func,
+};
 
 export default BusReport;
