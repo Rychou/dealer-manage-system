@@ -31,19 +31,21 @@ class CarManage extends Component {
   }
 
   changePage = (page, pageSize) => {
-    const { updatePagination } = this.props;
+    const { updatePagination, fetchBusInfo } = this.props;
     updatePagination({
       row: pageSize,
       page,
     });
+    fetchBusInfo({ row: pageSize, page });
   }
 
   changeShowSize = (current, size) => {
-    const { updatePagination } = this.props;
+    const { updatePagination, fetchBusInfo } = this.props;
     updatePagination({
       row: size,
       page: current,
     });
+    fetchBusInfo({ row: size, page: current });
   }
 
   editBusInfo = (record) => {
