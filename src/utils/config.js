@@ -26,6 +26,12 @@ export const menus = [
     path: '/buses',
     icon: 'anticon-deploymentunit',
   },
+  {
+    isSub: false,
+    name: '统计分析',
+    path: '/buses/report',
+    icon: 'anticon-deploymentunit',
+  },
 ];
 
 // 路由-面包屑映射列表
@@ -53,5 +59,9 @@ export const breadcrumbNameMap = {
   '/buses': {
     name: '车辆管理',
     path: '/buses',
+  },
+  '/buses/report': {
+    name: '车辆报表',
+    path: '/buses/report',
   },
 };
