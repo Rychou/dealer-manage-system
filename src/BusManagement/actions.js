@@ -11,7 +11,7 @@ export const async = new Async({
   ],
 });
 
-export const UPDATE_PAGINATION = 'UPDATE_PAGE';
+export const UPDATE_PAGINATION = 'UPDATE_MANAGEMENT_PAGE';
 
 export const updatePagination = pagination => ({
   type: UPDATE_PAGINATION,
