@@ -42,7 +42,6 @@ module.exports = {
     'no-param-reassign': 'off', // airbnb use error
     'no-prototype-builtins': 'off', // airbnb use error
     'operator-linebreak': 'off', // airbnb use error
-
     // It would be better to enable this rule, but it might slow us down.
     'import/no-extraneous-dependencies': 'off',
     'import/namespace': ['error', { allowComputed: true }],
@@ -80,6 +79,7 @@ module.exports = {
     'jsx-a11y/label-has-associated-control': 'off',
     'jsx-a11y/label-has-for': 'off',
     'jsx-a11y/no-autofocus': 'off', // We are a library, people do what they want.
+    'jsx-a11y/mouse-events-have-key-events':'off',
 
     'no-void': 'off',
   },
