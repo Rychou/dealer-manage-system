@@ -1,4 +1,4 @@
-import { async } from './actions';
+import { async, UPDATE_INFOWINDOW } from './actions';
 import blueBus from '../../static/icon/blueBus.png';
 import redBus from '../../static/icon/redBus.png';
 
@@ -23,6 +23,13 @@ const initState = {
     isFetching: false,
     isRejected: false,
     isResolved: false,
+  },
+  infoWindow: {
+    offset: [0, 0],
+    visible: false,
+    isCustom: false,
+    autoMove: true,
+    closeWhenClickMap: true,
   },
   isFetching: false,
   isRejected: false,
@@ -75,6 +82,7 @@ const Map = (state = initState, action) => {
         ...state,
         busInfo: {
           ...state.busInfo,
+          isResolved: false,
           isFetching: true,
         },
       };
@@ -95,6 +103,14 @@ const Map = (state = initState, action) => {
           ...state.busInfo,
           isFetching: false,
           isRejected: true,
+        },
+      };
+    case UPDATE_INFOWINDOW:
+      return {
+        ...state,
+        infoWindow: {
+          ...state.infoWindow,
+          ...action.payload,
         },
       };
     default:
