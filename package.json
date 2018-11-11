@@ -19,7 +19,7 @@
     "babel-polyfill": "^6.26.0",
     "css-loader": "^1.0.0",
     "react": "^16.2.0",
-    "react-amap-binding": "^0.0.22",
+    "react-amap-binding": "^0.0.23",
     "react-dom": "^16.2.0",
     "react-fittext": "^1.0.0",
     "react-hot-loader": "^4.0.0",

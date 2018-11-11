@@ -5620,9 +5620,9 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-amap-binding@^0.0.22:
-  version "0.0.22"
-  resolved "http://registry.npm.taobao.org/react-amap-binding/download/react-amap-binding-0.0.22.tgz#1b0768de440c1469906077a6e700aeb52f7d6168"
+react-amap-binding@^0.0.23:
+  version "0.0.23"
+  resolved "http://registry.npm.taobao.org/react-amap-binding/download/react-amap-binding-0.0.23.tgz#f2320fef58c99199263b89e1ea3f13090a958691"
   dependencies:
     lodash "^4.17.5"
 
