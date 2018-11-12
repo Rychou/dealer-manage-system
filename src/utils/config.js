@@ -1,6 +1,6 @@
 /*
-* 菜单配置参数
-*/
+ * 菜单配置参数
+ */
 export const menus = [
   {
     isSub: false,
