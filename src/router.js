@@ -23,45 +23,6 @@ class Router extends React.Component {
       },
       loading: () => <Spin spinning />,
     });
-    this.MapPage = lodable({
-      loader: () => {
-        injectAsyncReducer(context.store, 'Map', require('./Map/reducer').default);
-        return import('./Map/container');
-      },
-      loading: () => <Spin />,
-    });
-    this.BusMonitor = lodable({
-      loader: () => {
-        injectAsyncReducer(context.store, 'BusMonitor', require('./BusMonitor/reducer').default);
-        return import('./BusMonitor/container');
-      },
-      loading: () => <Spin />,
-    });
-    this.BusDetail = lodable({
-      loader: () => {
-        injectAsyncReducer(context.store, 'BusDetail', require('./BusDetail/reducer').default);
-        return import('./BusDetail/container');
-      },
-      loading: () => <Spin />,
-    });
-    this.CarManage = lodable({
-      loader: () => {
-        injectAsyncReducer(context.store, 'buses', require('./BusManagement/reducer').default);
-        return import('./BusManagement/container');
-      },
-      loading: () => <Spin />,
-    });
-    this.BusReport = lodable({
-      loader: () => {
-        injectAsyncReducer(
-          context.store,
-          'busReport',
-          require('./BusReport/reducer').default,
-        );
-        return import('./BusReport/container');
-      },
-      loading: () => <Spin />,
-    });
   }
 
   render() {
@@ -70,11 +31,6 @@ class Router extends React.Component {
         <Layout>
           <Switch>
             <Route exact path="/" component={this.IndexPage} />
-            <Route exact path="/map" component={this.MapPage} />
-            <Route exact path="/buses/monitor" component={this.BusMonitor} />
-            <Route exact path="/buses/monitor/:vin" component={this.BusDetail} />
-            <Route exact path="/buses" component={this.CarManage} />
-            <Route exact path="/buses/report" component={this.BusReport} />
             <Route component={() => <Exception type="404" />} />
           </Switch>
         </Layout>

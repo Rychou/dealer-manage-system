@@ -19,7 +19,7 @@ const LogoContainer = styled.div`
 const Logo = ({ collapsed }) => (
   <LogoContainer>
     <BIcon style={{ fontSize: '32px' }} type="anticon-logo-gjy" />
-    {!collapsed ? <LogoTitle>电量监控</LogoTitle> : ''}
+    {!collapsed ? <LogoTitle>经销商管理平台</LogoTitle> : ''}
   </LogoContainer>
 );
 
