@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import { object } from 'prop-types';
 import lodable from 'react-loadable';
 import { Spin } from 'antd';
@@ -7,6 +7,8 @@ import { Spin } from 'antd';
 import injectAsyncReducer from './injectAsyncReducer';
 import Layout from './Layout';
 import { Exception } from 'ant-design-pro';
+import { connect } from 'react-redux';
+import PrivateRoute from 'Common/PrivateRoute';
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
   static contextTypes = {
@@ -15,7 +17,6 @@ class Router extends React.Component {
 
   constructor(props, context) {
     super(props);
-
     this.IndexPage = lodable({
       loader: () => {
         injectAsyncReducer(context.store, 'Index', require('./Index/reducer').default);
@@ -23,15 +24,27 @@ class Router extends React.Component {
       },
       loading: () => <Spin spinning />,
     });
+
+    this.LoginPage = lodable({
+      loader: () => {
+        return import('./Login/container');
+      },
+      loading: () => <Spin spinning />,
+    });
   }
 
   render() {
+    const {
+      user: { isLogin },
+    } = this.props;
     return (
       <div>
         <Layout>
           <Switch>
-            <Route exact path="/" component={this.IndexPage} />
-            <Route component={() => <Exception type="404" />} />
+            {/* <Route exact path="/" component={this.IndexPage} /> */}
+            <PrivateRoute exact path="/" component={this.IndexPage} isLogin={isLogin} />
+            <Route exact path="/login" component={this.LoginPage} />
+            <PrivateRoute component={() => <Exception type="404" />} isLogin={isLogin} />
           </Switch>
         </Layout>
       </div>
@@ -39,4 +52,6 @@ class Router extends React.Component {
   }
 }
 
-export default Router;
+const mapStateToProps = state => state;
+
+export default connect(mapStateToProps)(withRouter(Router));
