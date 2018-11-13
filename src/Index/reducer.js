@@ -1,4 +1,4 @@
-import { async } from './antions';
+import { async } from './actions';
 
 const { fetchCompanies } = async;
 

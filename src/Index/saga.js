@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
-import { async } from './antions';
+import { async } from './actions';
 
 const { fetchCompanies } = async;
 

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { async } from './antions';
+import { async } from './actions';
 import Index from './component';
 
 const { fetchCompanies } = async;
