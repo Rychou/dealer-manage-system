@@ -52,7 +52,8 @@ class AppLayout extends Component {
   render() {
     const { location } = this.props;
     const isIndex = location.pathname === '/';
-    const showPageHeader = isIndex;
+    const isLoginPage = location.pathname === '/login';
+    const showPageHeader = isIndex || isLoginPage;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
