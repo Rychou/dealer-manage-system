@@ -1,7 +1,7 @@
 /* This module composes root reducer including react-router. */
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
-
+import user from './Login/reducer';
 /**
  * This is a create reducer function.
  * It returns current permanent and asynchronously loaded reducers.
@@ -18,5 +18,6 @@ export default function createReducer(asyncReducers) {
     router,
     /* Aync reducers. */
     ...asyncReducers,
+    user,
   });
 }
