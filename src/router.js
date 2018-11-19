@@ -17,14 +17,6 @@ class Router extends React.Component {
 
   constructor(props, context) {
     super(props);
-    this.IndexPage = lodable({
-      loader: () => {
-        injectAsyncReducer(context.store, 'Index', require('./Index/reducer').default);
-        return import('./Index/container');
-      },
-      loading: () => <Spin spinning />,
-    });
-
     this.LoginPage = lodable({
       loader: () => {
         return import('./Login/container');
@@ -41,8 +33,6 @@ class Router extends React.Component {
       <div>
         <Layout>
           <Switch>
-            {/* <Route exact path="/" component={this.IndexPage} /> */}
-            <PrivateRoute exact path="/" component={this.IndexPage} isLogin={isLogin} />
             <Route exact path="/login" component={this.LoginPage} />
             <PrivateRoute component={() => <Exception type="404" />} isLogin={isLogin} />
           </Switch>
