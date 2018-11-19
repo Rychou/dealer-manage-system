@@ -3,6 +3,7 @@ import { async } from './actions';
 const { fetchUser } = async;
 const initState = {
   isLogin: false,
+  type: null,
   userMsg: {},
 };
 
@@ -11,8 +12,8 @@ const User = (state = initState, action) => {
     case fetchUser.SUCCESS:
       return {
         ...state,
+        ...action.payload,
         isLogin: true,
-        userMsg: action.payload.userMsg,
       };
     default:
       return state;
