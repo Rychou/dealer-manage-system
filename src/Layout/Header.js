@@ -1,6 +1,7 @@
 import React from 'react';
 import { Layout, Icon } from 'antd';
 import styled from 'styled-components';
+import User from './User';
 
 const { Header } = Layout;
 
@@ -23,6 +24,7 @@ const AppHeader = ({ collapsed, onCollapse }) => (
       type={collapsed ? 'menu-unfold' : 'menu-fold'}
       onClick={() => onCollapse(!collapsed)}
     />
+    <User />
   </Header>
 );
 
