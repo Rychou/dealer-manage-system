@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array } from 'prop-types';
 import { Row, Col, Card } from 'antd';
+import { Link } from 'react-router-dom';
 import './index.less';
 
 const { Meta } = Card;
@@ -23,14 +24,16 @@ class Products extends Component {
     const ProductList = () => {
       return products.length
         ? products.map((product, index) => (
-            <Col span="6" key={index} style={{ marginTop: '24px' }}>
-              <Card
-                hoverable
-                style={{ width: 240 }}
-                cover={<img alt="example" src={product.imageUrl} />}
-              >
-                <Meta title={<Price price={product.price} />} description={product.name} />
-              </Card>
+            <Col span="6" style={{ marginTop: '24px' }} key={index}>
+              <Link to={`/products/${product.id}`}>
+                <Card
+                  hoverable
+                  style={{ width: 240 }}
+                  cover={<img alt="example" src={product.imageUrl} />}
+                >
+                  <Meta title={<Price price={product.price} />} description={product.name} />
+                </Card>
+              </Link>
             </Col>
           ))
         : null;
