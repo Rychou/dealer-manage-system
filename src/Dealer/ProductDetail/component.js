@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, number } from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Carousel } from 'antd';
+import './index.less';
 
 @hot(module)
 class ProductDetail extends Component {
@@ -19,7 +21,16 @@ class ProductDetail extends Component {
   }
 
   render() {
-    return <div>详细信息</div>;
+    const { product } = this.props;
+    return (
+      <Carousel className="carousel" autoplay>
+        {product.images
+          ? product.images.map((image, index) => {
+              return <img src={image} alt="" key={index} />;
+            })
+          : null}
+      </Carousel>
+    );
   }
 }
 
