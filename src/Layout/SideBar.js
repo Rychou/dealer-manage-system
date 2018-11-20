@@ -3,7 +3,8 @@ import { Layout, Menu, Icon } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import Logo from './Logo';
 import BIcon from '../Common/BIcon';
-import { menus } from '@/utils/config';
+import { defaultMenus, dealerMenus, companyMenus } from '@/utils/config';
+import { connect } from 'react-redux';
 
 const { Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -17,6 +18,8 @@ class SideBar extends Component {
     this.props.history.listen(({ pathname }) => {
       this.setState({ selectedKeys: [`${pathname}`] });
     });
+    const { isLogin, type } = this.props;
+    const menus = isLogin ? (type === 'dealer' ? dealerMenus : companyMenus) : defaultMenus;
     const Menus = menus.map(menu => {
       if (menu.isSub) {
         return (
@@ -71,4 +74,6 @@ class SideBar extends Component {
   }
 }
 
-export default withRouter(SideBar);
+const mapStateToProps = state => state.user;
+
+export default withRouter(connect(mapStateToProps)(SideBar));
