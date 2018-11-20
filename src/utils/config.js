@@ -55,3 +55,25 @@ export const dealerBreadcrumbNameMap = {
 };
 // 集团 路由-面包屑映射列表
 export const companyBreadcrumbNameMap = {};
+
+// routes配置 在src/router中使用
+export const routes = [
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'ProductsPage',
+    stateName: 'Products', // 该页面的reducer在store中的名称。
+    path: '/products', // 路由匹配路径
+    type: 'dealer', // 用户类型
+    reducer: require('../Dealer/Products/reducer').default,
+    container: import('../Dealer/Products/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'ProductDetailPage',
+    stateName: 'ProductDetail', // 该页面的reducer在store中的名称。
+    path: '/products/:id', // 路由匹配路径
+    type: 'dealer', // 用户类型
+    reducer: require('../Dealer/ProductDetail/reducer').default,
+    container: import('../Dealer/ProductDetail/container'),
+  },
+];

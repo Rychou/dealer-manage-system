@@ -9,6 +9,8 @@ import Layout from './Layout';
 import { Exception } from 'ant-design-pro';
 import { connect } from 'react-redux';
 import PrivateRoute from 'Common/PrivateRoute';
+import { routes } from 'utils/config';
+
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
   static contextTypes = {
@@ -23,42 +25,64 @@ class Router extends React.Component {
       },
       loading: () => <Spin spinning />,
     });
-    this.ProductsPage = lodable({
-      loader: () => {
-        injectAsyncReducer(context.store, 'Products', require('./Dealer/Products/reducer').default);
-        return import('./Dealer/Products/container');
-      },
-      loading: () => <Spin spinning />,
-    });
-    this.ProductDetailPage = lodable({
-      loader: () => {
-        injectAsyncReducer(
-          context.store,
-          'ProductDetail',
-          require('./Dealer/ProductDetail/reducer').default,
-        );
-        return import('./Dealer/ProductDetail/container');
-      },
-      loading: () => <Spin spinning />,
-    });
+    this.initLodables(context);
   }
+
+  /**
+   * 初始化lodables
+   * lodable函数是对自定义组件的封装，能在不同状态下渲染不同的组件，如在组件正在加载（loading）渲染<Spin/>组件
+   * 加载完成再渲染自定义组件
+   * @memberof Router
+   */
+  initLodables = context => {
+    for (let i = 0; i < routes.length; i++) {
+      this[routes[i].pageName] = lodable({
+        loader: () => {
+          injectAsyncReducer(context.store, routes[i].stateName, routes[i].reducer);
+          return routes[i].container;
+        },
+        loading: () => <Spin spinning />,
+      });
+    }
+  };
 
   render() {
     const {
-      user: { isLogin },
+      user: { isLogin, type },
     } = this.props;
+
+    /**
+     * 根据utils/config 中 routes 配置条件渲染符合当前用户权限的路由
+     * 如集团账户不应渲染出商品购买的路由
+     * @returns
+     */
+    const getRoutes = () => {
+      if (isLogin) {
+        return routes.length
+          ? routes.map((route, index) => {
+              if (route.type === type) {
+                return route.isPrivate ? (
+                  <PrivateRoute
+                    key={index}
+                    exact
+                    path={route.path}
+                    component={this[route.pageName]}
+                    isLogin={isLogin}
+                  />
+                ) : (
+                  <Route key={index} exact path={route.path} component={this[route.pageName]} />
+                );
+              }
+            })
+          : null;
+      }
+    };
     return (
       <div>
         <Layout>
           <Switch>
             <Route exact path="/login" component={this.LoginPage} />
-            <PrivateRoute exact path="/products" component={this.ProductsPage} isLogin={isLogin} />
-            <PrivateRoute
-              exact
-              path="/products/:id"
-              component={this.ProductDetailPage}
-              isLogin={isLogin}
-            />
+            {getRoutes()}
             <PrivateRoute component={() => <Exception type="404" />} isLogin={isLogin} />
           </Switch>
         </Layout>
