@@ -1,16 +1,16 @@
 /*
- * 菜单配置参数
+ * 默认菜单配置参数
  */
 export const defaultMenus = [
   {
     isSub: false,
-    name: '首页',
-    icon: 'anticon-bulb',
-    path: '/',
+    name: '登录',
+    icon: 'user',
+    path: '/login',
   },
 ];
 
-// 经销商菜单
+// 经销商菜单参数
 export const dealerMenus = [
   {
     isSub: false,
@@ -26,7 +26,7 @@ export const dealerMenus = [
   },
 ];
 
-// 集团菜单
+// 集团菜单参数
 export const companyMenus = [];
 
 // 经销商 路由-面包屑映射列表
@@ -40,7 +40,18 @@ export const dealerBreadcrumbNameMap = {
   '/products': {
     path: '/products',
     name: '商品列表',
+    component: '../Dealer/Products/container',
+    children: [
+      {
+        name: '商品详情',
+        path: '/products/:id',
+      },
+    ],
+  },
+  '/products/:id': {
+    name: '商品详情',
+    path: '/products/:id',
   },
 };
-// 集团
+// 集团 路由-面包屑映射列表
 export const companyBreadcrumbNameMap = {};
