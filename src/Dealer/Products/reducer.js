@@ -1,12 +1,11 @@
 import { async } from './actions';
+import { fetchState } from 'utils';
 
 const { fetchProducts } = async;
 
 const initState = {
+  ...fetchState,
   products: [],
-  isFetching: false,
-  isResolved: false,
-  isRejected: false,
 };
 
 const Products = (state = initState, action) => {
