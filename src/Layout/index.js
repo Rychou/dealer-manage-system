@@ -5,14 +5,18 @@ import Header from './Header';
 import Footer from './Footer';
 import { PageHeader } from 'ant-design-pro';
 import { withRouter, Link } from 'react-router-dom';
-import { breadcrumbNameMap } from '@/utils/config';
+import { dealerBreadcrumbNameMap, companyBreadcrumbNameMap } from 'utils/config';
+import { connect } from 'react-redux';
 
 const { Content } = Layout;
 
 class AppLayout extends Component {
-  state = {
-    collapsed: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      collapsed: false,
+    };
+  }
 
   onCollapse = collapsed => {
     this.setState({ collapsed });
@@ -25,7 +29,7 @@ class AppLayout extends Component {
    * @returns
    * @memberof AppLayout
    */
-  computePageHeaderTitle(location) {
+  computePageHeaderTitle(location, breadcrumbNameMap) {
     // breadcrumbNameMap中有对应路由的值则直接返回
     if (breadcrumbNameMap.hasOwnProperty(location.pathname)) {
       return breadcrumbNameMap[location.pathname].name;
@@ -50,10 +54,11 @@ class AppLayout extends Component {
   }
 
   render() {
-    const { location } = this.props;
+    const { location, isLogin } = this.props;
     const isIndex = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
     const showPageHeader = isIndex || isLoginPage;
+    const breadcrumbNameMap = isLogin ? dealerBreadcrumbNameMap : companyBreadcrumbNameMap;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
@@ -62,7 +67,7 @@ class AppLayout extends Component {
           {!showPageHeader ? (
             <PageHeader
               home="首页"
-              title={this.computePageHeaderTitle(location)}
+              title={this.computePageHeaderTitle(location, breadcrumbNameMap)}
               location={location}
               breadcrumbNameMap={breadcrumbNameMap}
               linkElement={Link}
@@ -70,7 +75,9 @@ class AppLayout extends Component {
           ) : (
             ''
           )}
-          <Content style={{ margin: '24px 16px 0', height: '100%' }}>{this.props.children}</Content>
+          <Content style={{ margin: '24px 16px 0', height: '100%', backgroundColor: '#fff' }}>
+            {this.props.children}
+          </Content>
           <Footer />
         </Layout>
       </Layout>
@@ -78,4 +85,6 @@ class AppLayout extends Component {
   }
 }
 
-export default withRouter(AppLayout);
+const mapStateToProps = state => state.user;
+
+export default withRouter(connect(mapStateToProps)(AppLayout));
