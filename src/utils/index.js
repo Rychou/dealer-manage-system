@@ -13,3 +13,10 @@ export const scrollToAnchor = location => {
     }
   }
 };
+
+// 网络请求的三种默认状态, 在reducer的初始状态中使用。
+export const fetchState = {
+  isFetching: false,
+  isResolved: false,
+  isRejected: false,
+};
