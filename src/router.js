@@ -23,6 +23,13 @@ class Router extends React.Component {
       },
       loading: () => <Spin spinning />,
     });
+    this.ProductsPage = lodable({
+      loader: () => {
+        injectAsyncReducer(context.store, 'Products', require('./Dealer/Products/reducer').default);
+        return import('./Dealer/Products/container');
+      },
+      loading: () => <Spin spinning />,
+    });
   }
 
   render() {
@@ -34,6 +41,7 @@ class Router extends React.Component {
         <Layout>
           <Switch>
             <Route exact path="/login" component={this.LoginPage} />
+            <Route exact path="/products" component={this.ProductsPage} isLogin={isLogin} />
             <PrivateRoute component={() => <Exception type="404" />} isLogin={isLogin} />
           </Switch>
         </Layout>
