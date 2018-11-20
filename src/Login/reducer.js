@@ -1,10 +1,11 @@
-import { async } from './actions';
+import { async, LOGOUT } from './actions';
 
 const { fetchUser } = async;
+const localUserMsg = JSON.parse(localStorage.getItem('user'));
 const initState = {
-  isLogin: false,
-  type: null,
-  userMsg: {},
+  isLogin: !!localUserMsg,
+  type: localUserMsg ? localUserMsg.type : null,
+  userMsg: localUserMsg ? localUserMsg.userMsg : {},
 };
 
 const User = (state = initState, action) => {
@@ -14,6 +15,13 @@ const User = (state = initState, action) => {
         ...state,
         ...action.payload,
         isLogin: true,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isLogin: false,
+        type: null,
+        userMsg: {},
       };
     default:
       return state;

@@ -4,10 +4,17 @@ import { object, bool } from 'prop-types';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { dispatch } from 'redux';
+import { logout } from '../Login/actions';
 import './user.less';
 
 @hot(module)
 class User extends Component {
+  handleLogout = () => {
+    localStorage.removeItem('user');
+    this.props.logout();
+  };
+
   render() {
     const menu = (
       <Menu>
@@ -16,6 +23,9 @@ class User extends Component {
         </Menu.Item>
         <Menu.Item>
           <Link to="/user/set">设置</Link>
+        </Menu.Item>
+        <Menu.Item onClick={this.handleLogout}>
+          <span>注销</span>
         </Menu.Item>
       </Menu>
     );
@@ -41,5 +51,11 @@ User.propTypes = {
 };
 
 const mapStateToProps = state => state.user;
+const mapDispatchToProps = dispatch => ({
+  logout: payload => dispatch(logout(payload)),
+});
 
-export default connect(mapStateToProps)(User);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(User);
