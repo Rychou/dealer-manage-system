@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, number } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Carousel } from 'antd';
+import { Row, Col, BackTop } from 'antd';
+import Preview from './Preview';
+import BuyForm from './BuyForm';
 import './index.less';
 
 @hot(module)
@@ -15,21 +17,28 @@ class ProductDetail extends Component {
         params: { id },
       },
     } = this.props;
-    if (!isResolve) {
-      fetchProductDetail(id);
-    }
+    fetchProductDetail(id);
   }
 
   render() {
     const { product } = this.props;
     return (
-      <Carousel className="carousel" autoplay>
-        {product.images
-          ? product.images.map((image, index) => {
-              return <img src={image} alt="" key={index} />;
-            })
-          : null}
-      </Carousel>
+      <div className="product-container">
+        <BackTop />
+        <Row gutter={16}>
+          <Col span={8}>
+            <Preview images={product.images} />
+          </Col>
+          <Col span={16}>
+            <BuyForm product={product} />
+          </Col>
+        </Row>
+        <div className="product-detail">
+          {product.detailImages
+            ? product.detailImages.map((image, index) => <img key={index} src={image} />)
+            : null}
+        </div>
+      </div>
     );
   }
 }
