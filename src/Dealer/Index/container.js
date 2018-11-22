@@ -2,7 +2,7 @@ import { async } from './actions';
 import { connect } from 'react-redux';
 import Orders from './component';
 
-const { fetchProducts } = async;
+const { fetchOrders } = async;
 
 const mapStateToProps = state => state.Orders;
 

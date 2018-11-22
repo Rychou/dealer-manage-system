@@ -16,7 +16,7 @@ class Orders extends Component {
   componentDidMount() {
     const { fetchOrders, isResolved } = this.props;
     if (!isResolved) {
-      fetchOrders({dealerId:'dealer01'});
+      fetchOrders({dealerId:"dealer01"});
     }
   }
 
@@ -32,9 +32,8 @@ class Orders extends Component {
                 style={{ width: 240 }}
                 // cover={<img alt="example" src={order.imageUrl} />}
               >
-                
-                <Id id={order.id}/>}
-                <Price price={order.price} />
+                <Meta title={<Id id={order.id} />} />
+                <Meta title={<Price price={order.price} />} />                
               </Card>
             </Col>
           ))
@@ -56,4 +55,4 @@ Orders.propTypes = {
   orders: array,
 };
 
-export default Products;
+export default Orders;

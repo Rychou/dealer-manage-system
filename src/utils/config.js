@@ -36,6 +36,7 @@ export const dealerBreadcrumbNameMap = {
     exact: true,
     path: '/',
     name: '首页',
+    component: '../Dealer/Index/container'
   },
   '/products': {
     path: '/products',
@@ -58,6 +59,15 @@ export const companyBreadcrumbNameMap = {};
 
 // routes配置 在src/router中使用
 export const routes = [
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'IndexPage',
+    stateName: 'Orders', // 该页面的reducer在store中的名称。
+    path: '/', // 路由匹配路径
+    type: 'dealer', // 用户类型
+    reducer: require('../Dealer/Index/reducer').default,
+    container: import('../Dealer/Index/container'),
+  },
   {
     isPrivate: true, // 该页面是否需要登录访问
     pageName: 'ProductsPage',
