@@ -15,7 +15,9 @@ const Price = ({ price }) => <span className="order-price">￥{price}</span>;
 
 const ProductList = ({productList}) => {
   return <List
-    itemLayout="horizontal"
+    // itemLayout="horizontal"
+    grid = {{gutter: 2,column:1}}
+    size = "small"
     dataSource={productList}
     renderItem={item =>(
         <Link to={`/products/${item.productId}`}>
@@ -25,7 +27,22 @@ const ProductList = ({productList}) => {
   />
 };
 
-
+const Status = ({status}) => {
+// 0-未付款
+// 1-已付款
+// 2-集团确认
+// 3-已发货
+// 4-已签收
+// 5-交易完成
+// 6-退货申请
+// 7-退货中
+// 8-已退货
+// 9-取消交易
+  switch (status){
+    case 
+  }
+ 
+}
 
 
 
