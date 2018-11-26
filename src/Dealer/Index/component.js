@@ -3,6 +3,7 @@ import { hot } from 'react-hot-loader';
 import { bool, func, array } from 'prop-types';
 import { Row, Col, Card, List } from 'antd';
 import { Link } from 'react-router-dom';
+import { orderStatus } from 'utils';
 import './index.less';
 
 
@@ -15,8 +16,6 @@ const Price = ({ price }) => <span className="order-price">￥{price}</span>;
 
 const ProductList = ({productList}) => {
   return <List
-    // itemLayout="horizontal"
-    grid = {{gutter: 2,column:1}}
     size = "small"
     dataSource={productList}
     renderItem={item =>(
@@ -27,21 +26,19 @@ const ProductList = ({productList}) => {
   />
 };
 
-const Status = ({status}) => {
-// 0-未付款
-// 1-已付款
-// 2-集团确认
-// 3-已发货
-// 4-已签收
-// 5-交易完成
-// 6-退货申请
-// 7-退货中
-// 8-已退货
-// 9-取消交易
-  switch (status){
-    case 
+const Status = ({status,logistics}) => {
+  const OrderStatus = orderStatus(status);
+  if(OrderStatus === "NotFound") {return (<Col>{OrderStatus}</Col>);}
+  if(OrderStatus === "已发货"){
+    return (
+      <span>
+        <Col>{OrderStatus}</Col>
+        <Col>{`物流单号：${logistics.num}`}</Col>
+        <Col>{`当前物流信息：${logistics.message}`}</Col>
+      </span>
+    );
   }
- 
+  return (<Col>{OrderStatus}</Col>);
 }
 
 
@@ -71,13 +68,7 @@ class Orders extends Component {
                 <Meta title={<Id id={order.id} />} />
                 <Meta title={<Price price={order.price} />} />
                 <ProductList productList={order.list} />  
-                         {/*ToDo:
-                            添加判断，
-                            switch(status):
-                                case "未付款" : print "未付款";break;
-                                case "集团未确认" : print "已付款，等待集团确认";break;
-                                case "已发货" : print "order.logistics";break;
-                        */}
+                <Meta title={<Status status={order.status} logistics={order.logistics} />} />
               </Card>
             </Col>
           ))

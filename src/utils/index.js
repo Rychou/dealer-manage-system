@@ -33,7 +33,7 @@ export const fetchState = {
 // 9-取消交易
 export const orderStatus = (orderStatusCode) => {
   let status = "";
-  switch(orderStatus){
+  switch(orderStatusCode){
     case 0 : status = "未付款";break;
     case 1 : status = "已付款";break;
     case 2 : status = "集团已确认";break;
