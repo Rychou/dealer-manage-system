@@ -2,35 +2,30 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array } from 'prop-types';
 import { Row, Col, Card, List } from 'antd';
+import { Link } from 'react-router-dom';
 import './index.less';
-import { product } from 'simple-statistics';
+
 
 const { Meta } = Card;
+const {Item} = List;
 
 //const Price = ({ price }) => <span className="product-price">￥{price}</span>;
 const Id = ({id}) => <span className="order-id">NO.{id}</span>;
 const Price = ({ price }) => <span className="order-price">￥{price}</span>;
 
 const ProductList = ({productList}) => {
-  const products = [];
-  productList.map((product) =>
-    products.push(`${product.productName}:${product.productNum}`)
-  );
   return <List
     itemLayout="horizontal"
-    dataSource={products}
-    renderItem={item => (
-      // const product = "{item.ProdoctName}:{item.ProdoctNum}"
-      <List.Item>
-        <List.Item.Meta
-          // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-          title={item}
-          // description={{item.prodoctNum}}
-        />
-      </List.Item>
+    dataSource={productList}
+    renderItem={item =>(
+        <Link to={`/products/${item.productId}`}>
+          <Item><Item.Meta description={`${item.productName}:${item.productNum}`} /></Item>
+        </Link>
     )}
   />
 };
+
+
 
 
 
