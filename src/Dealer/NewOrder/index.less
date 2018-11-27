@@ -1,0 +1,52 @@
+.new-order-container {
+  padding: 24px;
+  .address-select {
+    width: 400px;
+  }
+  .new-address {
+    margin: 24px 0;
+  }
+  .address-list {
+    .address-item {
+      .address-item-seleted {
+        border: 2px dashed;
+        box-shadow: 0 0 2px;
+      }
+      .address-item-card {
+        height: 150px;
+        cursor: pointer;
+      }
+      .address-item-title {
+        font-size: 12px;
+      }
+      .ant-card-head-title {
+        white-space: unset !important;
+      }
+      .address-item-content {
+        font-size: 12px;
+        white-space: unset !important;
+        .address-item-content-phone {
+          margin-left: 12px;
+        }
+      }
+    }
+  }
+  .overview {
+    width: fit-content;
+    border: 2px dashed red;
+    padding: 12px;
+    text-align: right;
+    float: right;
+    .label {
+      font-weight: bold;
+    }
+    .price {
+      font-size: 2em;
+      font-weight: bold;
+    }
+  }
+  .submit-order {
+    float: right;
+    margin-top: 12px;
+  }
+}
