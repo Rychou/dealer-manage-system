@@ -51,7 +51,12 @@ class SideBar extends Component {
     });
     return (
       <Sider
-        style={{ boxShadow: '2px 0px 6px 0px rgba(0,21,41,0.35)', zIndex: 99 }}
+        style={{
+          boxShadow: '2px 0px 6px 0px rgba(0,21,41,0.35)',
+          zIndex: 99,
+          position: 'fixed',
+          height: '100vh',
+        }}
         trigger={null}
         collapsible
         collapsed={this.props.collapsed}

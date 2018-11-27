@@ -7,9 +7,11 @@ import { PageHeader } from 'ant-design-pro';
 import { withRouter, Link } from 'react-router-dom';
 import { dealerBreadcrumbNameMap, companyBreadcrumbNameMap } from 'utils/config';
 import { connect } from 'react-redux';
+import { hot } from 'react-hot-loader';
 
 const { Content } = Layout;
 
+@hot(module)
 class AppLayout extends Component {
   constructor(props) {
     super(props);
@@ -57,12 +59,13 @@ class AppLayout extends Component {
     const { location, isLogin } = this.props;
     const isIndex = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
-    const showPageHeader = isIndex || isLoginPage;
+    const isNewOrderPage = location.pathname === '/newOrder';
+    const showPageHeader = isIndex || isLoginPage || isNewOrderPage;
     const breadcrumbNameMap = isLogin ? dealerBreadcrumbNameMap : companyBreadcrumbNameMap;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
-        <Layout>
+        <Layout style={{ marginLeft: this.state.collapsed ? 80 : 200, transition: 'margin 0.3s' }}>
           <Header collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
           {!showPageHeader ? (
             <PageHeader
