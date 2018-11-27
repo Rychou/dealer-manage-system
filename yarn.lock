@@ -1787,6 +1787,10 @@ check-types@^7.3.0:
   version "7.4.0"
   resolved "https://registry.yarnpkg.com/check-types/-/check-types-7.4.0.tgz#0378ec1b9616ec71f774931a3c6516fad8c152f4"
 
+china-division@^2.1.1:
+  version "2.1.1"
+  resolved "http://registry.npm.taobao.org/china-division/download/china-division-2.1.1.tgz#a7326d45cd01fbf0c8714e0bbb3502349694ea16"
+
 chokidar@^2.0.0, chokidar@^2.0.2:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.4.tgz#356ff4e2b0e8e43e322d18a372460bbcf3accd26"

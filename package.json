@@ -17,6 +17,8 @@
     "antd": "^3.10.0",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
+    "china-division": "^2.1.1",
+    "classnames": "^2.2.6",
     "css-loader": "^1.0.0",
     "react": "^16.2.0",
     "react-amap-binding": "^0.0.23",
