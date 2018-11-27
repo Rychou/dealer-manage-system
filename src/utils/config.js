@@ -52,6 +52,10 @@ export const dealerBreadcrumbNameMap = {
     name: '商品详情',
     path: '/products/:id',
   },
+  '/newOrder': {
+    name: '下单页面',
+    path: '/newOrder',
+  },
 };
 // 集团 路由-面包屑映射列表
 export const companyBreadcrumbNameMap = {};
@@ -75,5 +79,14 @@ export const routes = [
     type: 'dealer', // 用户类型
     reducer: require('../Dealer/ProductDetail/reducer').default,
     container: import('../Dealer/ProductDetail/container'),
+  },
+  {
+    isPrivate: true,
+    pageName: 'NewOrderPage',
+    stateName: 'NewOrder',
+    path: '/newOrder',
+    type: 'dealer',
+    reducer: require('../Dealer/NewOrder/reducer').default,
+    container: import('../Dealer/NewOrder/container'),
   },
 ];
