@@ -17,7 +17,7 @@ class BuyForm extends Component {
     validateFields((err, values) => {
       if (!err) {
         console.log(values);
-        push('/newOrder', { ...values, product });
+        push('/newOrder', { products: [{ ...values, ...product }] });
       }
     });
   };
