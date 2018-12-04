@@ -36,7 +36,7 @@ export const dealerBreadcrumbNameMap = {
     exact: true,
     path: '/',
     name: '首页',
-    component: '../Dealer/Index/container'
+    component: '../Dealer/Index/container',
   },
   '/products': {
     path: '/products',
@@ -57,6 +57,18 @@ export const dealerBreadcrumbNameMap = {
     name: '下单页面',
     path: '/newOrder',
   },
+  '/newOrder/confirm': {
+    name: '确认订单',
+    path: '/newOrder/confirm',
+  },
+  '/newOrder/pay': {
+    name: '支付',
+    path: '/newOrder/pay',
+  },
+  '/newOrder/result': {
+    name: '确认收货',
+    path: '/newOrder/result',
+  },
 };
 // 集团 路由-面包屑映射列表
 export const companyBreadcrumbNameMap = {};
@@ -68,6 +80,7 @@ export const routes = [
     pageName: 'IndexPage',
     stateName: 'Orders', // 该页面的reducer在store中的名称。
     path: '/', // 路由匹配路径
+    isExact: true,
     type: 'dealer', // 用户类型
     reducer: require('../Dealer/Index/reducer').default,
     container: import('../Dealer/Index/container'),
@@ -77,6 +90,7 @@ export const routes = [
     pageName: 'ProductsPage',
     stateName: 'Products', // 该页面的reducer在store中的名称。
     path: '/products', // 路由匹配路径
+    isExact: true,
     type: 'dealer', // 用户类型
     reducer: require('../Dealer/Products/reducer').default,
     container: import('../Dealer/Products/container'),
@@ -87,6 +101,7 @@ export const routes = [
     stateName: 'ProductDetail', // 该页面的reducer在store中的名称。
     path: '/products/:id', // 路由匹配路径
     type: 'dealer', // 用户类型
+    isExact: true,
     reducer: require('../Dealer/ProductDetail/reducer').default,
     container: import('../Dealer/ProductDetail/container'),
   },
@@ -96,6 +111,7 @@ export const routes = [
     stateName: 'NewOrder',
     path: '/newOrder',
     type: 'dealer',
+    isExact: false,
     reducer: require('../Dealer/NewOrder/reducer').default,
     container: import('../Dealer/NewOrder/container'),
   },
