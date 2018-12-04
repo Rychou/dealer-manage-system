@@ -64,7 +64,7 @@ class Router extends React.Component {
                 return route.isPrivate ? (
                   <PrivateRoute
                     key={index}
-                    exact
+                    exact={route.isExact}
                     path={route.path}
                     component={this[route.pageName]}
                     isLogin={isLogin}
