@@ -8,12 +8,31 @@
   }
   .address-list {
     .address-item {
+      padding: 0 !important;
+      margin: 6px 12px;
+      &:hover .address-item-actions {
+        display: block;
+      }
+      .address-item-actions {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 99;
+        a {
+          margin: 0 8px;
+          &:hover {
+            color: red;
+          }
+        }
+      }
       .address-item-seleted {
         border: 2px dashed;
         box-shadow: 0 0 2px;
       }
       .address-item-card {
-        height: 150px;
+        width: fit-content;
+        height: fit-content;
         cursor: pointer;
       }
       .address-item-title {
@@ -48,5 +67,16 @@
   .submit-order {
     float: right;
     margin-top: 12px;
+    clear: both;
+  }
+}
+
+.pay-order-detail {
+  margin-top: 24px;
+  .pay-order-detail-item {
+    margin: 8px;
+    .label {
+      font-weight: 600;
+    }
   }
 }

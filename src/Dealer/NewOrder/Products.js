@@ -9,6 +9,12 @@ class Products extends Component {
     const { products } = this.props;
     const columns = [
       {
+        title: '预览图',
+        dataIndex: 'image',
+        key: 'image',
+        render: (text, record) => <img style={{ width: 48 }} src={record.images[0]} />,
+      },
+      {
         title: '商品名称',
         dataIndex: 'name',
         key: 'name',
