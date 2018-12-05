@@ -83,7 +83,7 @@ const columns = [
             { title: '联系电话', dataIndex: 'phone', key: 'phone' },
             { title: '配送地址', dataIndex: 'address', key: 'address' },
             { 
-              title: '配送状态', 
+              title: '订单状态', 
               dataIndex: 'status', 
               key: 'status' ,
               filters: [{
@@ -129,7 +129,8 @@ const columns = [
               // 9-取消交易
               filterMultiple: true,
               onFilter: (value, record) => record.statusNum == value,},
-            { title: '详细信息', key: 'operation', render: () => <a href="javascript:;">详情</a> },
+            { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
+            { title: '详细信息', key: 'operation', render: () => <a href="/products">详情</a> },
           ];
 
 
@@ -160,7 +161,8 @@ class Orders extends Component {
               phone: order.phone,
               address: order.address,
               statusNum: order.status,
-              status: order.logistics.message,
+              status: status,
+              logistics: order.logistics.message,
               products: ProductList(order.list),
             });
           } else {
