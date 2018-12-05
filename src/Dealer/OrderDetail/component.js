@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func, number } from 'prop-types';
+import { bool, func,string } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Row, Col, BackTop } from 'antd';
 import './index.less';
@@ -21,14 +21,14 @@ class OrderDetail extends Component {
   render() {
     const { order } = this.props;
     return (
-      <div>{order.no}</div>
+      <div>123</div>
     );
   }
 }
 
 OrderDetail.propTypes = {
   fetchOrderDetail: func,
-  id: number,
+  id: string,
   isResolve: bool,
 };
 

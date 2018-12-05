@@ -3,7 +3,6 @@ import request from 'request';
 import { async } from './actions';
 
 const { fetchOrders } = async;
-// const dealerId = 'dealer01';
 function* doFetchOrders(action) {
   try {
     const { data } = yield call(request.get, `/orders`);

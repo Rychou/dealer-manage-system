@@ -1,12 +1,11 @@
 import { async } from './actions';
+import { fetchState } from 'utils';
 
 const { fetchOrders } = async;
 
 const initState = {
+  ...fetchState,
   orders: [],
-  isFetching: false,
-  isResolved: false,
-  isRejected: false,
 };
 
 const Orders = (state = initState, action) => {
