@@ -187,9 +187,10 @@ class Orders extends Component {
     return (
       // OrderList()
       <Table
-        className="components-table-demo-nested"
+        className="orderList"
         columns={columns}
         expandedRowRender={record => <Table
+            className="products"
             columns={insideColumns}
             dataSource={record.products}
             pagination={false}
@@ -212,16 +213,16 @@ export default Orders;
 
 
 
-const menu = (
-  <Menu>
-    <Menu.Item>
-      Action 1
-    </Menu.Item>
-    <Menu.Item>
-      Action 2
-    </Menu.Item>
-  </Menu>
-);
+// const menu = (
+//   <Menu>
+//     <Menu.Item>
+//       Action 1
+//     </Menu.Item>
+//     <Menu.Item>
+//       Action 2
+//     </Menu.Item>
+//   </Menu>
+// );
 
 // function Orders() {
 //   const expandedRowRender = () => {
