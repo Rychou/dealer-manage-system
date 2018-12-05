@@ -56,10 +56,10 @@ const ProductList = (productList) => {
   productList.map((product,index) => {
     data.push({
       key: index,
-      name: product.productName,
-      num: product.productNum, // int
-      price: product.productPrice, // float
-      totalPrice: product.productPrice * product.productNum, // *
+      name: product.name,
+      num: product.num, // int
+      price: product.price, // float
+      totalPrice: product.price * product.num, // *
     })
   });
   return (data);
@@ -70,7 +70,7 @@ ProductList.propTypes = {
 };
 
 const columns = [
-            { title: '订单编号', dataIndex: 'no', key: 'no' },
+            // { title: '订单编号', dataIndex: 'no', key: 'no' },
             { 
               title: '下单日期', 
               dataIndex: 'date', 
@@ -130,7 +130,7 @@ const columns = [
               filterMultiple: true,
               onFilter: (value, record) => record.statusNum == value,},
             { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
-            { title: '详细信息', key: 'operation', render: () => <a href="/products">详情</a> },
+            { title: '详细信息', key: 'operation', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
           ];
 
 
@@ -163,7 +163,8 @@ class Orders extends Component {
               statusNum: order.status,
               status: status,
               logistics: order.logistics.message,
-              products: ProductList(order.list),
+              // status: order.logistics.message,
+              products: ProductList(order.products),
             });
           } else {
             data.push({
@@ -176,7 +177,7 @@ class Orders extends Component {
               address: order.address,
               statusNum: order.status,              
               status: status,
-              products: ProductList(order.list),
+              products: ProductList(order.products),
             });
           }
           // return (data);
