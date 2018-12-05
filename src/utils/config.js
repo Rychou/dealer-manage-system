@@ -36,7 +36,13 @@ export const dealerBreadcrumbNameMap = {
     exact: true,
     path: '/',
     name: '首页',
-    component: '../Dealer/Index/container'
+    component: '../Dealer/Index/container',
+    children: [
+      {
+        name: '订单详情',
+        path: '/orders/:id',
+      },
+    ],
   },
   '/products': {
     path: '/products',
@@ -56,6 +62,11 @@ export const dealerBreadcrumbNameMap = {
   '/newOrder': {
     name: '下单页面',
     path: '/newOrder',
+  },
+  '/orders/:id': {
+    path: '/orders/:id',
+    name: '订单详情',
+    component: '../Dealer/OrderDetail/container'
   },
 };
 // 集团 路由-面包屑映射列表
@@ -98,5 +109,14 @@ export const routes = [
     type: 'dealer',
     reducer: require('../Dealer/NewOrder/reducer').default,
     container: import('../Dealer/NewOrder/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'OrderDetailPage',
+    stateName: 'OrderDetail', // 该页面的reducer在store中的名称。
+    path: '/orders/:id', // 路由匹配路径
+    type: 'dealer', // 用户类型
+    reducer: require('../Dealer/OrderDetail/reducer').default,
+    container: import('../Dealer/OrderDetail/container'),
   },
 ];
