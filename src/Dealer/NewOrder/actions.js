@@ -1,3 +1,10 @@
+import { Async } from 'redux-action-boilerplate';
+
+export const async = new Async({
+  prefix: 'newOrder',
+  actions: ['newOrder'],
+});
+
 export const UPDATE_PRODUCTS = 'UPDATE_PRODUCTS';
 export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
 export const UPDATE_CURRENT_STEP = 'UPDATE_CURRENT_STEP';

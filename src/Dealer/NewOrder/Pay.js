@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { withRouter } from 'react-router-dom';
 import { updateCurrentStep } from './actions';
+import request from 'request';
 
 const FormItem = Form.Item;
 @hot(module)
@@ -20,9 +21,26 @@ class Pay extends React.Component {
           paying: true,
         });
         setTimeout(() => {
-          this.setState({ paying: false }, () => this.props.history.push('/newOrder/result'));
-          message.success('支付成功！');
-          this.props.updateCurrentStep(2);
+          this.setState({ paying: false }, () => {
+            request({
+              method: 'put',
+              url: '/orders',
+              data: {
+                orderId: this.props.newOrder.orderId,
+                status: 1,
+              },
+            })
+              .then(res => {
+                console.log(res);
+                this.props.history.push('/newOrder/result', { payDate: new Date() });
+                message.success('支付成功！');
+                this.props.updateCurrentStep(2);
+              })
+              .catch(err => {
+                message.error('支付失败！');
+                console.log(err);
+              });
+          });
         }, 3000);
       }
     });

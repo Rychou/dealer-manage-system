@@ -19,13 +19,52 @@ class NewOrder extends Component {
     const {
       updateProducts,
       location: { state },
+      history: { listen },
+      updateCurrentStep,
     } = this.props;
     updateProducts(state.products);
+    listen(location => {
+      switch (location.pathname) {
+        case '/newOrder/pay':
+          updateCurrentStep(1);
+          break;
+        case '/newOrder/result':
+          updateCurrentStep(2);
+          break;
+        default:
+          updateCurrentStep(0);
+          break;
+      }
+    });
   }
 
   handleSumbitOrder = () => {
-    this.props.updateCurrentStep(1);
-    this.props.history.push('/newOrder/pay');
+    const {
+      updateCurrentStep,
+      newOrder,
+      products,
+      address,
+      history: { push },
+    } = this.props;
+    // updateCurrentStep(1);
+    newOrder({
+      products: products.map(({ no, amount }) => {
+        return {
+          productNo: no,
+          amount,
+        };
+      }),
+      address: {
+        province: address.address[0],
+        city: address.address[1],
+        district: address.address[2],
+        street: address.address[3],
+        details: address.detailAddress,
+      },
+      name: address.name,
+      phone: address.phone,
+    });
+    push('/newOrder/pay');
   };
 
   render() {
