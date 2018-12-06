@@ -25,7 +25,7 @@ class Products extends Component {
       return products.length
         ? products.map((product, index) => (
             <Col span="6" style={{ marginTop: '24px' }} key={index}>
-              <Link to={`/products/${product.id}`}>
+              <Link to={`/products/${product.no}`}>
                 <Card
                   hoverable
                   style={{ width: 240 }}

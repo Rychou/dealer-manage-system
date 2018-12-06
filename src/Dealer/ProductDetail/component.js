@@ -14,10 +14,10 @@ class ProductDetail extends Component {
       isResolve,
       fetchProductDetail,
       match: {
-        params: { id },
+        params: { no },
       },
     } = this.props;
-    fetchProductDetail(id);
+    fetchProductDetail(no);
   }
 
   render() {
@@ -45,7 +45,6 @@ class ProductDetail extends Component {
 
 ProductDetail.propTypes = {
   fetchProductDetail: func,
-  id: number,
   isResolve: bool,
 };
 

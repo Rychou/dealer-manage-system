@@ -6,7 +6,7 @@ const { fetchProductDetail } = async;
 
 function* doFetchProductDetail(action) {
   try {
-    const { data } = yield call(request.get, `/products/${action.payload.id}`);
+    const { data } = yield call(request.get, `/products/${action.payload.no}`);
     yield put(fetchProductDetail.success({ product: data }));
   } catch (err) {
     yield put(fetchProductDetail.failure(err));
