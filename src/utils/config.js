@@ -27,7 +27,26 @@ export const dealerMenus = [
 ];
 
 // 集团菜单参数
-export const companyMenus = [];
+export const companyMenus = [
+  {
+    isSub: false,
+    name: '销售数据',
+    path: '/',
+    icon: 'bar-chart',
+  },
+  {
+    isSub: false,
+    name: '订单管理',
+    path: '/orders',
+    icon: 'reconciliation',
+  },
+  {
+    isSub: false,
+    name: '库存管理',
+    path: '/stocks',
+    icon: 'cluster',
+  },
+];
 
 // 经销商 路由-面包屑映射列表
 export const dealerBreadcrumbNameMap = {
@@ -45,13 +64,13 @@ export const dealerBreadcrumbNameMap = {
     children: [
       {
         name: '商品详情',
-        path: '/products/:id',
+        path: '/products/:no',
       },
     ],
   },
-  '/products/:id': {
+  '/products/:no': {
     name: '商品详情',
-    path: '/products/:id',
+    path: '/products/:no',
   },
   '/newOrder': {
     name: '下单页面',
@@ -99,7 +118,7 @@ export const routes = [
     isPrivate: true, // 该页面是否需要登录访问
     pageName: 'ProductDetailPage',
     stateName: 'ProductDetail', // 该页面的reducer在store中的名称。
-    path: '/products/:id', // 路由匹配路径
+    path: '/products/:no', // 路由匹配路径
     type: 'dealer', // 用户类型
     isExact: true,
     reducer: require('../Dealer/ProductDetail/reducer').default,
@@ -114,5 +133,15 @@ export const routes = [
     isExact: false,
     reducer: require('../Dealer/NewOrder/reducer').default,
     container: import('../Dealer/NewOrder/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'StockPage',
+    stateName: 'Stock', // 该页面的reducer在store中的名称。
+    path: '/stocks', // 路由匹配路径
+    isExact: true,
+    type: 'company', // 用户类型
+    reducer: require('../Company/Stock/reducer').default,
+    container: import('../Company/Stock/container'),
   },
 ];
