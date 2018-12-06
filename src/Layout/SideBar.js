@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Layout, Menu, Icon } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import Logo from './Logo';
-import BIcon from '../Common/BIcon';
 import { defaultMenus, dealerMenus, companyMenus } from '@/utils/config';
 import { connect } from 'react-redux';
 
@@ -27,7 +26,7 @@ class SideBar extends Component {
             key={menu.subName}
             title={
               <span>
-                <BIcon type={menu.icon} />
+                <Icon type={menu.icon} />
                 <span>{menu.subName}</span>
               </span>
             }
@@ -43,7 +42,7 @@ class SideBar extends Component {
       return (
         <Menu.Item key={menu.path}>
           <Link to={menu.path}>
-            <BIcon type={menu.icon} />
+            <Icon type={menu.icon} />
             <span>{menu.name}</span>
           </Link>
         </Menu.Item>
