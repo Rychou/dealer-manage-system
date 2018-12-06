@@ -56,10 +56,10 @@ const ProductList = (productList) => {
   productList.map((product,index) => {
     data.push({
       key: index,
-      name: product.productName,
-      num: product.productNum, // int
-      price: product.productPrice, // float
-      totalPrice: product.productPrice * product.productNum, // *
+      name: product.name,
+      num: product.num, // int
+      price: product.price, // float
+      totalPrice: product.price * product.num, // *
     })
   });
   return (data);
@@ -70,7 +70,7 @@ ProductList.propTypes = {
 };
 
 const columns = [
-            { title: '订单编号', dataIndex: 'no', key: 'no' },
+            // { title: '订单编号', dataIndex: 'no', key: 'no' },
             { 
               title: '下单日期', 
               dataIndex: 'date', 
@@ -83,7 +83,7 @@ const columns = [
             { title: '联系电话', dataIndex: 'phone', key: 'phone' },
             { title: '配送地址', dataIndex: 'address', key: 'address' },
             { 
-              title: '配送状态', 
+              title: '订单状态', 
               dataIndex: 'status', 
               key: 'status' ,
               filters: [{
@@ -129,7 +129,8 @@ const columns = [
               // 9-取消交易
               filterMultiple: true,
               onFilter: (value, record) => record.statusNum == value,},
-            { title: '详细信息', key: 'operation', render: () => <a href="javascript:;">详情</a> },
+            { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
+            { title: '详细信息', key: 'operation', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
           ];
 
 
@@ -160,8 +161,10 @@ class Orders extends Component {
               phone: order.phone,
               address: order.address,
               statusNum: order.status,
-              status: order.logistics.message,
-              products: ProductList(order.list),
+              status: status,
+              logistics: order.logistics.message,
+              // status: order.logistics.message,
+              products: ProductList(order.products),
             });
           } else {
             data.push({
@@ -174,7 +177,7 @@ class Orders extends Component {
               address: order.address,
               statusNum: order.status,              
               status: status,
-              products: ProductList(order.list),
+              products: ProductList(order.products),
             });
           }
           // return (data);
@@ -185,9 +188,10 @@ class Orders extends Component {
     return (
       // OrderList()
       <Table
-        className="components-table-demo-nested"
+        className="orderList"
         columns={columns}
         expandedRowRender={record => <Table
+            className="products"
             columns={insideColumns}
             dataSource={record.products}
             pagination={false}
@@ -210,16 +214,16 @@ export default Orders;
 
 
 
-const menu = (
-  <Menu>
-    <Menu.Item>
-      Action 1
-    </Menu.Item>
-    <Menu.Item>
-      Action 2
-    </Menu.Item>
-  </Menu>
-);
+// const menu = (
+//   <Menu>
+//     <Menu.Item>
+//       Action 1
+//     </Menu.Item>
+//     <Menu.Item>
+//       Action 2
+//     </Menu.Item>
+//   </Menu>
+// );
 
 // function Orders() {
 //   const expandedRowRender = () => {

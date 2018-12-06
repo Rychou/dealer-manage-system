@@ -6,7 +6,7 @@ const { fetchOrders } = async;
 // const dealerId = 'dealer01';
 function* doFetchOrders(action) {
   try {
-    const { data } = yield call(request.get, `/dealer/orders`);
+    const { data } = yield call(request.get, `/orders`);
     yield put(fetchOrders.success({ orders: data }));
   } catch (err) {
     yield put(fetchOrders.failure(err));
