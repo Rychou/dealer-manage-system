@@ -64,9 +64,9 @@ export const dealerBreadcrumbNameMap = {
     path: '/newOrder',
   },
   '/orders/:id': {
-    path: '/orders/:id',
     name: '订单详情',
-    component: '../Dealer/OrderDetail/container'
+    path: '/orders/:id',
+    component: '../Dealer/OrderDetail/container',
   },
 };
 // 集团 路由-面包屑映射列表
