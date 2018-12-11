@@ -17,7 +17,7 @@ class ProductDetail extends Component {
         params: { no },
       },
     } = this.props;
-    fetchProductDetail(no);
+    fetchProductDetail({ no });
   }
 
   render() {
@@ -27,7 +27,7 @@ class ProductDetail extends Component {
         <BackTop />
         <Row gutter={16}>
           <Col span={8}>
-            <Preview images={product.images} />
+            <Preview images={product.carouselImages} />
           </Col>
           <Col span={16}>
             <BuyForm product={product} />
