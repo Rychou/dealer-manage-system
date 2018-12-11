@@ -90,7 +90,16 @@ export const dealerBreadcrumbNameMap = {
   },
 };
 // 集团 路由-面包屑映射列表
-export const companyBreadcrumbNameMap = {};
+export const companyBreadcrumbNameMap = {
+  '/': {
+    name: '销售数据',
+    path: '/',
+  },
+  '/stocks': {
+    name: '库存管理',
+    path: '/stocks',
+  },
+};
 
 // routes配置 在src/router中使用
 export const routes = [
