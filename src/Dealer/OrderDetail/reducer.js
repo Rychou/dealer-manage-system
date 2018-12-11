@@ -6,6 +6,7 @@ const { fetchOrderDetail } = async;
 const initState = {
   ...fetchState,
   order: {},
+  express: {},
 };
 
 const OrderDetail = (state = initState, action) => {
@@ -19,6 +20,7 @@ const OrderDetail = (state = initState, action) => {
       return {
         ...state,
         order: action.payload.order,
+        express: action.payload.express,
         isFetching: false,
         isResolved: true,
       };
