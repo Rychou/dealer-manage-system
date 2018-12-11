@@ -11,7 +11,7 @@ const Overview = ({ address, products }) => {
         <span className="label">实付款：</span>
         <span className="price">
           <span style={{ color: 'gray' }}>￥</span>
-          <span style={{ color: 'red' }}>{totalPrice}</span>
+          <span style={{ color: 'red' }}>{totalPrice.toFixed(2)}</span>
         </span>
       </div>
       <div>
