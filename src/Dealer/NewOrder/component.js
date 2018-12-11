@@ -40,17 +40,15 @@ class NewOrder extends Component {
 
   handleSumbitOrder = () => {
     const {
-      updateCurrentStep,
       newOrder,
       products,
       address,
       history: { push },
     } = this.props;
-    // updateCurrentStep(1);
     newOrder({
-      products: products.map(({ no, amount }) => {
+      orderDetails: products.map(({ no, amount }) => {
         return {
-          productNo: no,
+          product: { no },
           amount,
         };
       }),

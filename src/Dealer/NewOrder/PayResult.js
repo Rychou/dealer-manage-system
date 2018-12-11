@@ -13,7 +13,7 @@ class PayResult extends React.Component {
   render() {
     const {
       address,
-      newOrder: { orderId, date, totalPrice },
+      newOrder: { id, orderedAt, orderTotalPrice },
       location: {
         state: { payDate },
       },
@@ -26,11 +26,11 @@ class PayResult extends React.Component {
           <div>
             <div className="description">
               <span>订单编号：</span>
-              <span>{orderId}</span>
+              <span>{id}</span>
             </div>
             <div className="description">
               <span>创建时间：</span>
-              <span>{date}</span>
+              <span>{orderedAt}</span>
             </div>
             <div className="description">
               <span>付款时间：</span>
@@ -50,7 +50,7 @@ class PayResult extends React.Component {
             </div>
             <div className="description">
               <span>实付总额：</span>
-              <span style={{ fontSize: '2em' }}>￥{totalPrice}</span>
+              <span style={{ fontSize: '2em' }}>￥{orderTotalPrice}</span>
             </div>
             <Button type="primary" onClick={this.handleClick}>
               确定
