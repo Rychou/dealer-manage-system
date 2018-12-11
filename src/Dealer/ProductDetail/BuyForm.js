@@ -3,6 +3,8 @@ import { object } from 'prop-types';
 import { Form, Button, InputNumber, Radio } from 'antd';
 import { hot } from 'react-hot-loader';
 import { withRouter } from 'react-router-dom';
+import { addProduct } from '../ShoppingCart/actions';
+import { connect } from 'react-redux';
 
 const FormItem = Form.Item;
 @hot(module)
@@ -16,8 +18,21 @@ class BuyForm extends Component {
     } = this.props;
     validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         push('/newOrder/confirm', { products: [{ ...values, ...product }] });
+      }
+    });
+  };
+
+  handleAddToShoppingCart = () => {
+    const {
+      form: { validateFields },
+      addProduct,
+      product,
+    } = this.props;
+
+    validateFields((err, values) => {
+      if (!err) {
+        addProduct({ ...product, ...values });
       }
     });
   };
@@ -77,7 +92,9 @@ class BuyForm extends Component {
           <Button htmlType="submit" style={{ marginRight: 24 }}>
             立即购买
           </Button>
-          <Button type="primary">加入购物车</Button>
+          <Button type="primary" onClick={this.handleAddToShoppingCart}>
+            加入购物车
+          </Button>
         </FormItem>
       </Form>
     );
@@ -88,4 +105,11 @@ BuyForm.propTypes = {
   product: object,
 };
 
-export default withRouter(Form.create()(BuyForm));
+const mapDispatchToProps = dispatch => ({
+  addProduct: payload => dispatch(addProduct(payload)),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(withRouter(Form.create()(BuyForm)));

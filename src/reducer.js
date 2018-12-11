@@ -2,6 +2,7 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
 import user from './Login/reducer';
+import ShoppingCart from './Dealer/ShoppingCart/reducer';
 /**
  * This is a create reducer function.
  * It returns current permanent and asynchronously loaded reducers.
@@ -19,5 +20,6 @@ export default function createReducer(asyncReducers) {
     /* Aync reducers. */
     ...asyncReducers,
     user,
+    ShoppingCart,
   });
 }

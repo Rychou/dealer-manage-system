@@ -8,6 +8,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { dealerBreadcrumbNameMap, companyBreadcrumbNameMap } from 'utils/config';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
+import ShoppingCart from '../Dealer/ShoppingCart/container';
 
 const { Content } = Layout;
 
@@ -56,12 +57,13 @@ class AppLayout extends Component {
   }
 
   render() {
-    const { location, isLogin } = this.props;
+    const { location, isLogin, type } = this.props;
     const isIndex = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
     const isNewOrderPage = location.pathname === '/newOrder';
     const showPageHeader = isIndex || isLoginPage || isNewOrderPage;
-    const breadcrumbNameMap = isLogin ? dealerBreadcrumbNameMap : companyBreadcrumbNameMap;
+    const breadcrumbNameMap =
+      isLogin && type === 'dealer' ? dealerBreadcrumbNameMap : companyBreadcrumbNameMap;
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
@@ -81,6 +83,7 @@ class AppLayout extends Component {
           <Content style={{ margin: '24px 16px 0', height: '100%', backgroundColor: '#fff' }}>
             {this.props.children}
           </Content>
+          {isLogin && type === 'dealer' ? <ShoppingCart /> : null}
           <Footer />
         </Layout>
       </Layout>
