@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Modal, InputNumber, Form } from 'antd';
+import { Modal, InputNumber, Form, message } from 'antd';
 import { hot } from 'react-hot-loader';
+import request from 'request';
 
 const FormItem = Form.Item;
 @hot(module)
@@ -17,11 +18,47 @@ class ModifyStock extends Component {
 
   handleCancel = () => {
     this.props.hideModal();
+    this.props.form.resetFields();
   };
 
-  handleModifyStock = () => {
-    const { productNo } = this.props;
-    console.log('submit');
+  handleModifyStock = e => {
+    e.preventDefault();
+    const {
+      form: { validateFields },
+    } = this.props;
+    const {
+      stock: { productNo, stock: currentStock, warehouseNo },
+    } = this.state;
+
+    validateFields((err, values) => {
+      if (!err) {
+        if (values.stock === currentStock) {
+          message.info('您要修改的库存量和原来的是一样的噢！');
+        } else {
+          this.setStock(productNo, values.stock, warehouseNo);
+        }
+      }
+    });
+  };
+
+  setStock = (productNo, stock, warehouseNo) => {
+    request('/groupInventory', {
+      method: 'post',
+      data: {
+        productNo,
+        stock,
+        warehouseNo,
+      },
+    })
+      .then(res => {
+        message.success('修改成功！');
+        this.props.hideModal();
+        this.props.fetchStocks();
+      })
+      .catch(err => {
+        message.failure('修改失败！');
+        this.props.hideModal();
+      });
   };
 
   getStock = (productNo, stocks) => {

@@ -15,7 +15,6 @@ class Stock extends Component {
   }
 
   handleModifyStock = productNo => {
-    console.log(productNo);
     this.setState({
       visible: true,
       selectedProductNo: productNo,
@@ -40,11 +39,13 @@ class Stock extends Component {
         title: '商品单价(元)',
         dataIndex: 'price',
         key: 'price',
+        sorter: (a, b) => a.price - b.price,
       },
       {
         title: '库存量(件)',
         dataIndex: 'stock',
         key: 'stock',
+        sorter: (a, b) => a.stock - b.stock,
       },
       {
         title: '仓库名称',
@@ -70,6 +71,7 @@ class Stock extends Component {
       <div>
         <Table rowKey="productNo" loading={isFetching} dataSource={stocks} columns={columns} />
         <ModifyStock
+          fetchStocks={this.props.fetchStocks}
           hideModal={this.hideModal}
           productNo={this.state.selectedProductNo}
           visible={this.state.visible}

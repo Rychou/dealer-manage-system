@@ -6,7 +6,7 @@ const { fetchStocks } = async;
 
 function* doFetchStocks(action) {
   try {
-    const { data } = yield call(request.get, '/stocks');
+    const { data } = yield call(request.get, '/groupInventory');
     yield put(fetchStocks.success(data));
   } catch (err) {
     yield put(fetchStocks.failure(err));
