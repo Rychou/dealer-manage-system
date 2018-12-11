@@ -10,6 +10,7 @@ import { Exception } from 'ant-design-pro';
 import { connect } from 'react-redux';
 import PrivateRoute from 'Common/PrivateRoute';
 import { routes } from 'utils/config';
+import Loading from 'Common/Loading';
 
 /* Router with lazy loaded pages. */
 class Router extends React.Component {
@@ -23,7 +24,7 @@ class Router extends React.Component {
       loader: () => {
         return import('./Login/container');
       },
-      loading: () => <Spin spinning />,
+      loading: Loading,
     });
     this.initLodables(context);
   }
@@ -41,7 +42,7 @@ class Router extends React.Component {
           injectAsyncReducer(context.store, routes[i].stateName, routes[i].reducer);
           return routes[i].container;
         },
-        loading: () => <Spin spinning />,
+        loading: Loading,
       });
     }
   };
