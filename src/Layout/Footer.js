@@ -21,7 +21,7 @@ const links = [
 ];
 const CopyRight = (
   <div>
-    Copyright <Icon type="copyright" /> 2018 公交云体验技术部出品
+    Copyright <Icon type="copyright" /> 2018 魏锐小组出品
   </div>
 );
 
