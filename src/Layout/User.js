@@ -34,13 +34,16 @@ class User extends Component {
       if (isLogin) {
         return (
           <Dropdown overlay={menu}>
-            <Avatar
-              style={{
-                backgroundColor: type === 'dealer' ? 'black' : 'pink',
-              }}
-            >
-              {userMsg.name}
-            </Avatar>
+            <div>
+              <Avatar
+                style={{
+                  backgroundColor: type === 'dealer' ? 'black' : 'green',
+                }}
+              >
+                {type === 'company' ? '集团' : '经销商'}
+              </Avatar>
+              <span style={{ marginLeft: 8 }}>{userMsg.name}</span>
+            </div>
           </Dropdown>
         );
       }
