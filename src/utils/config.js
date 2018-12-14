@@ -145,6 +145,16 @@ export const routes = [
   },
   {
     isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'DashBoardPage',
+    stateName: 'DashBoard', // 该页面的reducer在store中的名称。
+    path: '/', // 路由匹配路径
+    isExact: true,
+    type: 'company', // 用户类型
+    reducer: require('../Company/DashBoard/reducer').default,
+    container: import('../Company/DashBoard/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
     pageName: 'StockPage',
     stateName: 'Stock', // 该页面的reducer在store中的名称。
     path: '/stocks', // 路由匹配路径
