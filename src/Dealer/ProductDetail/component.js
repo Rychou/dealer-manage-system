@@ -23,7 +23,7 @@ class ProductDetail extends Component {
   render() {
     const { product } = this.props;
     return (
-      <div className="product-container">
+      <div className="product-container" style={{ backgroundColor: '#fff' }}>
         <BackTop />
         <Row gutter={16}>
           <Col span={8}>
@@ -35,7 +35,9 @@ class ProductDetail extends Component {
         </Row>
         <div className="product-detail">
           {product.detailImages
-            ? product.detailImages.map((image, index) => <img key={index} src={image} />)
+            ? product.detailImages.map((image, index) => (
+                <img key={index} src={image} />
+              ))
             : null}
         </div>
       </div>

@@ -7,7 +7,7 @@ import { PageHeader } from 'ant-design-pro';
 import { withRouter, Link } from 'react-router-dom';
 import {
   dealerBreadcrumbNameMap,
-  companyBreadcrumbNameMap
+  companyBreadcrumbNameMap,
 } from 'utils/config';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
@@ -20,7 +20,7 @@ class AppLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false
+      collapsed: false,
     };
   }
 
@@ -78,7 +78,7 @@ class AppLayout extends Component {
         <Layout
           style={{
             marginLeft: this.state.collapsed ? 80 : 200,
-            transition: 'margin 0.3s'
+            transition: 'margin 0.3s',
           }}
         >
           <Header
@@ -87,7 +87,7 @@ class AppLayout extends Component {
           />
           {!showPageHeader ? (
             <PageHeader
-              home='首页'
+              home="首页"
               title={this.computePageHeaderTitle(location, breadcrumbNameMap)}
               location={location}
               breadcrumbNameMap={breadcrumbNameMap}
@@ -98,9 +98,8 @@ class AppLayout extends Component {
           )}
           <Content
             style={{
-              margin: '24px 16px 0',
+              padding: 24,
               height: '100%',
-              backgroundColor: '#fff'
             }}
           >
             {this.props.children}

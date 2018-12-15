@@ -76,7 +76,9 @@ class NewOrder extends Component {
       <div>
         <Address updateAddress={updateAddress} />
         <Products products={state.products} />
-        {address ? <Overview address={address} products={state.products} /> : null}
+        {address ? (
+          <Overview address={address} products={state.products} />
+        ) : null}
         <Button
           type="primary"
           disabled={!address}
@@ -88,14 +90,18 @@ class NewOrder extends Component {
       </div>
     );
     return (
-      <div className="new-order-container">
+      <div className="new-order-container" style={{ backgroundColor: '#fff' }}>
         <Row>
           <Col span={6}>
             <Steps
               direction="vertical"
               current={currentStep}
               size="small"
-              style={{ height: '80vh', display: 'flex', flexDirection: 'column' }}
+              style={{
+                height: '80vh',
+                display: 'flex',
+                flexDirection: 'column',
+              }}
             >
               <Step title="确认订单" description="确认你的订单信息" />
               <Step title="付款" description="" />
@@ -103,7 +109,11 @@ class NewOrder extends Component {
             </Steps>
           </Col>
           <Col span={18}>
-            <Route exact path="/newOrder/confirm" render={() => ConfirmOrder()} />
+            <Route
+              exact
+              path="/newOrder/confirm"
+              render={() => ConfirmOrder()}
+            />
             <Route exact path="/newOrder/pay" component={Pay} />
             <Route exact path="/newOrder/result" component={PayResult} />
           </Col>
