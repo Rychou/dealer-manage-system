@@ -6,6 +6,22 @@ import { Divider, Icon } from 'antd';
 import './index.less';
 import Products from './Products';
 import Express from './Express';
+import { orderStatus } from 'utils';
+
+const Address = (props) => {
+    const address = props.address || {};
+    const style = { marginLeft: 10 };
+    return (
+        <span>
+            <span style={style}>{address.province}</span>
+            <span style={style}>{address.city}</span>
+            <span style={style}>{address.district}</span>
+            <span style={style}>{address.street}</span>
+            <span style={style}>{address.details}</span>
+        </span>
+
+    );
+};
 
 @hot(module)
 class OrderDetail extends Component {
@@ -68,18 +84,34 @@ class OrderDetail extends Component {
   };
     // console.log('order->>>', order);
     return (
-      <div style={{ marginLeft: 20 }}>
-        <h1 style={{ marginTop: 20 }}>
+      <div style={{ marginLeft: 20, marginRight: 20 }}>
+        <h2 style={{ marginTop: 20 }}>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
-        </h1>
+        </h2>
         <Divider />
-        <h2>下单时间：{order.orderedAt}</h2>
-        <div hidden>
-          <h2>付款时间：{order.paidAt}</h2>
-          <h2>付款时间：{order.paidAt}</h2>
+        <div>
+            <div style={{ float: 'left' }}>
+                <h3>下单时间：{order.orderedAt}</h3>
+                {
+                    order.status > 0 ?
+                        <div><h3>付款时间：{order.paidAt}</h3></div>
+                        : null
+                }
+                <h3>订单状态：{orderStatus(order.status)}</h3>
+            </div>
+            <div style={{ float: 'left', marginLeft: 300 }}>
+                <h3>收货人：{order.name}</h3>
+                <h3>联系电话：{order.phone}</h3>
+                <h3>收货地址：<Address address={order.address} /></h3>
+            </div>
         </div>
         <Divider />
-        <Express express={expressData} />
+        {
+            order.status >= 3 && order.status <= 5 ?
+                <Express express={expressData} />
+                : null
+        }
+
         {/* <Express express={express} /> */}
         <Divider />
         <h2 style={{ marginBottom: -20 }}>订购产品</h2>

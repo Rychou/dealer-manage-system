@@ -1,7 +1,7 @@
 import React from 'react';
 // import { hot } from 'react-hot-loader';
 // import { bool, func } from 'prop-types';
-import { List } from 'antd';
+import { List, Menu } from 'antd';
 // import { Link } from 'react-router-dom';
 import './index.less';
 // import { withRouter } from 'react-router-dom';
@@ -16,13 +16,25 @@ const Express = ({ express }) => {
 
   return (
     // <div>123123</div>
-    <List
-      header={<div>{express.RESULT.com}</div>}
-      footer={<div>Footer</div>}
-      bordered
-      dataSource={express.RESULT.context}
-      renderItem={item => (<List.Item>{item.time}:{item.desc}</List.Item>)}
-    />
+    <div>
+      <Menu
+        mode="horizontal"
+        defaultSelectedKeys={['express']}
+        style={{ fontSize: 18, fontWeight: 'bold' }}
+      >
+        <Menu.Item key="express">
+            物流信息
+        </Menu.Item>
+      </Menu>
+      <List
+        header={<div>物流公司 ：{express.RESULT.com}</div>}
+        bordered
+        dataSource={express.RESULT.context}
+        renderItem={item => (
+          <List.Item><span className="time">{item.time}</span> ：{item.desc}</List.Item>
+        )}
+      />
+    </div>
   );
 };
 
