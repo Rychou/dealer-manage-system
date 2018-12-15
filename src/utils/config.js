@@ -56,6 +56,12 @@ export const dealerBreadcrumbNameMap = {
     path: '/',
     name: '首页',
     component: '../Dealer/Index/container',
+    children: [
+      {
+        name: '商品详情',
+        path: '/products/:no',
+      },
+    ],
   },
   '/products': {
     path: '/products',
@@ -63,10 +69,14 @@ export const dealerBreadcrumbNameMap = {
     component: '../Dealer/Products/container',
     children: [
       {
-        name: '商品详情',
-        path: '/products/:no',
+        name: '订单详情',
+        path: '/order/:id',
       },
     ],
+  },
+  '/order/:id': {
+    name: '订单详情',
+    path: '/order/:id',
   },
   '/products/:no': {
     name: '商品详情',
