@@ -9,6 +9,12 @@ class Products extends Component {
     const { products } = this.props;
     const columns = [
       {
+        title: '预览图',
+        dataIndex: 'image',
+        key: 'image',
+        render: (text, record) => <img style={{ width: 48 }} src={record.carouselImages[0]} />,
+      },
+      {
         title: '商品名称',
         dataIndex: 'name',
         key: 'name',
@@ -32,7 +38,9 @@ class Products extends Component {
         title: '小计',
         key: 'total',
         render: (text, record) => (
-          <span style={{ color: 'red', fontWeight: 'bold' }}>{record.price * record.amount}</span>
+          <span style={{ color: 'red', fontWeight: 'bold' }}>
+            {(record.price * record.amount).toFixed(2)}
+          </span>
         ),
       },
     ];

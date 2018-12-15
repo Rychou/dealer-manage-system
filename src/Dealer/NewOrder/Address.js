@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import NewArress from './NewAddress';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, Popconfirm, message, Button } from 'antd';
 import classnames from 'classnames';
 
 @hot(module)
@@ -9,6 +9,10 @@ class Address extends Component {
   state = {
     addressList: [],
     selected: -1,
+    visible: false,
+    editAddress: {},
+    isEdit: false,
+    editIndex: null,
   };
 
   componentDidMount() {
@@ -48,8 +52,35 @@ class Address extends Component {
     });
   };
 
+  handleDeleteAddress = selected => {
+    const arr = this.state.addressList;
+    arr.splice(selected, 1);
+    this.setState({
+      addressList: arr,
+    });
+    localStorage.setItem('addressList', JSON.stringify(arr));
+    message.success('删除成功!');
+  }
+
+  handleEditAddress = selected => {
+    this.setState({
+      editAddress: this.state.addressList[selected],
+      isEdit: true,
+      visible: true,
+      editIndex: selected,
+    });
+  }
+
+  handleShowModal = () => {
+    this.setState({ visible: true });
+  };
+
+  handleUnShowModal = () => {
+    this.setState({ visible: false, isEdit: false, editAddress: {} });
+  };
+
   render() {
-    const { addressList, selected } = this.state;
+    const { addressList, selected, editAddress, visible, isEdit, editIndex } = this.state;
     return (
       <div className="address">
         <h2>选择收货地址</h2>
@@ -57,12 +88,22 @@ class Address extends Component {
         <Row gutter={24} className="address-list">
           {addressList.map((address, index) => (
             <Col
-              onClick={this.handleAddressSelect.bind(this, index)}
               span={6}
               key={index}
               className="address-item"
             >
+              <div className="address-item-actions">
+                <a onClick={this.handleEditAddress.bind(this, index)}>
+                  编辑
+                </a>
+                <Popconfirm title="你确定要删除吗？" onConfirm={this.handleDeleteAddress.bind(this, index)}>
+                  <a>
+                    删除
+                  </a>
+                </Popconfirm>
+              </div>
               <Card
+              onClick={this.handleAddressSelect.bind(this, index)}
                 className={classnames('address-item-card', {
                   'address-item-seleted': selected === index,
                 })}
@@ -83,7 +124,16 @@ class Address extends Component {
             </Col>
           ))}
         </Row>
-        <NewArress updateLocalAddressList={this.updateLocalAddressList} />
+        <Button type="primary" onClick={this.handleShowModal} style={{ marginTop: 12 }}>
+          新增地址
+        </Button>
+        <NewArress
+          handleUnShowModal={this.handleUnShowModal}
+          visible={visible}
+          editAddress={editAddress}
+          isEdit={isEdit}
+          editIndex={editIndex}
+          updateLocalAddressList={this.updateLocalAddressList} />
       </div>
     );
   }

@@ -6,46 +6,47 @@ import { hot } from 'react-hot-loader';
 const FormItem = Form.Item;
 @hot(module)
 class NewAddress extends Component {
-  state = {
-    visible: false,
-  };
-
   handleSubmit = e => {
+    const {
+      isEdit,
+      updateLocalAddressList,
+      form: { validateFields, resetFields },
+      handleUnShowModal,
+      editIndex,
+    } = this.props;
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const addressList = JSON.parse(localStorage.getItem('addressList')) || [];
-        if (values.isDefault) {
-          addressList.forEach(address => {
-            address.isDefault = false;
-          });
+        if (isEdit) {
+          addressList.splice(editIndex, 1, values);
+          localStorage.setItem('addressList', JSON.stringify(addressList));
+          updateLocalAddressList();
+          message.success('编辑成功');
+        } else {
+          if (values.isDefault) {
+            addressList.forEach(address => {
+              address.isDefault = false;
+            });
+          }
+          addressList.push(values);
+          localStorage.setItem('addressList', JSON.stringify(addressList));
+          updateLocalAddressList();
+          message.success('新增成功');
         }
-        addressList.push(values);
-        localStorage.setItem('addressList', JSON.stringify(addressList));
-        this.props.updateLocalAddressList();
-        this.setState({ visible: false });
-        message.success('新增成功');
-        this.props.form.resetFields();
+        resetFields();
+        handleUnShowModal();
       }
     });
   };
 
-  handleChage = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-  };
-
-  handleClick = () => {
-    this.setState({ visible: true });
-  };
-
-  handleCancel = () => {
-    this.setState({ visible: false });
-  };
-
   render() {
     const {
+      form,
       form: { getFieldDecorator },
+      visible,
+      handleUnShowModal,
+      editAddress,
     } = this.props;
     const formItemLayout = {
       labelCol: { span: 6 },
@@ -53,19 +54,20 @@ class NewAddress extends Component {
     };
     return (
       <div className="new-address">
-        <Button type="primary" onClick={this.handleClick}>
-          新增地址
-        </Button>
         <Modal
           title="新增地址"
-          visible={this.state.visible}
+          visible={visible}
           onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          onCancel={() => {
+            handleUnShowModal();
+            form.resetFields();
+          }}
           okButtonProps={{ htmlType: 'submit', onClick: this.handleSubmit }}
         >
           <Form onSubmit={this.handleSubmit}>
             <FormItem {...formItemLayout} label="地址信息">
               {getFieldDecorator('address', {
+                initialValue: editAddress.address,
                 rules: [
                   {
                     required: true,
@@ -83,6 +85,7 @@ class NewAddress extends Component {
             </FormItem>
             <FormItem {...formItemLayout} label="详细地址">
               {getFieldDecorator('detailAddress', {
+                initialValue: editAddress.detailAddress,
                 rules: [
                   {
                     required: true,
@@ -95,11 +98,13 @@ class NewAddress extends Component {
             </FormItem>
             <FormItem {...formItemLayout} label="邮政编码">
               {getFieldDecorator('zipCode', {
+                initialValue: editAddress.zipCode,
                 rules: [],
               })(<Input placeholder="请输入邮政编码" />)}
             </FormItem>
             <FormItem {...formItemLayout} label="收件人姓名">
               {getFieldDecorator('name', {
+                initialValue: editAddress.name,
                 rules: [
                   {
                     required: true,
@@ -110,6 +115,7 @@ class NewAddress extends Component {
             </FormItem>
             <FormItem {...formItemLayout} label="手机号码">
               {getFieldDecorator('phone', {
+                initialValue: editAddress.phone,
                 rules: [
                   {
                     required: true,
@@ -121,7 +127,7 @@ class NewAddress extends Component {
             <FormItem>
               {getFieldDecorator('isDefault', {
                 valuePropName: 'checked',
-                initialValue: true,
+                initialValue: editAddress.isDefault,
               })(<Checkbox style={{ marginLeft: 120 }}>设置为默认地址</Checkbox>)}
             </FormItem>
           </Form>

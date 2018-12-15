@@ -5,9 +5,13 @@ import Header from './Header';
 import Footer from './Footer';
 import { PageHeader } from 'ant-design-pro';
 import { withRouter, Link } from 'react-router-dom';
-import { dealerBreadcrumbNameMap, companyBreadcrumbNameMap } from 'utils/config';
+import {
+  dealerBreadcrumbNameMap,
+  companyBreadcrumbNameMap
+} from 'utils/config';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
+import ShoppingCart from '../Dealer/ShoppingCart/container';
 
 const { Content } = Layout;
 
@@ -16,7 +20,7 @@ class AppLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      collapsed: false,
+      collapsed: false
     };
   }
 
@@ -31,7 +35,7 @@ class AppLayout extends Component {
    * @returns
    * @memberof AppLayout
    */
-  computePageHeaderTitle(location, breadcrumbNameMap) {
+  computePageHeaderTitle = (location, breadcrumbNameMap) => {
     // breadcrumbNameMap中有对应路由的值则直接返回
     if (breadcrumbNameMap.hasOwnProperty(location.pathname)) {
       return breadcrumbNameMap[location.pathname].name;
@@ -53,23 +57,37 @@ class AppLayout extends Component {
       }
     }
     return 404;
-  }
+  };
 
   render() {
-    const { location, isLogin } = this.props;
+    const { location, isLogin, type } = this.props;
     const isIndex = location.pathname === '/';
     const isLoginPage = location.pathname === '/login';
     const isNewOrderPage = location.pathname === '/newOrder';
     const showPageHeader = isIndex || isLoginPage || isNewOrderPage;
-    const breadcrumbNameMap = isLogin ? dealerBreadcrumbNameMap : companyBreadcrumbNameMap;
+    const breadcrumbNameMap =
+      isLogin && type === 'dealer'
+        ? dealerBreadcrumbNameMap
+        : companyBreadcrumbNameMap;
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <SideBar collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
-        <Layout style={{ marginLeft: this.state.collapsed ? 80 : 200, transition: 'margin 0.3s' }}>
-          <Header collapsed={this.state.collapsed} onCollapse={this.onCollapse} />
+        <SideBar
+          collapsed={this.state.collapsed}
+          onCollapse={this.onCollapse}
+        />
+        <Layout
+          style={{
+            marginLeft: this.state.collapsed ? 80 : 200,
+            transition: 'margin 0.3s'
+          }}
+        >
+          <Header
+            collapsed={this.state.collapsed}
+            onCollapse={this.onCollapse}
+          />
           {!showPageHeader ? (
             <PageHeader
-              home="首页"
+              home='首页'
               title={this.computePageHeaderTitle(location, breadcrumbNameMap)}
               location={location}
               breadcrumbNameMap={breadcrumbNameMap}
@@ -78,9 +96,16 @@ class AppLayout extends Component {
           ) : (
             ''
           )}
-          <Content style={{ margin: '24px 16px 0', height: '100%', backgroundColor: '#fff' }}>
+          <Content
+            style={{
+              margin: '24px 16px 0',
+              height: '100%',
+              backgroundColor: '#fff'
+            }}
+          >
             {this.props.children}
           </Content>
+          {isLogin && type === 'dealer' ? <ShoppingCart /> : null}
           <Footer />
         </Layout>
       </Layout>

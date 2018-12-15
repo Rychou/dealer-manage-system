@@ -25,11 +25,11 @@ class Products extends Component {
       return products.length
         ? products.map((product, index) => (
             <Col span="6" style={{ marginTop: '24px' }} key={index}>
-              <Link to={`/products/${product.id}`}>
+              <Link to={`/products/${product.no}`}>
                 <Card
                   hoverable
                   style={{ width: 240 }}
-                  cover={<img alt="example" src={product.imageUrl} />}
+                  cover={<img alt="example" src={product.carouselImages[0]} />}
                 >
                   <Meta title={<Price price={product.price} />} description={product.name} />
                 </Card>
@@ -40,7 +40,7 @@ class Products extends Component {
     };
 
     return (
-      <Row type="flex" justify="center" style={{ padding: '12px' }}>
+      <Row type="flex" justify="start" style={{ padding: '12px' }}>
         {ProductList()}
       </Row>
     );
