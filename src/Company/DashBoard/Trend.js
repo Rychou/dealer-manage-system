@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { hot } from 'react-hot-loader';
-import { Row, Col, Tabs, Radio } from 'antd';
+import { Row, Col, Tabs, Radio, Skeleton } from 'antd';
 import { Charts } from 'ant-design-pro';
 import DealerRank from './DealerRank';
 
@@ -37,9 +37,13 @@ class Trend extends Component {
       </Radio.Group>
     );
     return (
-      <div>
-        <Tabs defaultActiveKey="1" tabBarExtraContent={Selector}>
-          <TabPane tab="销售额" key="1">
+      <Tabs
+        className="trend-container"
+        defaultActiveKey="1"
+        tabBarExtraContent={Selector}
+      >
+        <TabPane tab="销售额" key="1">
+          <Skeleton active loading={isFetching}>
             <Row gutter={64}>
               <Col span={18}>
                 <Bar
@@ -56,9 +60,9 @@ class Trend extends Component {
                 />
               </Col>
             </Row>
-          </TabPane>
-        </Tabs>
-      </div>
+          </Skeleton>
+        </TabPane>
+      </Tabs>
     );
   }
 }

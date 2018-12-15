@@ -9,6 +9,7 @@ const {
   fetchAmountCategory,
   fetchAmountTrend,
   fetchDealerRank,
+  fetchQuantityCategory,
 } = async;
 
 const initState = {
@@ -22,6 +23,10 @@ const initState = {
   },
   amountCategoryWrapper: {
     amountCategory: [],
+    ...fetchState,
+  },
+  quantityCategoryWrapper: {
+    quantityCategory: [],
     ...fetchState,
   },
   amountTrendWrapper: {
@@ -212,10 +217,44 @@ const dealerRankReducer = (state = initState.dealerRankWrapper, action) => {
   }
 };
 
+const quantityCategoryReducer = (
+  state = initState.quantityCategoryWrapper,
+  action,
+) => {
+  switch (action.type) {
+    case fetchQuantityCategory.TYPE:
+      return {
+        ...state,
+        isFetching: true,
+        isResolved: false,
+        isRejected: false,
+      };
+    case fetchQuantityCategory.SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isResolved: true,
+        quantityCategory: action.payload.quantityCategory.map(item => ({
+          x: item.category,
+          y: item.quantity,
+        })),
+      };
+    case fetchQuantityCategory.FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isRejected: true,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   amountWrapper: amountReducer,
   quantityWrapper: quantityReducer,
   amountCategoryWrapper: amountCategoryReducer,
   amountTrendWrapper: amountTrendReducer,
   dealerRankWrapper: dealerRankReducer,
+  quantityCategoryWrapper: quantityCategoryReducer,
 });

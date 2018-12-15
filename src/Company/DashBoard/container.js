@@ -8,6 +8,7 @@ const {
   fetchAmountCategory,
   fetchAmountTrend,
   fetchDealerRank,
+  fetchQuantityCategory,
 } = async;
 
 const mapStateToProps = state => state.DashBoard;
@@ -28,6 +29,9 @@ const mapDispatchToProps = dispatch => {
     },
     fetchDealerRank: payload => {
       dispatch(fetchDealerRank(payload));
+    },
+    fetchQuantityCategory: payload => {
+      dispatch(fetchQuantityCategory(payload));
     },
   };
 };

@@ -5,8 +5,8 @@ import Amount from './Amount';
 import { object, func } from 'prop-types';
 import Quantity from './Quantity';
 import AmountCategory from './AmountCategory';
-import AreaQuantity from './AeraQuantity';
 import Trend from './Trend';
+import QuantityCategory from './QuantityCategory';
 import './index.less';
 
 @hot(module)
@@ -16,6 +16,7 @@ class DashBoard extends Component {
       amountWrapper,
       quantityWrapper,
       amountCategoryWrapper,
+      quantityCategoryWrapper,
       amountTrendWrapper,
       dealerRankWrapper,
       fetchAmount,
@@ -23,26 +24,16 @@ class DashBoard extends Component {
       fetchAmountCategory,
       fetchAmountTrend,
       fetchDealerRank,
+      fetchQuantityCategory,
     } = this.props;
     return (
       <div className="dashboard-container">
         <Row gutter={36}>
-          <Col span={12}>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Amount {...amountWrapper} fetchAmount={fetchAmount} />
-              </Col>
-              <Col span={12}>
-                <Quantity {...quantityWrapper} fetchQuantity={fetchQuantity} />
-              </Col>
-            </Row>
-            <AreaQuantity />
+          <Col span={6}>
+            <Amount {...amountWrapper} fetchAmount={fetchAmount} />
           </Col>
-          <Col span={12}>
-            <AmountCategory
-              {...amountCategoryWrapper}
-              fetchAmountCategory={fetchAmountCategory}
-            />
+          <Col span={6}>
+            <Quantity {...quantityWrapper} fetchQuantity={fetchQuantity} />
           </Col>
         </Row>
         <Trend
@@ -51,6 +42,20 @@ class DashBoard extends Component {
           fetchDealerRank={fetchDealerRank}
           fetchAmountTrend={fetchAmountTrend}
         />
+        <Row gutter={36}>
+          <Col span={12}>
+            <AmountCategory
+              {...amountCategoryWrapper}
+              fetchAmountCategory={fetchAmountCategory}
+            />
+          </Col>
+          <Col span={12}>
+            <QuantityCategory
+              {...quantityCategoryWrapper}
+              fetchQuantityCategory={fetchQuantityCategory}
+            />
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -64,6 +69,8 @@ DashBoard.propTypes = {
   fetchAmountCategory: func,
   fetchAmountTrend: func,
   fetchDealerRank: func,
+  fetchQuantityCategory: func,
+  quantityCategoryWrapper: object,
   quantityWrapper: object,
 };
 export default DashBoard;

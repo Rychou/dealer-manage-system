@@ -6,6 +6,7 @@ export const async = new Async({
     'fetchAmount',
     'fetchQuantity',
     'fetchAmountCategory',
+    'fetchQuantityCategory',
     'fetchAmountTrend',
     'fetchDealerRank',
   ],

@@ -8,9 +8,10 @@ const {
   fetchAmountCategory,
   fetchAmountTrend,
   fetchDealerRank,
+  fetchQuantityCategory,
 } = async;
 
-function* doFetchAmount(action) {
+function* doFetchAmount() {
   try {
     const { data } = yield call(request.get, '/productSale/amount');
     yield put(fetchAmount.success({ amount: data }));
@@ -19,7 +20,7 @@ function* doFetchAmount(action) {
   }
 }
 
-function* doFetchQuantity(action) {
+function* doFetchQuantity() {
   try {
     const { data } = yield call(request.get, '/productSale/quantity');
     yield put(fetchQuantity.success({ quantity: data }));
@@ -28,7 +29,7 @@ function* doFetchQuantity(action) {
   }
 }
 
-function* doFetchAmountCategory(action) {
+function* doFetchAmountCategory() {
   try {
     const { data } = yield call(request.get, '/productSale/amount/category');
     yield put(fetchAmountCategory.success({ amountCategory: data }));
@@ -37,7 +38,7 @@ function* doFetchAmountCategory(action) {
   }
 }
 
-function* doFetchAmountTrend(action) {
+function* doFetchAmountTrend() {
   try {
     const { data } = yield call(request.get, '/productSale/amount/trend');
     yield put(fetchAmountTrend.success({ amountTrend: data }));
@@ -46,12 +47,21 @@ function* doFetchAmountTrend(action) {
   }
 }
 
-function* doFetchDealerRank(action) {
+function* doFetchDealerRank() {
   try {
     const { data } = yield call(request.get, '/productSale/rank/dealer');
     yield put(fetchDealerRank.success({ dealerRank: data }));
   } catch (err) {
     yield put(fetchDealerRank.failure(err));
+  }
+}
+
+function* doFetchQuantityCategory() {
+  try {
+    const { data } = yield call(request.get, '/productSales/quantity/category');
+    yield put(fetchQuantityCategory.success({ quantityCategory: data }));
+  } catch (err) {
+    yield put(fetchQuantityCategory.failure(err));
   }
 }
 
@@ -61,4 +71,5 @@ export default function* () {
   yield takeEvery(fetchAmountCategory.TYPE, doFetchAmountCategory);
   yield takeEvery(fetchAmountTrend.TYPE, doFetchAmountTrend);
   yield takeEvery(fetchDealerRank.TYPE, doFetchDealerRank);
+  yield takeEvery(fetchQuantityCategory.TYPE, doFetchQuantityCategory);
 }
