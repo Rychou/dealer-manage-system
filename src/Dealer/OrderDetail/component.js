@@ -23,12 +23,19 @@ const Address = (props) => {
     );
 };
 
-const comfirmOrder = (id) => {
-    const isTrue = confirm('是否确认收货');
-    if (isTrue) {
-        alert(id);
-    }
-};
+// const comfirmOrder = (id) => {
+//     // const id = props.id || {};
+//     const isTrue = confirm('是否确认收货');
+//     if (isTrue) {
+//         const {
+//             updateOrderStatus,
+//             // match: {
+//             //     params: { id },
+//             // },
+//           } = this.props;
+//           updateOrderStatus({ id });
+//     }
+// };
 
 @hot(module)
 class OrderDetail extends Component {
@@ -43,8 +50,24 @@ class OrderDetail extends Component {
     fetchOrderDetail({ id });
   }
 
+  comfirmOrder (id) {
+    // const id = props.id || {};
+    const isTrue = confirm('是否确认收货');
+    if (isTrue) {
+        const {
+            updateOrderStatus,
+            // match: {
+            //     params: { id },
+            // },
+        } = this.props;
+        updateOrderStatus({ id });
+        const { OrderStatus } = this.props;
+        alert(OrderStatus.isSuccess);
+    }
+}
+
   render() {
-    const { order, express } = this.props;
+    const { order, express } = this.props.OrderDetail;
     const expressData = {
       ERRORCODE: '0',
       RESULT: {
@@ -98,7 +121,7 @@ class OrderDetail extends Component {
                   order.status == 4 ?
                     <Button
                         type="primary"
-                        onClick={comfirmOrder.bind(this, order.id)}
+                        onClick={this.comfirmOrder.bind(this, order.id)}
                     >确认收货
                     </Button>
                     : null
@@ -137,6 +160,7 @@ class OrderDetail extends Component {
         <Products products={order.orderDetails} />
         <Divider />
       </div>
+    // <div>123</div>
     );
   }
 }

@@ -1,39 +1,32 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array } from 'prop-types';
-import { Table, Badge, Menu, Dropdown, Icon } from 'antd';
+import { Table } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
 import './index.less';
 
 
-const insideColumns = [
-    { title: '名称', dataIndex: 'name', key: 'name' },
-    { title: '数量', dataIndex: 'num', key: 'num' },
-    { title: '单价', dataIndex: 'price', key: 'price' },
-    { title: '总价', dataIndex: 'totalPrice', key: 'totalPrice' },
-  ];
+// const ProductList = (productList) => {
+//   const data = [];
+//   productList.map((product, index) => {
+//     data.push({
+//       key: index,
+//       name: <Link to={`/products/${product.id}`}>{product.name}</Link>,
+//       num: product.num, // int
+//       price: product.price, // float
+//       totalPrice: product.price * product.num, // *
+//     });
+//   });
+//   return (data);
+// };
 
-const ProductList = (productList) => {
-  const data = [];
-  productList.map((product, index) => {
-    data.push({
-      key: index,
-      name: <Link to={`/products/${product.id}`}>{product.name}</Link>,
-      num: product.num, // int
-      price: product.price, // float
-      totalPrice: product.price * product.num, // *
-    });
-  });
-  return (data);
-};
-
-ProductList.propTypes = {
-  productList: array,
-};
+// ProductList.propTypes = {
+//   productList: array,
+// };
 
 const columns = [
-            // { title: '订单编号', dataIndex: 'no', key: 'no' },
+            { title: '订单编号', dataIndex: 'no', key: 'no' },
             {
               title: '下单日期',
               dataIndex: 'date',
@@ -42,7 +35,7 @@ const columns = [
               sorter: (a, b) => Date.parse(a.date) - Date.parse(b.date),
             },
             { title: '订单价格', dataIndex: 'price', key: 'price' },
-            { title: '收货人', dataIndex: 'name', key: 'name' },
+            { title: '经销商', dataIndex: 'name', key: 'name' },
             { title: '联系电话', dataIndex: 'phone', key: 'phone' },
             { title: '配送地址', dataIndex: 'address', key: 'address' },
             {
@@ -91,8 +84,8 @@ const columns = [
               // 8-已退货
               // 9-取消交易
               filterMultiple: true,
-              onFilter: (value, record) => record.statusNum == value  },
-            { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
+              onFilter: (value, record) => record.statusNum == value },
+            // { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
             { title: '详细信息', key: 'operation', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
           ];
 
@@ -112,7 +105,6 @@ class Orders extends Component {
     // const table = [];
     orders.length
         ? orders.map((order, index) => {
-
           const status = orderStatus(order.status);
           if (status == '已发货') {
             data.push({
@@ -127,7 +119,7 @@ class Orders extends Component {
               status,
               logistics: order.logistics.message,
               // status: order.logistics.message,
-              products: ProductList(order.products),
+              // products: ProductList(order.products),
             });
           } else {
             data.push({
@@ -140,7 +132,7 @@ class Orders extends Component {
               address: order.address,
               statusNum: order.status,
               status,
-              products: ProductList(order.products),
+              // products: ProductList(order.products),
             });
           }
           // return (data);
@@ -153,12 +145,6 @@ class Orders extends Component {
       <Table
         className="orderList"
         columns={columns}
-        expandedRowRender={record => <Table
-            className="products"
-            columns={insideColumns}
-            dataSource={record.products}
-            pagination={false}
-          />}
         dataSource={data}
       />
     );

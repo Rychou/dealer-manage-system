@@ -5,7 +5,7 @@ import { async } from './actions';
 const { fetchOrders } = async;
 function* doFetchOrders(action) {
   try {
-    const { data } = yield call(request.get, `/orders`);
+    const { data } = yield call(request.get, '/company/orders');
     yield put(fetchOrders.success({ orders: data }));
   } catch (err) {
     yield put(fetchOrders.failure(err));

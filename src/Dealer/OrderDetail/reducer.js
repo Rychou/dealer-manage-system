@@ -1,15 +1,23 @@
 import { async } from './actions';
 import { fetchState } from 'utils';
+import { combineReducers } from 'redux';
 
-const { fetchOrderDetail } = async;
+const { fetchOrderDetail, updateOrderStatus } = async;
 
 const initState = {
-  ...fetchState,
-  order: {},
-  express: {},
+  orderDetail: {
+    ...fetchState,
+    order: {},
+    express: {},
+  },
+  orderStatus: {
+    ...fetchState,
+    isSuccess: {},
+  },
 };
 
-const OrderDetail = (state = initState, action) => {
+
+const OrderDetailReducer = (state = initState.orderDetail, action) => {
   switch (action.type) {
     case fetchOrderDetail.TYPE:
       return {
@@ -24,7 +32,7 @@ const OrderDetail = (state = initState, action) => {
         isFetching: false,
         isResolved: true,
       };
-    case fetchOrderDetail.FAIL:
+    case fetchOrderDetail.FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -35,4 +43,32 @@ const OrderDetail = (state = initState, action) => {
   }
 };
 
-export default OrderDetail;
+const OrderStatusReducer = (state = initState.orderStatus, action) => {
+  switch (action.type) {
+    case updateOrderStatus.TYPE:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case updateOrderStatus.SUCCESS:
+      return {
+        ...state,
+        isSuccess: action.payload.isSuccess,
+        isFetching: false,
+        isResolved: true,
+      };
+    case updateOrderStatus.FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isRejected: true,
+      };
+    default:
+      return state;
+  }
+};
+
+export default combineReducers({
+  OrderDetail: OrderDetailReducer,
+  OrderStatus: OrderStatusReducer,
+});

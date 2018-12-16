@@ -6,7 +6,7 @@ import { async } from './actions';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-const { fetchOrderDetail } = async;
+const { fetchOrderDetail, updateOrderStatus } = async;
 
 function* doFetchOrderDetail(action) {
   try {
@@ -34,6 +34,20 @@ function* doFetchOrderDetail(action) {
   }
 }
 
+function* doUpdateOrderStatus(action) {
+  try {
+    const { data } = yield call(request, {
+      method: 'patch',
+      url: `/orders/${action.payload.id}`,
+      data: { status: 5 },
+    });
+    yield put(updateOrderStatus.success({ isSuccess: data.msg }));
+  } catch (err) {
+    yield put(updateOrderStatus.failure(err));
+  }
+}
+
 export default function* () {
   yield takeEvery(fetchOrderDetail.TYPE, doFetchOrderDetail);
+  yield takeEvery(updateOrderStatus.TYPE, doUpdateOrderStatus);
 }
