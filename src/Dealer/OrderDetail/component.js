@@ -23,6 +23,13 @@ const Address = (props) => {
     );
 };
 
+const comfirmOrder = (id) => {
+    const isTrue = confirm('是否确认收货');
+    if (isTrue) {
+        alert(id);
+    }
+};
+
 @hot(module)
 class OrderDetail extends Component {
   componentDidMount() {
@@ -86,8 +93,19 @@ class OrderDetail extends Component {
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ marginTop: 20 }}>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
+          <div style={{ float: 'right' }}>
+                {
+                  order.status == 4 ?
+                    <Button
+                        type="primary"
+                        onClick={comfirmOrder.bind(this, order.id)}
+                    >确认收货
+                    </Button>
+                    : null
+                }
+          </div>
         </h2>
-        <Button type="primary">确认收货</Button>
+
         <Divider />
         <div>
             <div style={{ float: 'left' }}>
@@ -118,7 +136,6 @@ class OrderDetail extends Component {
         <Divider />
         <Products products={order.orderDetails} />
         <Divider />
-        <Button type="primary">确认收货</Button>
       </div>
     );
   }

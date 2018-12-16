@@ -198,7 +198,7 @@ export const routes = [
   },
   {
     isPrivate: true, // 该页面是否需要登录访问
-    pageName: 'OrdersPage',
+    pageName: 'CompanyOrdersPage',
     stateName: 'Orders', // 该页面的reducer在store中的名称。
     path: '/orders', // 路由匹配路径
     isExact: true,
@@ -208,7 +208,7 @@ export const routes = [
   },
   {
     isPrivate: true, // 该页面是否需要登录访问
-    pageName: 'OrderDetailPage',
+    pageName: 'CompanyOrderDetailPage',
     stateName: 'OrderDetail', // 该页面的reducer在store中的名称。
     path: '/orders/:id', // 路由匹配路径
     type: 'company', // 用户类型
