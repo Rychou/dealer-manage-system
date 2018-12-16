@@ -58,8 +58,8 @@ export const dealerBreadcrumbNameMap = {
     component: '../Dealer/Index/container',
     children: [
       {
-        name: '商品详情',
-        path: '/products/:no',
+        name: '订单详情',
+        path: '/orders/:id',
       },
     ],
   },
@@ -69,14 +69,14 @@ export const dealerBreadcrumbNameMap = {
     component: '../Dealer/Products/container',
     children: [
       {
-        name: '订单详情',
-        path: '/order/:id',
+        name: '商品详情',
+        path: '/products/:no',
       },
     ],
   },
-  '/order/:id': {
+  '/orders/:id': {
     name: '订单详情',
-    path: '/order/:id',
+    path: '/orders/:id',
   },
   '/products/:no': {
     name: '商品详情',
@@ -104,6 +104,20 @@ export const companyBreadcrumbNameMap = {
   '/': {
     name: '销售数据',
     path: '/',
+  },
+  '/orders': {
+    name: '订单管理',
+    path: '/orders',
+    children: [
+      {
+        name: '订单详情',
+        path: '/orders/:id',
+      },
+    ],
+  },
+  '/orders/:id': {
+    name: '订单详情',
+    path: '/orders/:id',
   },
   '/stocks': {
     name: '库存管理',
@@ -159,6 +173,7 @@ export const routes = [
     stateName: 'OrderDetail', // 该页面的reducer在store中的名称。
     path: '/orders/:id', // 路由匹配路径
     type: 'dealer', // 用户类型
+    isExact: true,
     reducer: require('../Dealer/OrderDetail/reducer').default,
     container: import('../Dealer/OrderDetail/container'),
   },
@@ -180,5 +195,25 @@ export const routes = [
     type: 'company', // 用户类型
     reducer: require('../Company/Stock/reducer').default,
     container: import('../Company/Stock/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'OrdersPage',
+    stateName: 'Orders', // 该页面的reducer在store中的名称。
+    path: '/orders', // 路由匹配路径
+    isExact: true,
+    type: 'company', // 用户类型
+    reducer: require('../Company/Orders/reducer').default,
+    container: import('../Company/Orders/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'OrderDetailPage',
+    stateName: 'OrderDetail', // 该页面的reducer在store中的名称。
+    path: '/orders/:id', // 路由匹配路径
+    type: 'company', // 用户类型
+    isExact: true,
+    reducer: require('../Company/OrderDetail/reducer').default,
+    container: import('../Company/OrderDetail/container'),
   },
 ];

@@ -7,6 +7,8 @@ import ProductDetail from './Dealer/ProductDetail/saga';
 import NewOrder from './Dealer/NewOrder/saga';
 import Stock from './Company/Stock/saga';
 import DashBoard from './Company/DashBoard/saga';
+import CompanyOrders from './Company/Orders/saga';
+import CompanyOrderDetail from './Company/OrderDetail/saga';
 
 export default function* rootSaga() {
   yield all([
@@ -18,5 +20,7 @@ export default function* rootSaga() {
     NewOrder(),
     Stock(),
     DashBoard(),
+    CompanyOrders(),
+    CompanyOrderDetail(),
   ]);
 }

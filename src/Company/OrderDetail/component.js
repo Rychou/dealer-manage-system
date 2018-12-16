@@ -82,12 +82,26 @@ class OrderDetail extends Component {
           ],
       },
   };
+    // console.log('order->>>', order);
     return (
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ marginTop: 20 }}>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
+          <div>
+            {
+
+                order.status == 2 ?
+                    <Button type="primary" id="comfirmed">确认订单</Button>
+                    : null
+            }
+            {
+
+                order.status == 3 ?
+                <Button type="primary" id="link">关联物流</Button>
+                : null
+            }
+          </div>
         </h2>
-        <Button type="primary">确认收货</Button>
         <Divider />
         <div>
             <div style={{ float: 'left' }}>
@@ -118,7 +132,6 @@ class OrderDetail extends Component {
         <Divider />
         <Products products={order.orderDetails} />
         <Divider />
-        <Button type="primary">确认收货</Button>
       </div>
     );
   }
