@@ -123,7 +123,7 @@ class Orders extends Component {
               <Button
                   type="primary"
                   id="link"
-                  onClick={this.handleShowModal}
+                  onClick={this.handleShowModal.bind(this, record.id)}
               >关联物流
               </Button>
               {/* <linkExpress /> */}
@@ -143,6 +143,7 @@ class Orders extends Component {
   state = {
     searchText: '',
     visible: false,
+    selectedId: '',
   };
 
   componentDidMount() {
@@ -163,8 +164,8 @@ class Orders extends Component {
     this.setState({ searchText: '' });
   };
 
-  handleShowModal = () => {
-    this.setState({ visible: true });
+  handleShowModal = (id) => {
+    this.setState({ visible: true, selectedId: id });
   }
 
   handleCancel = () => {
@@ -180,8 +181,7 @@ class Orders extends Component {
       const {
         linkExpress,
       } = this.props;
-      const { order } = this.props.OrderDetail;
-      const { id } = order;
+      const id = this.state.selectedId;
       const { expressNumber } = values;
       linkExpress({ id, expressNumber, status: 3 });
       form.resetFields();
