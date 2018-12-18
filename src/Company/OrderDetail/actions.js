@@ -2,7 +2,7 @@ import { Async } from 'redux-action-boilerplate';
 
 export const async = new Async({
   prefix: 'orders',
-  actions: ['fetchCompanyOrderDetail', 'updateCompanyOrderStatus', 'linkExpress'],
+  actions: ['fetchCompanyOrderDetail', 'updateCompanyDetailOrderStatus', 'linkDetailExpress'],
 });
 
 // export const expressAsync = new Async({

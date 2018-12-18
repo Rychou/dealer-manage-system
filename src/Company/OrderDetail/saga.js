@@ -3,12 +3,13 @@ import request from 'request';
 import axios from 'axios';
 import qs from 'qs';
 import { async } from './actions';
-import {Modal} from 'antd';
-const {info} = Modal;
+import { Modal } from 'antd';
+
+const { info } = Modal;
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-const { fetchCompanyOrderDetail, updateCompanyOrderStatus, linkExpress } = async;
+const { fetchCompanyOrderDetail, updateCompanyDetailOrderStatus, linkDetailExpress } = async;
 
 function* doCompanyFetchOrderDetail(action) {
   try {
@@ -36,23 +37,23 @@ function* doCompanyFetchOrderDetail(action) {
   }
 }
 
-function* doCompanyUpdateOrderStatus(action) {
+function* doCompanyDetailUpdateOrderStatus(action) {
   try {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
       data: { status: action.payload.status },
     });
-    yield put(updateCompanyOrderStatus.success({ isSuccess: data.msg }));
+    yield put(updateCompanyDetailOrderStatus.success({ isSuccess: data.msg }));
     info({
       title: data.msg,
     });
   } catch (err) {
-    yield put(updateCompanyOrderStatus.failure(err));
+    yield put(updateCompanyDetailOrderStatus.failure(err));
   }
 }
 
-function* doLinkExpress(action) {
+function* doDetailLinkExpress(action) {
   try {
     const { data } = yield call(request, {
       method: 'post',
@@ -67,14 +68,14 @@ function* doLinkExpress(action) {
     info({
       title: data.msg,
     });
-    yield put(linkExpress.success({ isSuccess: data.msg }));
+    yield put(linkDetailExpress.success({ isSuccess: data.msg }));
   } catch (err) {
-    yield put(linkExpress.failure(err));
+    yield put(linkDetailExpress.failure(err));
   }
 }
 
 export default function* () {
   yield takeEvery(fetchCompanyOrderDetail.TYPE, doCompanyFetchOrderDetail);
-  yield takeEvery(updateCompanyOrderStatus.TYPE, doCompanyUpdateOrderStatus);
-  yield takeEvery(linkExpress.TYPE, doLinkExpress);
+  yield takeEvery(updateCompanyDetailOrderStatus.TYPE, doCompanyDetailUpdateOrderStatus);
+  yield takeEvery(linkDetailExpress.TYPE, doDetailLinkExpress);
 }

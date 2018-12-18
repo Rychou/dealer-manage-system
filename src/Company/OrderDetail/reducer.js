@@ -2,7 +2,7 @@ import { async } from './actions';
 import { fetchState } from 'utils';
 import { combineReducers } from 'redux';
 
-const { fetchCompanyOrderDetail, updateCompanyOrderStatus, linkExpress } = async;
+const { fetchCompanyOrderDetail, updateCompanyDetailOrderStatus, linkDetailExpress } = async;
 
 const initState = {
   OrderDetail: {
@@ -48,19 +48,19 @@ const CompanyOrderDetailReducer = (state = initState.OrderDetail, action) => {
 
 const CompanyOrderStatusReducer = (state = initState.OrderStatus, action) => {
   switch (action.type) {
-    case updateCompanyOrderStatus.TYPE:
+    case updateCompanyDetailOrderStatus.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case updateCompanyOrderStatus.SUCCESS:
+    case updateCompanyDetailOrderStatus.SUCCESS:
       return {
         ...state,
         isSuccess: action.payload.isSuccess,
         isFetching: false,
         isResolved: true,
       };
-    case updateCompanyOrderStatus.FAILURE:
+    case updateCompanyDetailOrderStatus.FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -73,19 +73,19 @@ const CompanyOrderStatusReducer = (state = initState.OrderStatus, action) => {
 
 const CompanyExpressReducer = (state = initState.Express, action) => {
   switch (action.type) {
-    case linkExpress.TYPE:
+    case linkDetailExpress.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case linkExpress.SUCCESS:
+    case linkDetailExpress.SUCCESS:
       return {
         ...state,
         isSuccess: action.payload.isSuccess,
         isFetching: false,
         isResolved: true,
       };
-    case linkExpress.FAILURE:
+    case linkDetailExpress.FAILURE:
       return {
         ...state,
         isFetching: false,

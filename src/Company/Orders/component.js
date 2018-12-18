@@ -1,49 +1,18 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array } from 'prop-types';
-import { Table, Input, Button, Icon } from 'antd';
+import { Table, Input, Button, Icon, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
+import ExpressForm from './ExpressForm';
 import './index.less';
 
-
-// const ProductList = (productList) => {
-//   const data = [];
-//   productList.map((product, index) => {
-//     data.push({
-//       key: index,
-//       name: <Link to={`/products/${product.id}`}>{product.name}</Link>,
-//       num: product.num, // int
-//       price: product.price, // float
-//       totalPrice: product.price * product.num, // *
-//     });
-//   });
-//   return (data);
-// };
-
-// ProductList.propTypes = {
-//   productList: array,
-// };
-
-const state = {
-  searchText: '',
-};
-
-const handleSearch = (selectedKeys, confirm) => () => {
-  confirm();
-  this.setState({ searchText: selectedKeys[0] });
-};
-
-const handleReset = clearFilters => () => {
-  clearFilters();
-  this.setState({ searchText: '' });
-};
-
+const Confirm = Modal.confirm;
 
 @hot(module)
 class Orders extends Component {
   columns = [
-    { title: '订单编号', dataIndex: 'no', key: 'no' },
+    { title: '订单编号', dataIndex: 'id', key: 'id' },
     {
       title: '下单日期',
       dataIndex: 'date',
@@ -132,22 +101,49 @@ class Orders extends Component {
         text: '取消交易',
         value: 9,
       }],
-      // 0-未付款
-      // 1-已付款
-      // 2-集团确认
-      // 3-已发货
-      // 4-已签收
-      // 5-交易完成
-      // 6-退货申请
-      // 7-退货中
-      // 8-已退货
-      // 9-取消交易
       filterMultiple: true,
       onFilter: (value, record) => record.statusNum == value },
-    // { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
-    { title: '详细信息', key: 'operation', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
+    { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
+    { title: '操作',
+      key: 'operation',
+      render: (record) => {
+        if (record.statusNum == 1) {
+          return (
+            <Button
+                type="primary"
+                id="comfirmed"
+                onClick={this.confirmOrder.bind(this, record.id)}
+            >确认订单
+            </Button>
+          );
+        }
+        if (record.statusNum == 2) {
+          return (
+            <div>
+              <Button
+                  type="primary"
+                  id="link"
+                  onClick={this.handleShowModal}
+              >关联物流
+              </Button>
+              {/* <linkExpress /> */}
+              <ExpressForm
+                  wrappedComponentRef={this.saveFormRef}
+                  visible={this.state.visible}
+                  onCancel={this.handleCancel}
+                  onCreate={this.handleCreate}
+              />
+            </div>
+          );
+        }
+      },
+    },
   ];
 
+  state = {
+    searchText: '',
+    visible: false,
+  };
 
   componentDidMount() {
     const { fetchOrders, isResolved } = this.props;
@@ -156,9 +152,6 @@ class Orders extends Component {
     }
   }
 
-  state = {
-    searchText: '',
-  };
 
   handleSearch = (selectedKeys, confirm) => () => {
     confirm();
@@ -170,28 +163,72 @@ class Orders extends Component {
     this.setState({ searchText: '' });
   };
 
+  handleShowModal = () => {
+    this.setState({ visible: true });
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  handleCreate = () => {
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      const {
+        linkExpress,
+      } = this.props;
+      const { order } = this.props.OrderDetail;
+      const { id } = order;
+      const { expressNumber } = values;
+      linkExpress({ id, expressNumber, status: 3 });
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  }
+
+  saveFormRef = (formRef) => {
+    this.formRef = formRef;
+  }
+
+    confirmOrder = id => {
+        // const id = props.id || {};
+        Confirm({
+            title: '是否确认订单？',
+            onOk: () => {
+                const {
+                    updateCompanyOrderStatus,
+                } = this.props;
+                updateCompanyOrderStatus({ id, status: 2 });
+            },
+        });
+    }
+
+
   render() {
-    const { orders } = this.props;
+    const { orders } = this.props.CompanyOrders;
     const data = [];
     // const table = [];
     orders.length
-        ? orders.map((order, index) => {
-          const status = orderStatus(order.status);
+      ? orders.map((order, index) => {
+        const status = orderStatus(order.status);
 
-        data.push({
-          key: index,
-          no: order.id,
-          date: order.date,
-          price: order.price,
-          name: order.dealer,
-          phone: order.phone,
-          address: order.address,
-          statusNum: order.status,
-          status,
-          // products: ProductList(order.products),
-        });
-      })
-      : null;
+      data.push({
+        key: index,
+        id: order.id,
+        date: order.date,
+        price: order.price,
+        name: order.dealer,
+        phone: order.phone,
+        address: order.address,
+        statusNum: order.status,
+        status,
+      });
+    })
+    : null;
+
 
     return (
       // OrderList()
