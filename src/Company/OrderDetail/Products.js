@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { array } from 'prop-types';
-import { Card, InputNumber } from 'antd';
+import { Card, Input } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Grid, Meta } = Card;
@@ -31,7 +31,7 @@ class Products extends Component {
                         key={index}
                         className="product"
                         title={<span>NO.{product.no}</span>}
-                        style={{ width: 1000, marginLeft: 60, marginTop: 20 }}
+                        style={{ width: 1200, marginLeft: 60, marginTop: 20 }}
                     >
                         <Grid style={{ padding: 0, marginRight: 10, width: 80, height: 80 }}>
                             <img alt="example" src={product.imageUrl} />
@@ -44,13 +44,15 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                         <span>单价：</span>
-                                        <InputNumber
+                                        <Input
                                             disabled
+                                            autosize
                                             defaultValue={product.price}
                                             formatter={value =>
                                                 `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                                             }
                                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                            className="input"
                                         />
                                        </div>}
                             />
@@ -59,13 +61,15 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                             <span>数量：</span>
-                                            <InputNumber
+                                            <Input
                                                 disabled
+                                                autosize
                                                 defaultValue={item.amount}
                                                 formatter={value =>
                                                     `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                                                 }
                                                 parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                                className="input"
                                             />
                                        </div>}
                                 />
@@ -74,12 +78,14 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                         <span>总价：</span>
-                                        <InputNumber
+                                        <Input
                                             disabled
+                                            autosize
                                             defaultValue={item.sum}
                                             formatter={value =>
                                                 `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                                             }
+                                            className="input"
                                             parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                         />
                                        </div>}

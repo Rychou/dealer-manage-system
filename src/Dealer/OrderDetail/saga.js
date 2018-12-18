@@ -39,7 +39,7 @@ function* doUpdateOrderStatus(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { status: 5 },
+      data: { status: action.payload.status },
     });
     yield put(updateOrderStatus.success({ isSuccess: data.msg }));
   } catch (err) {

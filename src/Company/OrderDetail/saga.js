@@ -3,12 +3,14 @@ import request from 'request';
 import axios from 'axios';
 import qs from 'qs';
 import { async } from './actions';
+import {Modal} from 'antd';
+const {info} = Modal;
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-const { fetchOrderDetail } = async;
+const { fetchCompanyOrderDetail, updateCompanyOrderStatus, linkExpress } = async;
 
-function* doFetchOrderDetail(action) {
+function* doCompanyFetchOrderDetail(action) {
   try {
     const { data } = yield call(request.get, `/orders/${action.payload.id}`);
     // if (data.expressNumber) {
@@ -28,12 +30,51 @@ function* doFetchOrderDetail(action) {
     //   yield put(fetchOrderDetail.success({ order: data, express: expressData }));
     // } else yield put(fetchOrderDetail.success({ order: data }));
     // delete next line
-    yield put(fetchOrderDetail.success({ order: data }));
+    yield put(fetchCompanyOrderDetail.success({ order: data }));
   } catch (err) {
-    yield put(fetchOrderDetail.failure(err));
+    yield put(fetchCompanyOrderDetail.failure(err));
+  }
+}
+
+function* doCompanyUpdateOrderStatus(action) {
+  try {
+    const { data } = yield call(request, {
+      method: 'patch',
+      url: `/orders/${action.payload.id}`,
+      data: { status: action.payload.status },
+    });
+    yield put(updateCompanyOrderStatus.success({ isSuccess: data.msg }));
+    info({
+      title: data.msg,
+    });
+  } catch (err) {
+    yield put(updateCompanyOrderStatus.failure(err));
+  }
+}
+
+function* doLinkExpress(action) {
+  try {
+    const { data } = yield call(request, {
+      method: 'post',
+      url: `/orders/${action.payload.id}`,
+      data: { expressNumber: action.payload.expressNumber },
+    });
+    yield call(request, {
+      method: 'patch',
+      url: `/orders/${action.payload.id}`,
+      data: { status: action.payload.status },
+    });
+    info({
+      title: data.msg,
+    });
+    yield put(linkExpress.success({ isSuccess: data.msg }));
+  } catch (err) {
+    yield put(linkExpress.failure(err));
   }
 }
 
 export default function* () {
-  yield takeEvery(fetchOrderDetail.TYPE, doFetchOrderDetail);
+  yield takeEvery(fetchCompanyOrderDetail.TYPE, doCompanyFetchOrderDetail);
+  yield takeEvery(updateCompanyOrderStatus.TYPE, doCompanyUpdateOrderStatus);
+  yield takeEvery(linkExpress.TYPE, doLinkExpress);
 }

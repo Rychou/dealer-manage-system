@@ -60,7 +60,7 @@ class OrderDetail extends Component {
             //     params: { id },
             // },
         } = this.props;
-        updateOrderStatus({ id });
+        updateOrderStatus({ id, status: 5 });
         const { OrderStatus } = this.props;
         alert(OrderStatus.isSuccess);
     }

@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Divider, Icon, Button } from 'antd';
+import { Divider, Icon, Button, Modal, Form, Input } from 'antd';
 import './index.less';
 import Products from './Products';
 import Express from './Express';
 import { orderStatus } from 'utils';
+import ExpressForm from './ExpressForm';
+
+const { confirm, info } = Modal;
+const FormItem = Form.Item;
+
 
 const Address = (props) => {
     const address = props.address || {};
@@ -23,21 +28,70 @@ const Address = (props) => {
     );
 };
 
+
 @hot(module)
 class OrderDetail extends Component {
+  state = {
+    visible: false,
+  };
+
   componentDidMount() {
     const {
       isResolve,
-      fetchOrderDetail,
+      fetchCompanyOrderDetail,
       match: {
         params: { id },
       },
     } = this.props;
-    fetchOrderDetail({ id });
+    fetchCompanyOrderDetail({ id });
   }
 
+  handleShowModal = () => {
+    this.setState({ visible: true });
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  handleCreate = () => {
+    const form = this.formRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      const {
+        linkExpress,
+      } = this.props;
+      const { order } = this.props.OrderDetail;
+      const { id } = order;
+      const { expressNumber } = values;
+      linkExpress({ id, expressNumber, status: 3 });
+      console.log('Received values of form: ', values);
+      form.resetFields();
+      this.setState({ visible: false });
+    });
+  }
+
+  saveFormRef = (formRef) => {
+    this.formRef = formRef;
+  }
+
+    confirmOrder = id => {
+        // const id = props.id || {};
+        confirm({
+            title: '是否确认订单？',
+            onOk: () => {
+                const {
+                    updateCompanyOrderStatus,
+                } = this.props;
+                updateCompanyOrderStatus({ id, status: 2 });
+            },
+        });
+    }
+
   render() {
-    const { order, express } = this.props;
+    const { order, express } = this.props.OrderDetail;
     const expressData = {
       ERRORCODE: '0',
       RESULT: {
@@ -82,22 +136,40 @@ class OrderDetail extends Component {
           ],
       },
   };
-    // console.log('order->>>', order);
     return (
       <div style={{ marginLeft: 20, marginRight: 20 }}>
         <h2 style={{ marginTop: 20 }}>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
-          <div>
+          <div className="button">
             {
 
-                order.status == 2 ?
-                    <Button type="primary" id="comfirmed">确认订单</Button>
+                order.status == 1 ?
+                    <Button
+                        type="primary"
+                        id="comfirmed"
+                        onClick={this.confirmOrder.bind(this, order.id)}
+                    >确认订单
+                    </Button>
                     : null
             }
             {
 
-                order.status == 3 ?
-                <Button type="primary" id="link">关联物流</Button>
+                order.status == 2 ?
+                <div>
+                    <Button
+                        type="primary"
+                        id="link"
+                        onClick={this.handleShowModal}
+                    >关联物流
+                    </Button>
+                    {/* <linkExpress /> */}
+                    <ExpressForm
+                        wrappedComponentRef={this.saveFormRef}
+                        visible={this.state.visible}
+                        onCancel={this.handleCancel}
+                        onCreate={this.handleCreate}
+                    />
+                </div>
                 : null
             }
           </div>
@@ -125,8 +197,6 @@ class OrderDetail extends Component {
                 <Express express={expressData} />
                 : null
         }
-
-        {/* <Express express={express} /> */}
         <Divider />
         <h2 style={{ marginBottom: -20 }}>订购产品</h2>
         <Divider />
