@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Divider, Icon, Button } from 'antd';
+import { Divider, Icon, Button, Modal } from 'antd';
 import './index.less';
 import Products from './Products';
 import Express from './Express';
 import { orderStatus } from 'utils';
+
+const { confirm } = Modal;
 
 const Address = (props) => {
     const address = props.address || {};
@@ -23,19 +25,6 @@ const Address = (props) => {
     );
 };
 
-// const comfirmOrder = (id) => {
-//     // const id = props.id || {};
-//     const isTrue = confirm('是否确认收货');
-//     if (isTrue) {
-//         const {
-//             updateOrderStatus,
-//             // match: {
-//             //     params: { id },
-//             // },
-//           } = this.props;
-//           updateOrderStatus({ id });
-//     }
-// };
 
 @hot(module)
 class OrderDetail extends Component {
@@ -51,20 +40,17 @@ class OrderDetail extends Component {
   }
 
   comfirmOrder (id) {
-    // const id = props.id || {};
-    const isTrue = confirm('是否确认收货');
-    if (isTrue) {
-        const {
-            updateOrderStatus,
-            // match: {
-            //     params: { id },
-            // },
-        } = this.props;
-        updateOrderStatus({ id, status: 5 });
-        const { OrderStatus } = this.props;
-        alert(OrderStatus.isSuccess);
-    }
+    confirm({
+        title: '是否确认收货？',
+        onOk: () => {
+            const {
+                updateOrderStatus,
+            } = this.props;
+            updateOrderStatus({ id, status: 5 });
+        },
+    });
 }
+
 
   render() {
     const { order, express } = this.props.OrderDetail;

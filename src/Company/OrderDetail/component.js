@@ -2,15 +2,14 @@ import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Divider, Icon, Button, Modal, Form, Input } from 'antd';
+import { Divider, Icon, Button, Modal } from 'antd';
 import './index.less';
 import Products from './Products';
 import Express from './Express';
 import { orderStatus } from 'utils';
 import ExpressForm from './ExpressForm';
 
-const { confirm, info } = Modal;
-const FormItem = Form.Item;
+const { confirm } = Modal;
 
 
 const Address = (props) => {

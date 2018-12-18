@@ -3,6 +3,9 @@ import request from 'request';
 import axios from 'axios';
 import qs from 'qs';
 import { async } from './actions';
+import { Modal } from 'antd';
+
+const { info } = Modal;
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
@@ -42,6 +45,9 @@ function* doUpdateOrderStatus(action) {
       data: { status: action.payload.status },
     });
     yield put(updateOrderStatus.success({ isSuccess: data.msg }));
+    info({
+      title: data.msg,
+    });
   } catch (err) {
     yield put(updateOrderStatus.failure(err));
   }

@@ -16,15 +16,18 @@ const insideColumns = [
 
 const ProductList = (productList) => {
   const data = [];
-  productList.map((product, index) => {
-    data.push({
-      key: index,
-      name: <Link to={`/products/${product.id}`}>{product.name}</Link>,
-      num: product.num, // int
-      price: product.price, // float
-      totalPrice: product.price * product.num, // *
+  if (productList) {
+    productList.map((product, index) => {
+      data.push({
+        key: index,
+        name: <Link to={`/products/${product.id}`}>{product.name}</Link>,
+        num: product.num, // int
+        price: product.price, // float
+        totalPrice: product.price * product.num, // *
+      });
     });
-  });
+  }
+
   return (data);
 };
 
@@ -91,7 +94,7 @@ const columns = [
               // 8-已退货
               // 9-取消交易
               filterMultiple: true,
-              onFilter: (value, record) => record.statusNum == value  },
+              onFilter: (value, record) => record.statusNum == value },
             { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
             { title: '详细信息', key: 'operation', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
           ];
@@ -112,7 +115,6 @@ class Orders extends Component {
     // const table = [];
     orders.length
         ? orders.map((order, index) => {
-
           const status = orderStatus(order.status);
           if (status == '已发货') {
             data.push({
@@ -139,6 +141,7 @@ class Orders extends Component {
               phone: order.phone,
               address: order.address,
               statusNum: order.status,
+              logistics: '暂无物流信息',
               status,
               products: ProductList(order.products),
             });
