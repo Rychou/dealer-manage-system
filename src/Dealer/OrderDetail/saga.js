@@ -9,7 +9,7 @@ const { info } = Modal;
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-const { fetchOrderDetail, updateOrderStatus } = async;
+const { fetchOrderDetail, updateDetailOrderStatus } = async;
 
 function* doFetchOrderDetail(action) {
   try {
@@ -44,16 +44,16 @@ function* doUpdateOrderStatus(action) {
       url: `/orders/${action.payload.id}`,
       data: { status: action.payload.status },
     });
-    yield put(updateOrderStatus.success({ isSuccess: data.msg }));
+    yield put(updateDetailOrderStatus.success({ isSuccess: data.msg }));
     info({
       title: data.msg,
     });
   } catch (err) {
-    yield put(updateOrderStatus.failure(err));
+    yield put(updateDetailOrderStatus.failure(err));
   }
 }
 
 export default function* () {
   yield takeEvery(fetchOrderDetail.TYPE, doFetchOrderDetail);
-  yield takeEvery(updateOrderStatus.TYPE, doUpdateOrderStatus);
+  yield takeEvery(updateDetailOrderStatus.TYPE, doUpdateOrderStatus);
 }

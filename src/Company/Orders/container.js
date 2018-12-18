@@ -2,12 +2,12 @@ import { async } from './actions';
 import { connect } from 'react-redux';
 import Orders from './component';
 
-const { fetchOrders, updateCompanyOrderStatus, linkExpress } = async;
+const { fetchCompanyOrders, updateCompanyOrderStatus, linkExpress } = async;
 
 const mapStateToProps = state => state.Orders;
 
 const mapDistpachToProps = dispatch => ({
-  fetchOrders: payload => dispatch(fetchOrders(payload)),
+  fetchOrders: payload => dispatch(fetchCompanyOrders(payload)),
   updateCompanyOrderStatus: payload => dispatch(updateCompanyOrderStatus(payload)),
   linkExpress: payload => dispatch(linkExpress(payload)),
 });

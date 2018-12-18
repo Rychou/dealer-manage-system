@@ -2,7 +2,7 @@ import { async } from './actions';
 import { fetchState } from 'utils';
 import { combineReducers } from 'redux';
 
-const { fetchOrderDetail, updateOrderStatus } = async;
+const { fetchOrderDetail, updateDetailOrderStatus } = async;
 
 const initState = {
   orderDetail: {
@@ -45,19 +45,19 @@ const OrderDetailReducer = (state = initState.orderDetail, action) => {
 
 const OrderStatusReducer = (state = initState.orderStatus, action) => {
   switch (action.type) {
-    case updateOrderStatus.TYPE:
+    case updateDetailOrderStatus.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case updateOrderStatus.SUCCESS:
+    case updateDetailOrderStatus.SUCCESS:
       return {
         ...state,
         isSuccess: action.payload.isSuccess,
         isFetching: false,
         isResolved: true,
       };
-    case updateOrderStatus.FAILURE:
+    case updateDetailOrderStatus.FAILURE:
       return {
         ...state,
         isFetching: false,

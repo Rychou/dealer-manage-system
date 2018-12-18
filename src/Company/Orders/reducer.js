@@ -2,7 +2,7 @@ import { async } from './actions';
 import { fetchState } from 'utils';
 import { combineReducers } from 'redux';
 
-const { fetchOrders, updateCompanyOrderStatus, linkExpress } = async;
+const { fetchCompanyOrders, updateCompanyOrderStatus, linkExpress } = async;
 
 const initState = {
   Orders: {
@@ -21,19 +21,19 @@ const initState = {
 
 const CompanyOrdersReducer = (state = initState.Orders, action) => {
   switch (action.type) {
-    case fetchOrders.TYPE:
+    case fetchCompanyOrders.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case fetchOrders.SUCCESS:
+    case fetchCompanyOrders.SUCCESS:
       return {
         ...state,
         orders: action.payload.orders,
         isFetching: false,
         isResolved: true,
       };
-    case fetchOrders.FAILURE:
+    case fetchCompanyOrders.FAILURE:
       return {
         ...state,
         isRejected: true,

@@ -5,14 +5,14 @@ import { Modal } from 'antd';
 
 const { info } = Modal;
 
-const { fetchOrders, updateCompanyOrderStatus, linkExpress } = async;
+const { fetchCompanyOrders, updateCompanyOrderStatus, linkExpress } = async;
 
 function* doFetchOrders(action) {
   try {
     const { data } = yield call(request.get, '/company/orders');
-    yield put(fetchOrders.success({ orders: data }));
+    yield put(fetchCompanyOrders.success({ orders: data }));
   } catch (err) {
-    yield put(fetchOrders.failure(err));
+    yield put(fetchCompanyOrders.failure(err));
   }
 }
 
@@ -55,7 +55,7 @@ function* doLinkExpress(action) {
 
 
 export default function* () {
-  yield takeEvery(fetchOrders.TYPE, doFetchOrders);
+  yield takeEvery(fetchCompanyOrders.TYPE, doFetchOrders);
   yield takeEvery(updateCompanyOrderStatus.TYPE, doCompanyUpdateOrderStatus);
   yield takeEvery(linkExpress.TYPE, doLinkExpress);
 }
