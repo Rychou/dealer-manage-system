@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
+import { store } from '../store';
 
 const { BASE_URL } = process.env;
 
@@ -12,6 +13,8 @@ instance.interceptors.request.use(config => {
   console.group('请求体');
   console.log(config);
   console.groupEnd();
+  const accessToken = store.getState().user.accessToken;
+  config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });
 
@@ -21,8 +24,6 @@ instance.interceptors.response.use(
     console.group('响应体');
     console.log(response);
     console.groupEnd();
-    if (response.status === 401) {
-    }
     return response;
   },
   error => {
@@ -33,9 +34,11 @@ instance.interceptors.response.use(
     // 默认除了2XX之外的都是错误的，就会走这里
     if (error.response) {
       switch (error.response.status) {
-        case 401:
-        case 400:
+        // case 403:
+        //   window.location.pathname = '/login';
+        //   break;
         default:
+          break;
       }
     }
     return Promise.reject(error);
