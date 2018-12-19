@@ -10,7 +10,7 @@ import './user.less';
 @hot(module)
 class User extends Component {
   handleLogout = () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('userMsg');
     this.props.logout();
   };
 
@@ -42,7 +42,7 @@ class User extends Component {
               >
                 {type === 'company' ? '集团' : '经销商'}
               </Avatar>
-              <span style={{ marginLeft: 8 }}>{userMsg.name}</span>
+              <span style={{ marginLeft: 8 }}>{userMsg.username}</span>
             </div>
           </Dropdown>
         );
