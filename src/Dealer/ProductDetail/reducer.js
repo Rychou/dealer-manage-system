@@ -18,7 +18,10 @@ const ProductDetail = (state = initState, action) => {
     case fetchProductDetail.SUCCESS:
       return {
         ...state,
-        product: action.payload.product,
+        product: {
+          ...action.payload.product,
+          categories: [action.payload.product.categories],
+        },
         isFetching: false,
         isResolved: true,
       };
