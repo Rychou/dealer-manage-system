@@ -2,12 +2,13 @@ import { async } from './actions';
 import { fetchState } from 'utils';
 import { combineReducers } from 'redux';
 
-const { fetchOrders, updateOrderStatus } = async;
+const { fetchOrderDetail, updateDetailOrderStatus } = async;
 
 const initState = {
-  Orders: {
+  orderDetail: {
     ...fetchState,
-    orders: [],
+    order: {},
+    express: {},
   },
   orderStatus: {
     ...fetchState,
@@ -15,25 +16,27 @@ const initState = {
   },
 };
 
-const OrdersReducer = (state = initState, action) => {
+
+const OrderDetailReducer = (state = initState.orderDetail, action) => {
   switch (action.type) {
-    case fetchOrders.TYPE:
+    case fetchOrderDetail.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case fetchOrders.SUCCESS:
+    case fetchOrderDetail.SUCCESS:
       return {
         ...state,
-        orders: action.payload.orders,
+        order: action.payload.order,
+        express: action.payload.express,
         isFetching: false,
         isResolved: true,
       };
-    case fetchOrders.FAILURE:
+    case fetchOrderDetail.FAILURE:
       return {
         ...state,
-        isRejected: true,
         isFetching: false,
+        isRejected: true,
       };
     default:
       return state;
@@ -42,19 +45,19 @@ const OrdersReducer = (state = initState, action) => {
 
 const OrderStatusReducer = (state = initState.orderStatus, action) => {
   switch (action.type) {
-    case updateOrderStatus.TYPE:
+    case updateDetailOrderStatus.TYPE:
       return {
         ...state,
         isFetching: true,
       };
-    case updateOrderStatus.SUCCESS:
+    case updateDetailOrderStatus.SUCCESS:
       return {
         ...state,
         isSuccess: action.payload.isSuccess,
         isFetching: false,
         isResolved: true,
       };
-    case updateOrderStatus.FAILURE:
+    case updateDetailOrderStatus.FAILURE:
       return {
         ...state,
         isFetching: false,
@@ -65,8 +68,7 @@ const OrderStatusReducer = (state = initState.orderStatus, action) => {
   }
 };
 
-
 export default combineReducers({
-  Orders: OrdersReducer,
+  OrderDetail: OrderDetailReducer,
   OrderStatus: OrderStatusReducer,
 });
