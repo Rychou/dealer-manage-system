@@ -1,4 +1,9 @@
-import { TOGGLE_VISIBLE, SELECT_PRODUCT, ADD_PRODUCT, UPDATE_PRODUCT_AMOUNT } from './actions';
+import {
+  TOGGLE_VISIBLE,
+  SELECT_PRODUCT,
+  ADD_PRODUCT,
+  UPDATE_PRODUCT_AMOUNT,
+} from './actions';
 import { message } from 'antd';
 
 const initState = {
@@ -25,14 +30,13 @@ const updateProductAmount = (amount, index, products) => {
 };
 
 const computeTotalPrice = (selectedRowKeys, products) => {
-  let totalPrice = 0;
-  for (const key of selectedRowKeys) {
-    for (const product of products) {
-      if (product.no === key) {
-        totalPrice += product.price * product.amount;
-      }
-    }
-  }
+  const totalPrice = products.reduce(
+    (total, product) =>
+      selectedRowKeys.includes(product.no)
+        ? total + product.price * product.amount
+        : 0,
+    0,
+  );
   return Number(totalPrice.toFixed(2));
 };
 
@@ -71,19 +75,34 @@ const ShoppingCart = (state = initState, action) => {
       return {
         ...state,
         products: addProduct(state.products, action.payload),
-        totalPrice: computeTotalPrice(state.selectedRowKeys, [...state.products, action.payload]),
+        totalPrice: computeTotalPrice(state.selectedRowKeys, [
+          ...state.products,
+          action.payload,
+        ]),
       };
     case UPDATE_PRODUCT_AMOUNT:
       return {
         ...state,
-        products: updateProductAmount(action.payload.amount, action.payload.index, state.products),
+        products: updateProductAmount(
+          action.payload.amount,
+          action.payload.index,
+          state.products,
+        ),
         totalPrice: computeTotalPrice(
           state.selectedRowKeys,
-          updateProductAmount(action.payload.amount, action.payload.index, state.products),
+          updateProductAmount(
+            action.payload.amount,
+            action.payload.index,
+            state.products,
+          ),
         ),
         selectedProducts: computeSelectedProducts(
           state.selectedRowKeys,
-          updateProductAmount(action.payload.amount, action.payload.index, state.products),
+          updateProductAmount(
+            action.payload.amount,
+            action.payload.index,
+            state.products,
+          ),
         ), // 此处用computeSelectedProducts函数而不用action传过来的selectedProducts是因为在这个action中，传过来的selectedProducts不会更新。
       };
     case SELECT_PRODUCT:
@@ -92,7 +111,10 @@ const ShoppingCart = (state = initState, action) => {
         selectedRowKeys: action.payload.selectedRowKeys,
         selectedAmount: action.payload.selectedRowKeys.length,
         selectedProducts: action.payload.selectedProducts, // 此处不用computeSelectedProducts函数是因为
-        totalPrice: computeTotalPrice(action.payload.selectedRowKeys, state.products),
+        totalPrice: computeTotalPrice(
+          action.payload.selectedRowKeys,
+          state.products,
+        ),
       };
     default:
       return state;
