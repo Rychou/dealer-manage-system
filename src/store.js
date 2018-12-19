@@ -4,12 +4,14 @@
  */
 import { createStore } from 'redux';
 import createReducer from './reducer';
+
+let store = {};
 /**
  * Factory composing react store with reducers and middlewares.
  * @param  {Object} initialState - An instance by calling applyMiddleware.
  */
-export default function configureStore(initialState) {
-  const store = createStore(createReducer(), initialState);
+function configureStore(initialState) {
+  store = createStore(createReducer(), initialState);
 
   // Enable Webpack hot module replacement for reducers
   // if (module.hot) {
@@ -26,3 +28,6 @@ export default function configureStore(initialState) {
 
   return store;
 }
+
+export { store };
+export default configureStore;
