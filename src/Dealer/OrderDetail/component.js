@@ -111,7 +111,7 @@ class OrderDetail extends Component {
   };
     return (
     <Spin spinning={this.state.loading}>
-      <div style={{ backgroundColor: 'white', padding: 20 }}>
+      <div id="main">
         <h2>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
           <div style={{ float: 'right' }}>
@@ -148,12 +148,10 @@ class OrderDetail extends Component {
         <Divider style={{ marginTop: 150 }} />
         {
             order.status >= 3 && order.status <= 5 ?
-                <Express express={expressData} />
+                Express(expressData)
                 : null
         }
-
-        {/* <Express express={express} /> */}
-        <Divider />
+        <br />
         <h2 style={{ marginBottom: -20 }}>订购产品</h2>
         <Divider />
         <Products products={order.orderDetails} />
@@ -166,6 +164,7 @@ class OrderDetail extends Component {
 OrderDetail.propTypes = {
   fetchOrderDetail: func,
   match: object,
+  OrderDetail: object,
   updateOrderStatus: func,
 };
 

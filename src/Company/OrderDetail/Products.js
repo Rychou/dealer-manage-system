@@ -32,11 +32,11 @@ class Products extends Component {
         return (
         <div>
             {products
-                ? products.map((item, index) => {
+                ? products.map((item) => {
                     const { product } = item;
                     return (
                     <Card
-                        key={index}
+                        key={product.no}
                         className="product"
                         title={<span>NO.{product.no}</span>}
                         style={{ width: 1000, marginLeft: 60, marginTop: 20 }}

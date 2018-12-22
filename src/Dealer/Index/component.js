@@ -26,7 +26,7 @@ const ProductList = (orderDetails) => {
         name: <Link to={`/products/${productInfo.no}`}>{productInfo.name}</Link>,
         num: product.amount, // int
         price: productInfo.price, // float
-        totalPrice: product.sum, // *
+        totalPrice: product.totalMoney, // *
       });
       return true;
     });
@@ -58,7 +58,6 @@ const orderData = (orders) => {
             address: addressMsg,
             statusNum: order.orderStatus,
             status,
-            logistics: order.logistics.message,
             products: ProductList(order.orderDetails),
           });
         } else {
@@ -71,7 +70,6 @@ const orderData = (orders) => {
             phone: order.phone,
             address: addressMsg,
             statusNum: order.orderStatus,
-            logistics: '暂无物流信息',
             status,
             products: ProductList(order.orderDetails),
           });
@@ -140,8 +138,8 @@ class Orders extends Component {
       }],
       filterMultiple: true,
       onFilter: (value, record) => record.statusNum === value },
-    { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
-    { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
+    // { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
+    { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
     { title: '操作',
       key: 'operation',
       render: (record) => {
@@ -194,6 +192,7 @@ class Orders extends Component {
                 pagination={false}
               />}
             dataSource={orderData(orders)}
+            style={{ backgroundColor: 'white', width: 1250 }}
           />
       </Spin>
 
@@ -205,6 +204,7 @@ Orders.propTypes = {
   fetchOrders: func,
   isResolved: bool,
   Orders: object,
+  updateOrderStatus: func,
 };
 
 export default Orders;

@@ -1,4 +1,4 @@
-import { async } from './actions';
+import async from './actions';
 import { connect } from 'react-redux';
 import OrderDetail from './component';
 

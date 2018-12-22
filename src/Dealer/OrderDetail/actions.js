@@ -6,8 +6,3 @@ const async = new Async({
 });
 
 export default async;
-
-// export const expressAsync = new Async({
-//   prefix: 'express',
-//   actions: ['fetchExpress'],
-// });

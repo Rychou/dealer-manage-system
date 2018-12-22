@@ -10,7 +10,7 @@ function* doFetchOrders() {
   try {
     const { data } = yield call(request, {
       method: 'get',
-      url: '/orders?dealerId=1',
+      url: '/orders',
     });
     yield put(fetchOrders.success({ orders: data }));
   } catch (err) {

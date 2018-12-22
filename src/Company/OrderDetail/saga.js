@@ -2,7 +2,7 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
 import axios from 'axios';
 import qs from 'qs';
-import { async } from './actions';
+import async from './actions';
 import { Modal } from 'antd';
 
 const { info } = Modal;

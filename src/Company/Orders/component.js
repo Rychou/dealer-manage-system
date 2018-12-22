@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func, array } from 'prop-types';
+import { bool, func, array, object } from 'prop-types';
 import { Table, Input, Button, Icon, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
@@ -25,6 +25,7 @@ const orderData = (orders) => {
         statusNum: order.status,
         status,
       });
+      return true;
     });
   }
   return data;
@@ -42,7 +43,6 @@ class Orders extends Component {
       sorter: (a, b) => Date.parse(a.date) - Date.parse(b.date),
     },
     { title: '订单价格', dataIndex: 'price', key: 'price' },
-    // { title: '经销商', dataIndex: 'name', key: 'name' },
     {
       title: '经销商',
       dataIndex: 'name',
@@ -52,13 +52,11 @@ class Orders extends Component {
       }) => (
         <div className="custom-filter-dropdown">
           <Input
-            ref={ele => this.searchInput = ele}
+            ref={(ele) => { this.searchInput = ele; return true; }}
             placeholder="Search name"
             value={selectedKeys[0]}
             onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={this.handleSearch(selectedKeys, confirm)}
-            // style={{ width: 200 }}
-            // style={{ width: 200, marginLeft: 200, position: 'absolute' }}
           />
           <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
           <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
@@ -124,12 +122,12 @@ class Orders extends Component {
         value: 9,
       }],
       filterMultiple: true,
-      onFilter: (value, record) => record.statusNum == value },
+      onFilter: (value, record) => record.statusNum === value },
     { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
     { title: '操作',
       key: 'operation',
       render: (record) => {
-        if (record.statusNum == 1) {
+        if (record.statusNum === 1) {
           return (
             <Button
                 type="primary"
@@ -139,7 +137,7 @@ class Orders extends Component {
             </Button>
           );
         }
-        if (record.statusNum == 2) {
+        if (record.statusNum === 2) {
           return (
             <div>
               <Button
@@ -148,7 +146,6 @@ class Orders extends Component {
                   onClick={this.handleShowModal(record.id)}
               >关联物流
               </Button>
-              {/* <linkExpress /> */}
               <ExpressForm
                   wrappedComponentRef={this.saveFormRef}
                   visible={this.state.visible}
@@ -158,6 +155,7 @@ class Orders extends Component {
             </div>
           );
         }
+        return null;
       },
     },
   ];
@@ -216,7 +214,6 @@ class Orders extends Component {
   }
 
     confirmOrder = id => {
-        // const id = props.id || {};
         Confirm({
             title: '是否确认订单？',
             onOk: () => {
@@ -232,7 +229,6 @@ class Orders extends Component {
   render() {
     const { orders } = this.props.CompanyOrders;
     return (
-      // OrderList()
       <Table
         className="orderList"
         columns={this.columns}
@@ -244,10 +240,12 @@ class Orders extends Component {
 }
 
 Orders.propTypes = {
+  CompanyOrders: object,
   fetchOrders: func,
-  isFetching: bool,
   isResolved: bool,
+  linkExpress: func,
   orders: array,
+  updateCompanyOrderStatus: func,
 };
 
 export default Orders;

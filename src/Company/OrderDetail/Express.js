@@ -3,7 +3,7 @@ import { List, Menu } from 'antd';
 import './index.less';
 
 
-const Express = ({ express }) => {
+const Express = (express) => {
   return (
     <div>
       <Menu
