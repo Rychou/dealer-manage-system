@@ -8,7 +8,10 @@ const { info } = Modal;
 const { fetchOrders, updateOrderStatus } = async;
 function* doFetchOrders(action) {
   try {
-    const { data } = yield call(request.get, '/orders');
+    const { data } = yield call(request, {
+      method: 'get',
+      url: '/orders?dealerId=1',
+    });
     yield put(fetchOrders.success({ orders: data }));
   } catch (err) {
     yield put(fetchOrders.failure(err));

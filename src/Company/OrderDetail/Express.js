@@ -1,21 +1,13 @@
 import React from 'react';
-// import { hot } from 'react-hot-loader';
-// import { bool, func } from 'prop-types';
-import { List, Menu } from 'antd';
-// import { Link } from 'react-router-dom';
+import { List, Menu, Timeline } from 'antd';
 import './index.less';
-// import { withRouter } from 'react-router-dom';
 
 // const { Meta } = Card;
+const { Item } = Timeline;
 
 
 const Express = ({ express }) => {
-  // const { express } = this.props;
-  // console.log('express->>>', express);
-  // console.log('no->>>', this.props.no);
-
   return (
-    // <div>123123</div>
     <div>
       <Menu
         mode="horizontal"
@@ -34,6 +26,22 @@ const Express = ({ express }) => {
           <List.Item><span className="time">{item.time}</span> ：{item.desc}</List.Item>
         )}
       />
+      {/* <Timeline mode="alternate">
+      {
+        express.RESULT.context.map((deliver,index)=>{
+          return (<Item key={index}>
+                    {deliver.time}
+                  </Item>)
+        })
+      }
+
+        <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
+        <Timeline.Item color="green">Solve initial network problems 2015-09-01</Timeline.Item>
+        <Timeline.Item dot={<Icon type="clock-circle-o" style={{ fontSize: '16px' }} />}>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</Timeline.Item>
+        <Timeline.Item color="red">Network problems being solved 2015-09-01</Timeline.Item>
+        <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
+        <Timeline.Item dot={<Icon type="clock-circle-o" style={{ fontSize: '16px' }} />}>Technical testing 2015-09-01</Timeline.Item>
+      </Timeline> */}
     </div>
   );
 };

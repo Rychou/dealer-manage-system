@@ -9,6 +9,27 @@ import './index.less';
 
 const Confirm = Modal.confirm;
 
+const orderData = (orders) => {
+  const data = [];
+  if (orders.length) {
+    orders.map((order, index) => {
+      const status = orderStatus(order.status);
+      data.push({
+        key: index,
+        id: order.id,
+        date: order.date,
+        price: order.price,
+        name: order.dealer,
+        phone: order.phone,
+        address: order.address,
+        statusNum: order.status,
+        status,
+      });
+    });
+  }
+  return data;
+};
+
 @hot(module)
 class Orders extends Component {
   columns = [
@@ -43,7 +64,8 @@ class Orders extends Component {
           <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
         </div>
       ),
-      filterIcon: filtered => <Icon type="smile-o" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+      filterIcon: filtered =>
+            <Icon type="smile-o" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
       onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
@@ -112,7 +134,7 @@ class Orders extends Component {
             <Button
                 type="primary"
                 id="comfirmed"
-                onClick={this.confirmOrder.bind(this, record.id)}
+                onClick={this.confirmOrder(record.id)}
             >确认订单
             </Button>
           );
@@ -123,7 +145,7 @@ class Orders extends Component {
               <Button
                   type="primary"
                   id="link"
-                  onClick={this.handleShowModal.bind(this, record.id)}
+                  onClick={this.handleShowModal(record.id)}
               >关联物流
               </Button>
               {/* <linkExpress /> */}
@@ -209,33 +231,12 @@ class Orders extends Component {
 
   render() {
     const { orders } = this.props.CompanyOrders;
-    const data = [];
-    // const table = [];
-    orders.length
-      ? orders.map((order, index) => {
-        const status = orderStatus(order.status);
-
-      data.push({
-        key: index,
-        id: order.id,
-        date: order.date,
-        price: order.price,
-        name: order.dealer,
-        phone: order.phone,
-        address: order.address,
-        statusNum: order.status,
-        status,
-      });
-    })
-    : null;
-
-
     return (
       // OrderList()
       <Table
         className="orderList"
         columns={this.columns}
-        dataSource={data}
+        dataSource={orderData(orders)}
         style={{ width: 1250 }}
       />
     );

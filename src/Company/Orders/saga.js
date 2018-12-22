@@ -9,7 +9,7 @@ const { fetchCompanyOrders, updateCompanyOrderStatus, linkExpress } = async;
 
 function* doFetchOrders(action) {
   try {
-    const { data } = yield call(request.get, '/company/orders');
+    const { data } = yield call(request.get, '/orders');
     yield put(fetchCompanyOrders.success({ orders: data }));
   } catch (err) {
     yield put(fetchCompanyOrders.failure(err));

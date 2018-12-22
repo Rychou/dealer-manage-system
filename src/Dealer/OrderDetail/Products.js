@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { array } from 'prop-types';
-import { Card, InputNumber } from 'antd';
+import { array, string } from 'prop-types';
+import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Grid, Meta } = Card;
+
+const formatter = (value) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+formatter.propTypes = {
+    value: string,
+};
 
 
 class Products extends Component {
@@ -44,14 +52,10 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                         <span>单价：</span>
-                                        <InputNumber
-                                            disabled
-                                            defaultValue={product.price}
-                                            formatter={value =>
-                                                `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                            }
-                                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                        />
+                                        <span>
+                                            ￥{formatter(String(product.price))}
+                                        </span>
+
                                        </div>}
                             />
                         </div>
@@ -59,14 +63,9 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                             <span>数量：</span>
-                                            <InputNumber
-                                                disabled
-                                                defaultValue={item.amount}
-                                                formatter={value =>
-                                                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                                }
-                                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                            />
+                                            <span>
+                                                {formatter(String(item.amount))}
+                                            </span>
                                        </div>}
                                 />
                         </div>
@@ -74,23 +73,12 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                         <span>总价：</span>
-                                        <InputNumber
-                                            disabled
-                                            defaultValue={item.sum}
-                                            formatter={value =>
-                                                `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                            }
-                                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                        />
+                                        <span>
+                                            ￥{formatter(String(item.sum))}
+                                        </span>
                                        </div>}
                                 />
                         </div>
-                        {/* <Grid style={{height:80}}>
-                        <Meta
-                            avatar={<img src={product.imageUrl} />}
-                            title={product.name}
-                            // description={product.num}
-                        /></Grid> */}
                     </Card>
                 );
             })

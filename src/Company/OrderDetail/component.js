@@ -196,7 +196,7 @@ class OrderDetail extends Component {
                 <Express express={expressData} />
                 : null
         }
-        <Divider />
+
         <h2 style={{ marginBottom: -20 }}>订购产品</h2>
         <Divider />
         <Products products={order.orderDetails} />

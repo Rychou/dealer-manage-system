@@ -1,21 +1,10 @@
 import React from 'react';
-// import { hot } from 'react-hot-loader';
-// import { bool, func } from 'prop-types';
 import { List, Menu } from 'antd';
-// import { Link } from 'react-router-dom';
 import './index.less';
-// import { withRouter } from 'react-router-dom';
-
-// const { Meta } = Card;
 
 
 const Express = ({ express }) => {
-  // const { express } = this.props;
-  // console.log('express->>>', express);
-  // console.log('no->>>', this.props.no);
-
   return (
-    // <div>123123</div>
     <div>
       <Menu
         mode="horizontal"
@@ -31,7 +20,7 @@ const Express = ({ express }) => {
         bordered
         dataSource={express.RESULT.context}
         renderItem={item => (
-          <List.Item><span className="time">{item.time}</span> ：{item.desc}</List.Item>
+          <List.Item><span className="time">{item.time}</span> ：<span className="desc">{item.desc}</span></List.Item>
         )}
       />
     </div>
