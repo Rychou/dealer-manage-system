@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array } from 'prop-types';
-import { Row, Col, Card } from 'antd';
+import { Row, Col, Card, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import './index.less';
 
@@ -19,7 +19,7 @@ class Products extends Component {
   }
 
   render() {
-    const { products } = this.props;
+    const { products, isFetching } = this.props;
 
     const ProductList = () => {
       return products.length
@@ -55,7 +55,7 @@ class Products extends Component {
         justify="start"
         style={{ padding: '12px', backgroundColor: '#fff' }}
       >
-        {ProductList()}
+        <Spin spinning={isFetching}>{ProductList()}</Spin>
       </Row>
     );
   }

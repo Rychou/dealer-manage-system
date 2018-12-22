@@ -1,6 +1,11 @@
 import { connect } from 'react-redux';
 import NewOrder from './component';
-import { async, updateProducts, updateAddress, updateCurrentStep } from './actions';
+import {
+  async,
+  updateProducts,
+  updateAddress,
+  updateCurrentStep,
+} from './actions';
 
 const { newOrder } = async;
 const mapStateToProps = state => state.NewOrder;

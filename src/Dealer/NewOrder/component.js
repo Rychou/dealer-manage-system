@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import { Steps, Row, Col, Button } from 'antd';
 import './index.less';
 import Address from './Address';
 import Products from './Products';
 import Overview from './Overview';
 import { hot } from 'react-hot-loader';
-import { object, func } from 'prop-types';
-import { Route } from 'react-router-dom';
+import { object, func, number, array } from 'prop-types';
 import Pay from './Pay';
 import PayResult from './PayResult';
 
@@ -39,30 +38,29 @@ class NewOrder extends Component {
   }
 
   handleSumbitOrder = () => {
-    const {
-      newOrder,
-      products,
-      address,
-      history: { push },
-    } = this.props;
+    const { newOrder, products, address, history } = this.props;
     newOrder({
-      orderDetails: products.map(({ no, amount }) => {
-        return {
-          product: { no },
-          amount,
-        };
-      }),
-      address: {
-        province: address.address[0],
-        city: address.address[1],
-        district: address.address[2],
-        street: address.address[3],
-        details: address.detailAddress,
+      orderMsg: {
+        orderDetails: products.map(({ no, amount }) => {
+          return {
+            product: { no },
+            amount,
+          };
+        }),
+        address: {
+          province: address.address[0],
+          city: address.address[1],
+          district: address.address[2],
+          street: address.address[3],
+          details: address.detailAddress,
+        },
+        name: address.name,
+        phone: address.phone,
+        dealer: { id: 1 },
       },
-      name: address.name,
-      phone: address.phone,
+      history,
     });
-    push('/newOrder/pay');
+    // push('/newOrder/pay');
   };
 
   render() {
@@ -125,8 +123,13 @@ class NewOrder extends Component {
 
 NewOrder.propTypes = {
   address: object,
+  currentStep: number,
+  history: object,
   location: object,
+  newOrder: func,
+  products: array,
   updateAddress: func,
+  updateCurrentStep: func,
   updateProducts: func,
 };
 
