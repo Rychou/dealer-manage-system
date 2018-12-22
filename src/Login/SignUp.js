@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Modal, Input } from 'antd';
+import { Form, Modal, Input, Select, Cascader } from 'antd';
 import { hot } from 'react-hot-loader';
 import { connect } from 'react-redux';
 import { async } from './actions';
+import options from '../Dealer/NewOrder/options';
 
 const FormItem = Form.Item;
 
@@ -17,11 +18,23 @@ class SignUp extends Component {
     const { form, signUp } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
+        console.log(values);
         signUp({
           username: values.username,
           password: values.password,
           email: values.email,
-          roles: ['ROLE_CLIENT'],
+          dealer: {
+            name: values.name,
+            gender: values.gender,
+            phone: values.phone,
+            address: {
+              province: values.address[0],
+              city: values.address[1],
+              district: values.address[2],
+              street: values.address[3],
+              details: values.details,
+            },
+          },
         });
       }
     });
@@ -64,6 +77,7 @@ class SignUp extends Component {
     };
     return (
       <Modal
+        style={{ top: 20 }}
         onOk={this.handleSubmit}
         onCancel={toggleShowSignUp}
         visible={showSignUp}
@@ -126,11 +140,64 @@ class SignUp extends Component {
               />,
             )}
           </FormItem>
-          {/* <FormItem label="选择用户角色">
-            {getFieldDecorator('roles', {
-              rules: [{required}],
-            })}
-          </FormItem> */}
+          <FormItem {...formLayout} label="姓名">
+            {getFieldDecorator('name', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入姓名',
+                },
+              ],
+            })(<Input placeholder="姓名" />)}
+          </FormItem>
+          <FormItem {...formLayout} label="性别">
+            {getFieldDecorator('gender', {
+              initialValue: 'male',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择性别',
+                },
+              ],
+            })(
+              <Select>
+                <Select.Option value="male">男</Select.Option>
+                <Select.Option value="female">女</Select.Option>
+              </Select>,
+            )}
+          </FormItem>
+          <FormItem {...formLayout} label="电话号">
+            {getFieldDecorator('phone', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入电话号',
+                },
+              ],
+            })(<Input placeholder="电话号" />)}
+          </FormItem>
+          <FormItem {...formLayout} label="地址信息">
+            {getFieldDecorator('address', {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地址信息',
+                },
+              ],
+            })(<Cascader className="address-select" options={options} changeOnSelect />)}
+          </FormItem>
+          <FormItem {...formLayout} label="详细地址">
+            {getFieldDecorator('details', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入详细地址',
+                },
+              ],
+            })(
+              <Input.TextArea placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元等信息" />,
+            )}
+          </FormItem>
         </Form>
       </Modal>
     );
