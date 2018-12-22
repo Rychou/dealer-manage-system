@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Divider, Icon, Button, Modal } from 'antd';
 import './index.less';
@@ -12,19 +12,25 @@ import ExpressForm from './ExpressForm';
 const { confirm } = Modal;
 
 
-const Address = (props) => {
-    const address = props.address || {};
+const Address = (address) => {
     const style = { marginLeft: 10 };
-    return (
-        <span>
-            <span style={style}>{address.province}</span>
-            <span style={style}>{address.city}</span>
-            <span style={style}>{address.district}</span>
-            <span style={style}>{address.street}</span>
-            <span style={style}>{address.details}</span>
-        </span>
+    if (address) {
+        return (
+            <span>
+                <span style={style}>{address.province}</span>
+                <span style={style}>{address.city}</span>
+                <span style={style}>{address.district}</span>
+                <span style={style}>{address.street}</span>
+                <span style={style}>{address.details}</span>
+            </span>
 
-    );
+        );
+    }
+    return null;
+};
+
+Address.prototype = {
+    address: object,
 };
 
 
@@ -36,7 +42,6 @@ class OrderDetail extends Component {
 
   componentDidMount() {
     const {
-      isResolve,
       fetchCompanyOrderDetail,
       match: {
         params: { id },
@@ -66,7 +71,6 @@ class OrderDetail extends Component {
       const { id } = order;
       const { expressNumber } = values;
       linkExpress({ id, expressNumber, status: 3 });
-      console.log('Received values of form: ', values);
       form.resetFields();
       this.setState({ visible: false });
     });
@@ -161,7 +165,6 @@ class OrderDetail extends Component {
                         onClick={this.handleShowModal}
                     >关联物流
                     </Button>
-                    {/* <linkExpress /> */}
                     <ExpressForm
                         wrappedComponentRef={this.saveFormRef}
                         visible={this.state.visible}
@@ -207,8 +210,11 @@ class OrderDetail extends Component {
 }
 
 OrderDetail.propTypes = {
-  fetchOrderDetail: func,
-  isResolve: bool,
+    fetchCompanyOrderDetail: func,
+    linkExpress: func,
+    match: object,
+    OrderDetail: object,
+    updateCompanyOrderStatus: func,
 };
 
 

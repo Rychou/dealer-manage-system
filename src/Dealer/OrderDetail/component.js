@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Divider, Icon, Button, Modal, Spin } from 'antd';
 import './index.less';
@@ -10,19 +10,25 @@ import { orderStatus } from 'utils';
 
 const { confirm } = Modal;
 
-const Address = (props) => {
-    const address = props.address || {};
+const Address = (address) => {
     const style = { marginLeft: 10 };
-    return (
-        <span>
-            <span style={style}>{address.province}</span>
-            <span style={style}>{address.city}</span>
-            <span style={style}>{address.district}</span>
-            <span style={style}>{address.street}</span>
-            <span style={style}>{address.details}</span>
-        </span>
+    if (address) {
+        return (
+            <span>
+                <span style={style}>{address.province}</span>
+                <span style={style}>{address.city}</span>
+                <span style={style}>{address.district}</span>
+                <span style={style}>{address.street}</span>
+                <span style={style}>{address.details}</span>
+            </span>
 
-    );
+        );
+    }
+    return null;
+};
+
+Address.prototype = {
+    address: object,
 };
 
 
@@ -136,7 +142,7 @@ class OrderDetail extends Component {
             <div style={{ float: 'right', marginRight: 100 }}>
                 <h3>收货人：{order.name}</h3>
                 <h3>联系电话：{order.phone}</h3>
-                <h3>收货地址：<Address address={order.address} /></h3>
+                <h3>收货地址：{Address(order.address)}</h3>
             </div>
         </div>
         <Divider style={{ marginTop: 150 }} />
@@ -159,7 +165,8 @@ class OrderDetail extends Component {
 
 OrderDetail.propTypes = {
   fetchOrderDetail: func,
-  isResolve: bool,
+  match: object,
+  updateOrderStatus: func,
 };
 
 

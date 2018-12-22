@@ -1,9 +1,11 @@
 import { Async } from 'redux-action-boilerplate';
 
-export const async = new Async({
+const async = new Async({
   prefix: 'orders',
   actions: ['fetchOrderDetail', 'updateDetailOrderStatus'],
 });
+
+export default async;
 
 // export const expressAsync = new Async({
 //   prefix: 'express',

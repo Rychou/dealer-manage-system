@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func, array } from 'prop-types';
+import { bool, func, array, object } from 'prop-types';
 import { Table, Button, Modal, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
@@ -28,6 +28,7 @@ const ProductList = (orderDetails) => {
         price: productInfo.price, // float
         totalPrice: product.sum, // *
       });
+      return true;
     });
   }
 
@@ -35,12 +36,11 @@ const ProductList = (orderDetails) => {
 };
 
 ProductList.propTypes = {
-  productList: array,
+  orderDetails: array,
 };
 
 const orderData = (orders) => {
   const data = [];
-  // const {orders} = this.props;
   if (orders) {
     if (orders.length) {
       orders.map((order, index) => {
@@ -59,7 +59,6 @@ const orderData = (orders) => {
             statusNum: order.orderStatus,
             status,
             logistics: order.logistics.message,
-            // status: order.logistics.message,
             products: ProductList(order.orderDetails),
           });
         } else {
@@ -77,6 +76,7 @@ const orderData = (orders) => {
             products: ProductList(order.orderDetails),
           });
         }
+        return true;
       });
     }
   }
@@ -139,7 +139,7 @@ class Orders extends Component {
         value: 9,
       }],
       filterMultiple: true,
-      onFilter: (value, record) => record.statusNum == value },
+      onFilter: (value, record) => record.statusNum === value },
     { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
     { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
     { title: '操作',
@@ -149,11 +149,12 @@ class Orders extends Component {
           return (
             <Button
                 type="primary"
-                onClick={this.comfirmOrder.bind(this, record.id)}
+                onClick={this.comfirmOrders.bind(this, record.id)}
             >确认收货
             </Button>
           );
         }
+        return null;
       },
     },
   ];
@@ -203,7 +204,7 @@ class Orders extends Component {
 Orders.propTypes = {
   fetchOrders: func,
   isResolved: bool,
-  orders: array,
+  Orders: object,
 };
 
 export default Orders;
