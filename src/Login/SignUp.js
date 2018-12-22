@@ -18,7 +18,6 @@ class SignUp extends Component {
     const { form, signUp } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
         signUp({
           username: values.username,
           password: values.password,
@@ -34,6 +33,7 @@ class SignUp extends Component {
               street: values.address[3],
               details: values.details,
             },
+            note: values.note,
           },
         });
       }
@@ -197,6 +197,9 @@ class SignUp extends Component {
             })(
               <Input.TextArea placeholder="请输入详细地址，如道路、门牌号、小区、楼栋号、单元等信息" />,
             )}
+          </FormItem>
+          <FormItem {...formLayout} label="备注">
+            {getFieldDecorator('note', {})(<Input.TextArea placeholder="备注信息，可选。" />)}
           </FormItem>
         </Form>
       </Modal>
