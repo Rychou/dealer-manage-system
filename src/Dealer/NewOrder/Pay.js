@@ -4,44 +4,50 @@ import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { withRouter } from 'react-router-dom';
 import { updateCurrentStep } from './actions';
-import request from 'request';
+import PropTypes from 'prop-types';
+import { async } from './actions';
 
 const FormItem = Form.Item;
 @hot(module)
 class Pay extends React.Component {
-  state = {
-    paying: false,
-  };
-
   handleSubmit = e => {
+    const {
+      pay,
+      newOrder: { id },
+      history,
+    } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.setState({
-          paying: true,
-        });
-        setTimeout(() => {
-          this.setState({ paying: false }, () => {
-            request({
-              method: 'put',
-              url: '/orders',
-              data: {
-                orderId: this.props.newOrder.orderId,
-                status: 1,
-              },
-            })
-              .then(res => {
-                console.log(res);
-                this.props.history.push('/newOrder/result', { payDate: new Date() });
-                message.success('支付成功！');
-                this.props.updateCurrentStep(2);
-              })
-              .catch(err => {
-                message.error('支付失败！');
-                console.log(err);
-              });
-          });
-        }, 3000);
+        pay({ orderId: id, updateCurrentStep, history });
+
+        // this.setState({
+        //   paying: true,
+        // });
+        // setTimeout(() => {
+        //   this.setState({ paying: false }, () => {
+        //     request({
+        //       method: 'put',
+        //       url: '/orders',
+        //       data: {
+        //         orderId: this.props.newOrder.orderId,
+        //         status: 1,
+        //       },
+        //     })
+        //       .then(res => {
+        //         console.log(res);
+        //         this.props.history.push('/newOrder/result', {
+        //           payDate: new Date(),
+        //         });
+        //         message.success('支付成功！');
+        //         this.props.updateCurrentStep(2);
+        //       })
+        //       .catch(err => {
+        //         message.error('支付失败！');
+        //         console.log(err);
+        //       });
+        //   });
+        // }, 3000);
       }
     });
   };
@@ -51,10 +57,15 @@ class Pay extends React.Component {
       form: { getFieldDecorator },
       address,
       totalPrice,
+      payState,
     } = this.props;
     return (
       <div>
-        <Alert message="确认转账后，资金将直接打入对方账户，无法退回。" type="info" showIcon />
+        <Alert
+          message="确认转账后，资金将直接打入对方账户，无法退回。"
+          type="info"
+          showIcon
+        />
         <div className="pay-order-detail">
           <div className="pay-order-detail-item">
             <span className="label">付款账户：</span>
@@ -98,7 +109,7 @@ class Pay extends React.Component {
           <FormItem>
             <Button
               style={{ marginTop: 12 }}
-              loading={this.state.paying}
+              loading={payState.isFetching}
               type="primary"
               htmlType="submit"
             >
@@ -111,9 +122,21 @@ class Pay extends React.Component {
   }
 }
 
+Pay.propTypes = {
+  address: PropTypes.object,
+  form: PropTypes.object,
+  history: PropTypes.object,
+  newOrder: PropTypes.object,
+  pay: PropTypes.func,
+  payState: PropTypes.object,
+  totalPrice: PropTypes.number,
+};
+
+const { pay } = async;
 const mapStateToProps = state => state.NewOrder;
 const mapDispatchToProps = dispatch => ({
   updateCurrentStep: payload => dispatch(updateCurrentStep(payload)),
+  pay: payload => dispatch(pay(payload)),
 });
 
 export default connect(

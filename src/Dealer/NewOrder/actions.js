@@ -2,7 +2,7 @@ import { Async } from 'redux-action-boilerplate';
 
 export const async = new Async({
   prefix: 'newOrder',
-  actions: ['newOrder'],
+  actions: ['newOrder', 'pay'],
 });
 
 export const UPDATE_PRODUCTS = 'UPDATE_PRODUCTS';

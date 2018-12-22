@@ -1,13 +1,19 @@
-import { async, UPDATE_PRODUCTS, UPDATE_ADDRESS, UPDATE_CURRENT_STEP } from './actions';
+import {
+  async,
+  UPDATE_PRODUCTS,
+  UPDATE_ADDRESS,
+  UPDATE_CURRENT_STEP,
+} from './actions';
 import { fetchState } from 'utils';
 
-const { newOrder } = async;
+const { newOrder, pay } = async;
 
 const initState = {
   products: [],
   address: {},
   currentStep: 0,
   newOrder: fetchState,
+  payState: fetchState,
 };
 const computePrice = products => {
   let totalPrice = 0;
@@ -44,6 +50,33 @@ const NewOrder = (state = initState, action) => {
           ...state.newOrder,
           isRejected: true,
           isFetching: false,
+        },
+      };
+    case pay.TYPE:
+      return {
+        ...state,
+        payState: {
+          isFetching: true,
+          isResolved: false,
+          isRejected: false,
+        },
+      };
+    case pay.SUCCESS:
+      return {
+        ...state,
+        payState: {
+          ...state.payState,
+          isFetching: false,
+          isResolved: true,
+        },
+      };
+    case pay.FAILURE:
+      return {
+        ...state,
+        payState: {
+          ...state.payState,
+          isFetching: false,
+          isRejected: true,
         },
       };
     case UPDATE_PRODUCTS:
