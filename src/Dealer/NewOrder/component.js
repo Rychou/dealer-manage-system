@@ -56,11 +56,9 @@ class NewOrder extends Component {
         },
         name: address.name,
         phone: address.phone,
-        dealer: { id: 1 },
       },
       history,
     });
-    // push('/newOrder/pay');
   };
 
   render() {
@@ -74,9 +72,7 @@ class NewOrder extends Component {
       <div>
         <Address updateAddress={updateAddress} />
         <Products products={state.products} />
-        {address ? (
-          <Overview address={address} products={state.products} />
-        ) : null}
+        {address ? <Overview address={address} products={state.products} /> : null}
         <Button
           type="primary"
           disabled={!address}
@@ -107,11 +103,7 @@ class NewOrder extends Component {
             </Steps>
           </Col>
           <Col span={18}>
-            <Route
-              exact
-              path="/newOrder/confirm"
-              render={() => ConfirmOrder()}
-            />
+            <Route exact path="/newOrder/confirm" render={() => ConfirmOrder()} />
             <Route exact path="/newOrder/pay" component={Pay} />
             <Route exact path="/newOrder/result" component={PayResult} />
           </Col>
