@@ -78,7 +78,7 @@ export const dealerBreadcrumbNameMap = {
     exact: true,
     path: '/orders',
     name: '订单',
-    // component: '../Dealer/Index/container',
+    component: '../Dealer/Index/container',
     children: [
       {
         name: '订单详情',
@@ -144,6 +144,16 @@ export const routes = [
     pageName: 'IndexPage',
     stateName: 'Orders', // 该页面的reducer在store中的名称。
     path: '/', // 路由匹配路径
+    isExact: true,
+    type: 'dealer', // 用户类型
+    reducer: require('../Dealer/Index/reducer').default,
+    container: import('../Dealer/Index/container'),
+  },
+  {
+    isPrivate: true, // 该页面是否需要登录访问
+    pageName: 'orders',
+    stateName: 'Orders', // 该页面的reducer在store中的名称。
+    path: '/orders', // 路由匹配路径
     isExact: true,
     type: 'dealer', // 用户类型
     reducer: require('../Dealer/Index/reducer').default,
