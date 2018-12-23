@@ -1,15 +1,14 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
 import async from './actions';
-import { Modal } from 'antd';
+import { message } from 'antd';
 
-const { info } = Modal;
 
 const { fetchCompanyOrders, updateCompanyOrderStatus, linkExpress } = async;
 
 function* doFetchOrders() {
   try {
-    const { data } = yield call(request.get, '/orders');
+    const { data } = yield call(request.get, '/orders/group');
     yield put(fetchCompanyOrders.success({ orders: data }));
   } catch (err) {
     yield put(fetchCompanyOrders.failure(err));
@@ -21,12 +20,11 @@ function* doCompanyUpdateOrderStatus(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { status: action.payload.status },
+      data: { orderStatus: action.payload.status },
     });
-    yield put(updateCompanyOrderStatus.success({ isSuccess: data.msg }));
-    info({
-      title: data.msg,
-    });
+    yield put(updateCompanyOrderStatus.success({ isSuccess: data }));
+    action.payload.fetchOrders();
+    message.success('确认订单成功');
   } catch (err) {
     yield put(updateCompanyOrderStatus.failure(err));
   }
@@ -35,19 +33,18 @@ function* doCompanyUpdateOrderStatus(action) {
 function* doLinkExpress(action) {
   try {
     const { data } = yield call(request, {
-      method: 'post',
-      url: `/orders/${action.payload.id}`,
-      data: { expressNumber: action.payload.expressNumber },
-    });
-    yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { status: action.payload.status },
+      data: { expressNumber: action.payload.expressNumber, orderStatus: action.payload.status },
     });
-    info({
-      title: data.msg,
-    });
-    yield put(linkExpress.success({ isSuccess: data.msg }));
+    // yield call(request, {
+    //   method: 'patch',
+    //   url: `/orders/${action.payload.id}`,
+    //   data: { status: action.payload.status },
+    // });
+    action.payload.fetchOrders();
+    message.success('关联物流成功');
+    yield put(linkExpress.success({ isSuccess: data }));
   } catch (err) {
     yield put(linkExpress.failure(err));
   }

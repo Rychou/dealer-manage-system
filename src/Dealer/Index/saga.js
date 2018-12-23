@@ -1,9 +1,8 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
 import async from './actions';
-import { Modal } from 'antd';
+import { message } from 'antd';
 
-const { info } = Modal;
 
 const { fetchOrders, updateOrderStatus } = async;
 function* doFetchOrders() {
@@ -23,12 +22,11 @@ function* doUpdateOrderStatus(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { status: action.payload.status },
+      data: { orderStatus: action.payload.status },
     });
-    yield put(updateOrderStatus.success({ isSuccess: data.msg }));
-    info({
-      title: data.msg,
-    });
+    yield put(updateOrderStatus.success({ isSuccess: data }));
+    message.success('已成功收货');
+    action.payload.fetchOrders();
   } catch (err) {
     yield put(updateOrderStatus.failure(err));
   }

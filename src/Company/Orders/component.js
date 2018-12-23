@@ -1,28 +1,50 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array, object } from 'prop-types';
-import { Table, Input, Button, Icon, Modal } from 'antd';
+import { Table, Input, Button, Icon, Modal, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
 import ExpressForm from './ExpressForm';
+import moment from 'moment';
 import './index.less';
 
 const Confirm = Modal.confirm;
+
+const Address = (address) => {
+  if (address) {
+      return (
+          <Tooltip
+              title={
+                  `${address.province} 
+                  ${address.city} 
+                  ${address.district} 
+                  ${address.street} 
+                  ${address.details}`
+              }
+          ><span>{address.province} {address.city} {address.district} {address.street}</span>
+          </Tooltip>
+
+      );
+  }
+  return null;
+};
 
 const orderData = (orders) => {
   const data = [];
   if (orders.length) {
     orders.map((order, index) => {
-      const status = orderStatus(order.status);
+      const status = orderStatus(order.orderStatus);
+      const { address } = order;
+      const addressMsg = Address(address);
       data.push({
         key: index,
         id: order.id,
-        date: order.date,
-        price: order.price,
-        name: order.dealer,
+        date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
+        price: order.orderTotalPrice,
+        name: order.dealer.name,
         phone: order.phone,
-        address: order.address,
-        statusNum: order.status,
+        address: addressMsg,
+        statusNum: order.orderStatus,
         status,
       });
       return true;
@@ -132,7 +154,7 @@ class Orders extends Component {
             <Button
                 type="primary"
                 id="comfirmed"
-                onClick={this.confirmOrder(record.id)}
+                onClick={this.confirmOrder.bind(this, record.id)}
             >确认订单
             </Button>
           );
@@ -143,7 +165,7 @@ class Orders extends Component {
               <Button
                   type="primary"
                   id="link"
-                  onClick={this.handleShowModal(record.id)}
+                  onClick={this.handleShowModal.bind(this, record.id)}
               >关联物流
               </Button>
               <ExpressForm
@@ -200,10 +222,11 @@ class Orders extends Component {
       }
       const {
         linkExpress,
+        fetchOrders,
       } = this.props;
       const id = this.state.selectedId;
       const { expressNumber } = values;
-      linkExpress({ id, expressNumber, status: 3 });
+      linkExpress({ id, expressNumber, status: 3, fetchOrders });
       form.resetFields();
       this.setState({ visible: false });
     });
@@ -219,17 +242,19 @@ class Orders extends Component {
             onOk: () => {
                 const {
                     updateCompanyOrderStatus,
+                    fetchOrders,
                 } = this.props;
-                updateCompanyOrderStatus({ id, status: 2 });
+                updateCompanyOrderStatus({ id, status: 2, fetchOrders });
             },
         });
     }
 
 
   render() {
-    const { orders } = this.props.CompanyOrders;
+    const { orders, isFetching } = this.props.CompanyOrders;
     return (
       <Table
+      loading={isFetching}
         className="orderList"
         columns={this.columns}
         dataSource={orderData(orders)}
@@ -241,6 +266,7 @@ class Orders extends Component {
 
 Orders.propTypes = {
   CompanyOrders: object,
+  fetchCompanyOrders: func,
   fetchOrders: func,
   isResolved: bool,
   linkExpress: func,

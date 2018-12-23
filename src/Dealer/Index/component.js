@@ -1,13 +1,32 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
 import { bool, func, array, object } from 'prop-types';
-import { Table, Button, Modal, Spin } from 'antd';
+import { Table, Button, Modal, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
 import moment from 'moment';
 import './index.less';
 
 const { confirm } = Modal;
+
+const Address = (address) => {
+  if (address) {
+      return (
+          <Tooltip
+              title={
+                  `${address.province} 
+                  ${address.city} 
+                  ${address.district} 
+                  ${address.street} 
+                  ${address.details}`
+              }
+          ><span>{address.province} {address.city} {address.district} {address.street}</span>
+          </Tooltip>
+
+      );
+  }
+  return null;
+};
 
 const insideColumns = [
     { title: '名称', dataIndex: 'name', key: 'name' },
@@ -46,11 +65,11 @@ const orderData = (orders) => {
       orders.map((order, index) => {
         const status = orderStatus(order.orderStatus);
         const { address } = order;
-        const addressMsg = `${address.province} ${address.city} ${address.district}`;
+        const addressMsg = Address(address);
         if (status === '已发货') {
           data.push({
             key: index,
-            id: order.orderNo,
+            id: order.id,
             date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
             price: order.orderTotalPrice,
             name: order.dealer.name,
@@ -63,7 +82,7 @@ const orderData = (orders) => {
         } else {
           data.push({
             key: index,
-            id: order.orderNo,
+            id: order.id,
             date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
             price: order.orderTotalPrice,
             name: order.dealer.name,
@@ -85,10 +104,6 @@ const orderData = (orders) => {
 
 @hot(module)
 class Orders extends Component {
-  state = {
-    loading: true,
-  }
-
   columns = [
     {
       title: '下单日期',
@@ -138,7 +153,6 @@ class Orders extends Component {
       }],
       filterMultiple: true,
       onFilter: (value, record) => record.statusNum === value },
-    // { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
     { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
     { title: '操作',
       key: 'operation',
@@ -147,7 +161,7 @@ class Orders extends Component {
           return (
             <Button
                 type="primary"
-                onClick={this.comfirmOrders.bind(this, record.id)}
+                onClick={this.comfirmOrder.bind(this, record.id)}
             >确认收货
             </Button>
           );
@@ -161,7 +175,6 @@ class Orders extends Component {
     const { fetchOrders, isResolved } = this.props;
     if (!isResolved) {
       fetchOrders();
-      this.setState({ loading: false });
     }
   }
 
@@ -171,18 +184,19 @@ class Orders extends Component {
         onOk: () => {
             const {
                 updateOrderStatus,
+                fetchOrders,
             } = this.props;
-            updateOrderStatus({ id, status: 5 });
+            updateOrderStatus({ id, status: 5, fetchOrders });
         },
     });
   }
 
 
   render() {
-    const { orders } = this.props.Orders || {};
+    const { orders, isFetching } = this.props.Orders;
     return (
-      <Spin spinning={this.state.loading}>
           <Table
+            loading={isFetching}
             className="orderList"
             columns={this.columns}
             expandedRowRender={record => <Table
@@ -194,7 +208,6 @@ class Orders extends Component {
             dataSource={orderData(orders)}
             style={{ backgroundColor: 'white', width: 1250 }}
           />
-      </Spin>
 
     );
   }

@@ -42,7 +42,7 @@ class Products extends Component {
                         style={{ width: 1000, marginLeft: 60, marginTop: 20 }}
                     >
                         <Grid style={{ padding: 0, marginRight: 10, width: 80, height: 80 }}>
-                            <img alt="example" src={product.imageUrl} />
+                            <img alt="example" src={product.detailImages[0]} style={{ width: 80, height: 80 }} />
                         </Grid>
                         <Meta
                             title={<Link to={`/products/${product.no}`}>{product.name}</Link>}
@@ -74,7 +74,7 @@ class Products extends Component {
                                 title={<div>
                                         <span>总价：</span>
                                         <span>
-                                            ￥{formatter(String(item.sum))}
+                                            ￥{formatter(String(item.totalMoney))}
                                         </span>
                                        </div>}
                                 />
