@@ -58,8 +58,8 @@ export const dealerBreadcrumbNameMap = {
     component: '../Dealer/Index/container',
     children: [
       {
-        name: '订单详情',
-        path: '/orders/:id',
+        name: '订单',
+        path: '/orders',
       },
     ],
   },
@@ -71,6 +71,18 @@ export const dealerBreadcrumbNameMap = {
       {
         name: '商品详情',
         path: '/products/:no',
+      },
+    ],
+  },
+  '/orders': {
+    exact: true,
+    path: '/orders',
+    name: '订单',
+    // component: '../Dealer/Index/container',
+    children: [
+      {
+        name: '订单详情',
+        path: '/orders/:id',
       },
     ],
   },

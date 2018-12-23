@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
-import { array } from 'prop-types';
-import { Card, Input } from 'antd';
+import { array, string } from 'prop-types';
+import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 
 const { Grid, Meta } = Card;
+
+const formatter = (value) => {
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+};
+
+formatter.propTypes = {
+    value: string,
+};
 
 
 class Products extends Component {
@@ -24,14 +32,14 @@ class Products extends Component {
         return (
         <div>
             {products
-                ? products.map((item, index) => {
+                ? products.map((item) => {
                     const { product } = item;
                     return (
                     <Card
-                        key={index}
+                        key={product.no}
                         className="product"
                         title={<span>NO.{product.no}</span>}
-                        style={{ width: 1200, marginLeft: 60, marginTop: 20 }}
+                        style={{ width: 1000, marginLeft: 60, marginTop: 20 }}
                     >
                         <Grid style={{ padding: 0, marginRight: 10, width: 80, height: 80 }}>
                             <img alt="example" src={product.imageUrl} />
@@ -44,16 +52,10 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                         <span>单价：</span>
-                                        <Input
-                                            disabled
-                                            autosize
-                                            defaultValue={product.price}
-                                            formatter={value =>
-                                                `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                            }
-                                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                            className="input"
-                                        />
+                                        <span>
+                                            ￥{formatter(String(product.price))}
+                                        </span>
+
                                        </div>}
                             />
                         </div>
@@ -61,16 +63,9 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                             <span>数量：</span>
-                                            <Input
-                                                disabled
-                                                autosize
-                                                defaultValue={item.amount}
-                                                formatter={value =>
-                                                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                                }
-                                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                                className="input"
-                                            />
+                                            <span>
+                                                {formatter(String(item.amount))}
+                                            </span>
                                        </div>}
                                 />
                         </div>
@@ -78,25 +73,12 @@ class Products extends Component {
                             <Meta
                                 title={<div>
                                         <span>总价：</span>
-                                        <Input
-                                            disabled
-                                            autosize
-                                            defaultValue={item.sum}
-                                            formatter={value =>
-                                                `￥${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                                            }
-                                            className="input"
-                                            parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                        />
+                                        <span>
+                                            ￥{formatter(String(item.sum))}
+                                        </span>
                                        </div>}
                                 />
                         </div>
-                        {/* <Grid style={{height:80}}>
-                        <Meta
-                            avatar={<img src={product.imageUrl} />}
-                            title={product.name}
-                            // description={product.num}
-                        /></Grid> */}
                     </Card>
                 );
             })

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Divider, Icon, Button, Modal } from 'antd';
+import { Divider, Icon, Button, Modal, Spin } from 'antd';
 import './index.less';
 import Products from './Products';
 import Express from './Express';
@@ -10,36 +10,47 @@ import { orderStatus } from 'utils';
 
 const { confirm } = Modal;
 
-const Address = (props) => {
-    const address = props.address || {};
+const Address = (address) => {
     const style = { marginLeft: 10 };
-    return (
-        <span>
-            <span style={style}>{address.province}</span>
-            <span style={style}>{address.city}</span>
-            <span style={style}>{address.district}</span>
-            <span style={style}>{address.street}</span>
-            <span style={style}>{address.details}</span>
-        </span>
+    if (address) {
+        return (
+            <span>
+                <span style={style}>{address.province}</span>
+                <span style={style}>{address.city}</span>
+                <span style={style}>{address.district}</span>
+                <span style={style}>{address.street}</span>
+                <span style={style}>{address.details}</span>
+            </span>
 
-    );
+        );
+    }
+    return null;
+};
+
+Address.prototype = {
+    address: object,
 };
 
 
 @hot(module)
 class OrderDetail extends Component {
+  state = {
+      loading: true,
+  }
+
   componentDidMount() {
     const {
-      isResolve,
+    //   isResolve,
       fetchOrderDetail,
       match: {
         params: { id },
       },
     } = this.props;
     fetchOrderDetail({ id });
+    this.setState({ loading: false });
   }
 
-  comfirmOrder (id) {
+  comfirmOrder(id) {
     confirm({
         title: '是否确认收货？',
         onOk: () => {
@@ -99,15 +110,17 @@ class OrderDetail extends Component {
       },
   };
     return (
-      <div style={{ marginLeft: 20, marginRight: 20 }}>
-        <h2 style={{ marginTop: 20 }}>
+    <Spin spinning={this.state.loading}>
+      <div id="main">
+        <h2>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
           <div style={{ float: 'right' }}>
                 {
-                  order.status == 4 ?
+                  order.status === 4 ?
                     <Button
                         type="primary"
                         onClick={this.comfirmOrder.bind(this, order.id)}
+                        style={{ marginRight: 20 }}
                     >确认收货
                     </Button>
                     : null
@@ -116,8 +129,8 @@ class OrderDetail extends Component {
         </h2>
 
         <Divider />
-        <div>
-            <div style={{ float: 'left' }}>
+        <div id="info">
+            <div style={{ float: 'left', marginLeft: 100 }}>
                 <h3>下单时间：{order.orderedAt}</h3>
                 {
                     order.status > 0 ?
@@ -126,34 +139,33 @@ class OrderDetail extends Component {
                 }
                 <h3>订单状态：{orderStatus(order.status)}</h3>
             </div>
-            <div style={{ float: 'left', marginLeft: 300 }}>
+            <div style={{ float: 'right', marginRight: 100 }}>
                 <h3>收货人：{order.name}</h3>
                 <h3>联系电话：{order.phone}</h3>
-                <h3>收货地址：<Address address={order.address} /></h3>
+                <h3>收货地址：{Address(order.address)}</h3>
             </div>
         </div>
-        <Divider />
+        <Divider style={{ marginTop: 150 }} />
         {
             order.status >= 3 && order.status <= 5 ?
-                <Express express={expressData} />
+                Express(expressData)
                 : null
         }
-
-        {/* <Express express={express} /> */}
-        <Divider />
+        <br />
         <h2 style={{ marginBottom: -20 }}>订购产品</h2>
         <Divider />
         <Products products={order.orderDetails} />
-        <Divider />
       </div>
-    // <div>123</div>
+    </Spin>
     );
   }
 }
 
 OrderDetail.propTypes = {
   fetchOrderDetail: func,
-  isResolve: bool,
+  match: object,
+  OrderDetail: object,
+  updateOrderStatus: func,
 };
 
 

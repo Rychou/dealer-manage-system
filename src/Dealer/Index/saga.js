@@ -1,14 +1,17 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 import request from 'request';
-import { async } from './actions';
+import async from './actions';
 import { Modal } from 'antd';
 
 const { info } = Modal;
 
 const { fetchOrders, updateOrderStatus } = async;
-function* doFetchOrders(action) {
+function* doFetchOrders() {
   try {
-    const { data } = yield call(request.get, '/orders');
+    const { data } = yield call(request, {
+      method: 'get',
+      url: '/orders',
+    });
     yield put(fetchOrders.success({ orders: data }));
   } catch (err) {
     yield put(fetchOrders.failure(err));

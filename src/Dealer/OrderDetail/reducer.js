@@ -1,4 +1,4 @@
-import { async } from './actions';
+import async from './actions';
 import { fetchState } from 'utils';
 import { combineReducers } from 'redux';
 

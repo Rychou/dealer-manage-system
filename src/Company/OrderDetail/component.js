@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func } from 'prop-types';
+import { func, object } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Divider, Icon, Button, Modal } from 'antd';
+import { Divider, Icon, Button, Modal, Spin } from 'antd';
 import './index.less';
 import Products from './Products';
 import Express from './Express';
@@ -12,19 +12,25 @@ import ExpressForm from './ExpressForm';
 const { confirm } = Modal;
 
 
-const Address = (props) => {
-    const address = props.address || {};
+const Address = (address) => {
     const style = { marginLeft: 10 };
-    return (
-        <span>
-            <span style={style}>{address.province}</span>
-            <span style={style}>{address.city}</span>
-            <span style={style}>{address.district}</span>
-            <span style={style}>{address.street}</span>
-            <span style={style}>{address.details}</span>
-        </span>
+    if (address) {
+        return (
+            <span>
+                <span style={style}>{address.province}</span>
+                <span style={style}>{address.city}</span>
+                <span style={style}>{address.district}</span>
+                <span style={style}>{address.street}</span>
+                <span style={style}>{address.details}</span>
+            </span>
 
-    );
+        );
+    }
+    return null;
+};
+
+Address.prototype = {
+    address: object,
 };
 
 
@@ -32,17 +38,18 @@ const Address = (props) => {
 class OrderDetail extends Component {
   state = {
     visible: false,
+    loading: true,
   };
 
   componentDidMount() {
     const {
-      isResolve,
       fetchCompanyOrderDetail,
       match: {
         params: { id },
       },
     } = this.props;
     fetchCompanyOrderDetail({ id });
+    this.setState({ loading: false });
   }
 
   handleShowModal = () => {
@@ -66,7 +73,6 @@ class OrderDetail extends Component {
       const { id } = order;
       const { expressNumber } = values;
       linkExpress({ id, expressNumber, status: 3 });
-      console.log('Received values of form: ', values);
       form.resetFields();
       this.setState({ visible: false });
     });
@@ -136,13 +142,14 @@ class OrderDetail extends Component {
       },
   };
     return (
-      <div style={{ marginLeft: 20, marginRight: 20 }}>
+    <Spin spinning={this.state.loading}>
+      <div id="main">
         <h2 style={{ marginTop: 20 }}>
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
           <div className="button">
             {
 
-                order.status == 1 ?
+                order.status === 1 ?
                     <Button
                         type="primary"
                         id="comfirmed"
@@ -153,7 +160,7 @@ class OrderDetail extends Component {
             }
             {
 
-                order.status == 2 ?
+                order.status === 2 ?
                 <div>
                     <Button
                         type="primary"
@@ -161,7 +168,6 @@ class OrderDetail extends Component {
                         onClick={this.handleShowModal}
                     >关联物流
                     </Button>
-                    {/* <linkExpress /> */}
                     <ExpressForm
                         wrappedComponentRef={this.saveFormRef}
                         visible={this.state.visible}
@@ -175,7 +181,7 @@ class OrderDetail extends Component {
         </h2>
         <Divider />
         <div>
-            <div style={{ float: 'left' }}>
+            <div style={{ float: 'left', marginLeft: 100 }}>
                 <h3>下单时间：{order.orderedAt}</h3>
                 {
                     order.status > 0 ?
@@ -184,31 +190,35 @@ class OrderDetail extends Component {
                 }
                 <h3>订单状态：{orderStatus(order.status)}</h3>
             </div>
-            <div style={{ float: 'left', marginLeft: 300 }}>
+            <div style={{ float: 'right', marginRight: 300 }}>
                 <h3>收货人：{order.name}</h3>
                 <h3>联系电话：{order.phone}</h3>
-                <h3>收货地址：<Address address={order.address} /></h3>
+                <h3>收货地址：{Address(order.address)}</h3>
             </div>
         </div>
         <Divider />
         {
             order.status >= 3 && order.status <= 5 ?
-                <Express express={expressData} />
+                Express(expressData)
                 : null
         }
-        <Divider />
+        <br />
         <h2 style={{ marginBottom: -20 }}>订购产品</h2>
         <Divider />
         <Products products={order.orderDetails} />
         <Divider />
       </div>
+    </Spin>
     );
   }
 }
 
 OrderDetail.propTypes = {
-  fetchOrderDetail: func,
-  isResolve: bool,
+    fetchCompanyOrderDetail: func,
+    linkExpress: func,
+    match: object,
+    OrderDetail: object,
+    updateCompanyOrderStatus: func,
 };
 
 

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { hot } from 'react-hot-loader';
-import { bool, func, array } from 'prop-types';
-import { Table, Button, Modal } from 'antd';
+import { bool, func, array, object } from 'prop-types';
+import { Table, Button, Modal, Spin } from 'antd';
 import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
+import moment from 'moment';
 import './index.less';
 
 const { confirm } = Modal;
@@ -15,17 +16,19 @@ const insideColumns = [
     { title: '总价', dataIndex: 'totalPrice', key: 'totalPrice' },
   ];
 
-const ProductList = (productList) => {
+const ProductList = (orderDetails) => {
   const data = [];
-  if (productList) {
-    productList.map((product, index) => {
+  if (orderDetails) {
+    orderDetails.map((product, index) => {
+      const productInfo = product.product;
       data.push({
         key: index,
-        name: <Link to={`/products/${product.id}`}>{product.name}</Link>,
-        num: product.num, // int
-        price: product.price, // float
-        totalPrice: product.price * product.num, // *
+        name: <Link to={`/products/${productInfo.no}`}>{productInfo.name}</Link>,
+        num: product.amount, // int
+        price: productInfo.price, // float
+        totalPrice: product.totalMoney, // *
       });
+      return true;
     });
   }
 
@@ -33,17 +36,57 @@ const ProductList = (productList) => {
 };
 
 ProductList.propTypes = {
-  productList: array,
+  orderDetails: array,
+};
+
+const orderData = (orders) => {
+  const data = [];
+  if (orders) {
+    if (orders.length) {
+      orders.map((order, index) => {
+        const status = orderStatus(order.orderStatus);
+        const { address } = order;
+        const addressMsg = `${address.province} ${address.city} ${address.district}`;
+        if (status === '已发货') {
+          data.push({
+            key: index,
+            id: order.orderNo,
+            date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
+            price: order.orderTotalPrice,
+            name: order.dealer.name,
+            phone: order.phone,
+            address: addressMsg,
+            statusNum: order.orderStatus,
+            status,
+            products: ProductList(order.orderDetails),
+          });
+        } else {
+          data.push({
+            key: index,
+            id: order.orderNo,
+            date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
+            price: order.orderTotalPrice,
+            name: order.dealer.name,
+            phone: order.phone,
+            address: addressMsg,
+            statusNum: order.orderStatus,
+            status,
+            products: ProductList(order.orderDetails),
+          });
+        }
+        return true;
+      });
+    }
+  }
+
+  return data;
 };
 
 
 @hot(module)
 class Orders extends Component {
-  componentDidMount() {
-    const { fetchOrders, isResolved } = this.props;
-    if (!isResolved) {
-      fetchOrders();
-    }
+  state = {
+    loading: true,
   }
 
   columns = [
@@ -94,24 +137,33 @@ class Orders extends Component {
         value: 9,
       }],
       filterMultiple: true,
-      onFilter: (value, record) => record.statusNum == value },
-    { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
-    { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.no}`}>详情</Link> },
+      onFilter: (value, record) => record.statusNum === value },
+    // { title: '物流信息', dataIndex: 'logistics', key: 'logistics' },
+    { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
     { title: '操作',
       key: 'operation',
       render: (record) => {
-        if (record.statusNum == 4) {
+        if (record.statusNum === 4) {
           return (
             <Button
                 type="primary"
-                onClick={this.comfirmOrder.bind(this, record.id)}
+                onClick={this.comfirmOrders.bind(this, record.id)}
             >确认收货
             </Button>
           );
         }
+        return null;
       },
     },
   ];
+
+  componentDidMount() {
+    const { fetchOrders, isResolved } = this.props;
+    if (!isResolved) {
+      fetchOrders();
+      this.setState({ loading: false });
+    }
+  }
 
   comfirmOrder (id) {
     confirm({
@@ -123,73 +175,36 @@ class Orders extends Component {
             updateOrderStatus({ id, status: 5 });
         },
     });
-}
+  }
+
 
   render() {
     const { orders } = this.props.Orders || {};
-    const data = [];
-    // const table = [];
-    if (orders) {
-      orders.length
-        ? orders.map((order, index) => {
-          const status = orderStatus(order.status);
-          if (status == '已发货') {
-            data.push({
-              key: index,
-              id: order.id,
-              date: order.date,
-              price: order.price,
-              name: order.name,
-              phone: order.phone,
-              address: order.address,
-              statusNum: order.status,
-              status,
-              logistics: order.logistics.message,
-              // status: order.logistics.message,
-              products: ProductList(order.products),
-            });
-          } else {
-            data.push({
-              key: index,
-              id: order.id,
-              date: order.date,
-              price: order.price,
-              name: order.name,
-              phone: order.phone,
-              address: order.address,
-              statusNum: order.status,
-              logistics: '暂无物流信息',
-              status,
-              products: ProductList(order.products),
-            });
-          }
-        })
-        : null;
-    }
-
-
     return (
-      // OrderList()
-      <Table
-        className="orderList"
-        columns={this.columns}
-        expandedRowRender={record => <Table
-            className="products"
-            columns={insideColumns}
-            dataSource={record.products}
-            pagination={false}
-          />}
-        dataSource={data}
-      />
+      <Spin spinning={this.state.loading}>
+          <Table
+            className="orderList"
+            columns={this.columns}
+            expandedRowRender={record => <Table
+                className="products"
+                columns={insideColumns}
+                dataSource={record.products}
+                pagination={false}
+              />}
+            dataSource={orderData(orders)}
+            style={{ backgroundColor: 'white', width: 1250 }}
+          />
+      </Spin>
+
     );
   }
 }
 
 Orders.propTypes = {
   fetchOrders: func,
-  isFetching: bool,
   isResolved: bool,
-  orders: array,
+  Orders: object,
+  updateOrderStatus: func,
 };
 
 export default Orders;
