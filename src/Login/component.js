@@ -79,7 +79,7 @@ class Login extends Component {
           <FormItem>
             {getFieldDecorator('remember', {
               valuePropName: 'checked',
-              initialValue: false,
+              initialValue: true,
             })(<Checkbox>记住密码</Checkbox>)}
 
             <Button
