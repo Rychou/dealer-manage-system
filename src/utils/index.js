@@ -31,20 +31,46 @@ export const fetchState = {
 // 7-退货中
 // 8-已退货
 // 9-取消交易
-export const orderStatus = (orderStatusCode) => {
+export const orderStatus = orderStatusCode => {
   let status = '';
   switch (orderStatusCode) {
-    case 0: status = '未付款'; break;
-    case 1: status = '已付款'; break;
-    case 2: status = '集团已确认'; break;
-    case 3: status = '已发货'; break;
-    case 4: status = '已签收'; break;
-    case 5: status = '交易完成'; break;
-    case 6: status = '退货申请中'; break;
-    case 7: status = '退货中'; break;
-    case 8: status = '已退货'; break;
-    case 9: status = '交易取消'; break;
-    default: status = 'UNDEFINED';
+    case 0:
+      status = '未付款';
+      break;
+    case 1:
+      status = '已付款';
+      break;
+    case 2:
+      status = '集团已确认';
+      break;
+    case 3:
+      status = '已发货';
+      break;
+    case 4:
+      status = '已签收';
+      break;
+    case 5:
+      status = '交易完成';
+      break;
+    case 6:
+      status = '退货申请中';
+      break;
+    case 7:
+      status = '退货中';
+      break;
+    case 8:
+      status = '已退货';
+      break;
+    case 9:
+      status = '交易取消';
+      break;
+    default:
+      status = 'UNDEFINED';
   }
   return status;
+};
+
+export const formatDate = date => {
+  return `${date.getFullYear()}-${date.getMonth() +
+    1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 };

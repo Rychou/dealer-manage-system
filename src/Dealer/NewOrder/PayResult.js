@@ -3,6 +3,7 @@ import { Result } from 'ant-design-pro';
 import { connect } from 'react-redux';
 import { hot } from 'react-hot-loader';
 import { Button } from 'antd';
+import { formatDate } from 'utils';
 
 @hot(module)
 class PayResult extends React.Component {
@@ -30,14 +31,11 @@ class PayResult extends React.Component {
             </div>
             <div className="description">
               <span>创建时间：</span>
-              <span>{orderedAt}</span>
+              <span>{formatDate(new Date(orderedAt))}</span>
             </div>
             <div className="description">
               <span>付款时间：</span>
-              <span>
-                {`${payDate.getFullYear()}-${payDate.getMonth() +
-                  1}-${payDate.getDate()} ${payDate.getHours()}:${payDate.getMinutes()}:${payDate.getSeconds()}`}
-              </span>
+              <span>{formatDate(payDate)}</span>
             </div>
             <div className="description">
               <span>收货地址: </span>
