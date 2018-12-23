@@ -125,9 +125,6 @@ class Orders extends Component {
         text: '已发货',
         value: 3,
       }, {
-        text: '已签收',
-        value: 4,
-      }, {
         text: '交易完成',
         value: 5,
       }, {
@@ -144,7 +141,7 @@ class Orders extends Component {
         value: 9,
       }],
       filterMultiple: true,
-      onFilter: (value, record) => record.statusNum === value },
+      onFilter: (value, record) => String(record.statusNum) === value },
     { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
     { title: '操作',
       key: 'operation',

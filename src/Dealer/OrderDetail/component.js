@@ -72,7 +72,7 @@ class OrderDetail extends Component {
           <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
           <div style={{ float: 'right' }}>
                 {
-                  order.orderStatus === 4 ?
+                  order.orderStatus === 3 ?
                     <Button
                         type="primary"
                         onClick={this.comfirmOrder.bind(this, order.id)}

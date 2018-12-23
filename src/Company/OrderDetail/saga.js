@@ -27,7 +27,7 @@ function* doCompanyFetchOrderDetail(action) {
             },
           },
         );
-      if (expressData.ERRORCODE !== 0) {
+      if (expressData.ERRORCODE !== '0') {
         message.error('物流单号错误');
       }
       yield put(fetchCompanyOrderDetail.success({ order: data, express: expressData }));
