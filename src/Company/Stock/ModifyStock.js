@@ -27,7 +27,7 @@ class ModifyStock extends Component {
       form: { validateFields },
     } = this.props;
     const {
-      stock: { productNo, stock: currentStock, warehouseNo },
+      stock: { productNo, stock: currentStock, warehouseId },
     } = this.state;
 
     validateFields((err, values) => {
@@ -35,25 +35,26 @@ class ModifyStock extends Component {
         if (values.stock === currentStock) {
           message.info('您要修改的库存量和原来的是一样的噢！');
         } else {
-          this.setStock(productNo, values.stock, warehouseNo);
+          this.setStock(productNo, values.stock, warehouseId);
         }
       }
     });
   };
 
-  setStock = (productNo, stock, warehouseNo) => {
+  setStock = (productNo, stock, warehouseId) => {
     request('/groupInventory', {
       method: 'post',
       data: {
         productNo,
         stock,
-        warehouseNo,
+        warehouseId,
       },
     })
       .then(res => {
         message.success('修改成功！');
         this.props.hideModal();
         this.props.fetchStocks();
+        this.props.form.resetFields();
       })
       .catch(err => {
         message.failure('修改失败！');

@@ -61,10 +61,7 @@ class Stock extends Component {
         title: '操作',
         key: 'action',
         render: (text, record) => (
-          <a
-            href="javascript:;"
-            onClick={this.handleModifyStock.bind(this, record.productNo)}
-          >
+          <a href="javascript:;" onClick={this.handleModifyStock.bind(this, record.productNo)}>
             修改库存
           </a>
         ),
@@ -72,12 +69,7 @@ class Stock extends Component {
     ];
     return (
       <div style={{ backgroundColor: '#fff', padding: 12 }}>
-        <Table
-          rowKey="productNo"
-          loading={isFetching}
-          dataSource={stocks}
-          columns={columns}
-        />
+        <Table rowKey="productNo" loading={isFetching} dataSource={stocks} columns={columns} />
         <ModifyStock
           fetchStocks={this.props.fetchStocks}
           hideModal={this.hideModal}
