@@ -12,19 +12,19 @@ const Confirm = Modal.confirm;
 
 const Address = (address) => {
   if (address) {
-      return (
-          <Tooltip
-              title={
-                  `${address.province} 
+    return (
+      <Tooltip
+        title={
+          `${address.province} 
                   ${address.city} 
                   ${address.district} 
                   ${address.street} 
                   ${address.details}`
-              }
-          ><span>{address.province} {address.city} {address.district} {address.street}</span>
-          </Tooltip>
+        }
+      ><span>{address.province} {address.city} {address.district} {address.street}</span>
+      </Tooltip>
 
-      );
+    );
   }
   return null;
 };
@@ -40,7 +40,7 @@ const orderData = (orders) => {
         key: index,
         id: order.id,
         date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
-        price: order.orderTotalPrice,
+        price: order.orderTotalPrice.toFixed(2),
         name: order.dealer.name,
         phone: order.phone,
         address: addressMsg,
@@ -72,20 +72,20 @@ class Orders extends Component {
       filterDropdown: ({
         setSelectedKeys, selectedKeys, confirm, clearFilters,
       }) => (
-        <div className="custom-filter-dropdown">
-          <Input
-            ref={(ele) => { this.searchInput = ele; return true; }}
-            placeholder="Search name"
-            value={selectedKeys[0]}
-            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-            onPressEnter={this.handleSearch(selectedKeys, confirm)}
-          />
-          <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
-          <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-        </div>
-      ),
+          <div className="custom-filter-dropdown">
+            <Input
+              ref={(ele) => { this.searchInput = ele; return true; }}
+              placeholder="Search name"
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={this.handleSearch(selectedKeys, confirm)}
+            />
+            <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+            <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+          </div>
+        ),
       filterIcon: filtered =>
-            <Icon type="smile-o" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        <Icon type="smile-o" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
       onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
@@ -141,17 +141,19 @@ class Orders extends Component {
         value: 9,
       }],
       filterMultiple: true,
-      onFilter: (value, record) => String(record.statusNum) === value },
+      onFilter: (value, record) => String(record.statusNum) === value,
+    },
     { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
-    { title: '操作',
+    {
+      title: '操作',
       key: 'operation',
       render: (record) => {
         if (record.statusNum === 1) {
           return (
             <Button
-                type="primary"
-                id="comfirmed"
-                onClick={this.confirmOrder.bind(this, record.id)}
+              type="primary"
+              id="comfirmed"
+              onClick={this.confirmOrder.bind(this, record.id)}
             >确认订单
             </Button>
           );
@@ -160,16 +162,16 @@ class Orders extends Component {
           return (
             <div>
               <Button
-                  type="primary"
-                  id="link"
-                  onClick={this.handleShowModal.bind(this, record.id)}
+                type="primary"
+                id="link"
+                onClick={this.handleShowModal.bind(this, record.id)}
               >关联物流
               </Button>
               <ExpressForm
-                  wrappedComponentRef={this.saveFormRef}
-                  visible={this.state.visible}
-                  onCancel={this.handleCancel}
-                  onCreate={this.handleCreate}
+                wrappedComponentRef={this.saveFormRef}
+                visible={this.state.visible}
+                onCancel={this.handleCancel}
+                onCreate={this.handleCreate}
               />
             </div>
           );
@@ -233,25 +235,25 @@ class Orders extends Component {
     this.formRef = formRef;
   }
 
-    confirmOrder = id => {
-        Confirm({
-            title: '是否确认订单？',
-            onOk: () => {
-                const {
-                    updateCompanyOrderStatus,
-                    fetchOrders,
-                } = this.props;
-                updateCompanyOrderStatus({ id, status: 2, fetchOrders });
-            },
-        });
-    }
+  confirmOrder = id => {
+    Confirm({
+      title: '是否确认订单？',
+      onOk: () => {
+        const {
+          updateCompanyOrderStatus,
+          fetchOrders,
+        } = this.props;
+        updateCompanyOrderStatus({ id, status: 2, fetchOrders });
+      },
+    });
+  }
 
 
   render() {
     const { orders, isFetching } = this.props.CompanyOrders;
     return (
       <Table
-      loading={isFetching}
+        loading={isFetching}
         className="orderList"
         columns={this.columns}
         dataSource={orderData(orders)}

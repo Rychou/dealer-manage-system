@@ -54,33 +54,36 @@ class Products extends Component {
                 />
                 <div className="productInfo">
                   <Meta
-                    title={<div>
-                      <span>单价：</span>
-                      <span>
-                        ￥{formatter(String(product.price))}
-                      </span>
+                    title={
+                      <div>
+                        <span>单价：</span>
+                        <span>
+                          ￥{formatter(String(product.price.toFixed(2)))}
+                        </span>
 
-                           </div>}
+                      </div>}
                   />
                 </div>
                 <div className="productInfo">
                   <Meta
-                    title={<div>
-                      <span>数量：</span>
-                      <span>
-                        {formatter(String(item.amount))}
-                      </span>
-                           </div>}
+                    title={
+                      <div>
+                        <span>数量：</span>
+                        <span>
+                          {formatter(String(item.amount))}
+                        </span>
+                      </div>}
                   />
                 </div>
                 <div className="productInfo">
                   <Meta
-                    title={<div>
-                      <span>总价：</span>
-                      <span>
-                        ￥{formatter(String(item.totalMoney))}
-                      </span>
-                           </div>}
+                    title={
+                      <div>
+                        <span>总价：</span>
+                        <span>
+                          ￥{formatter(String(item.totalMoney.toFixed(2)))}
+                        </span>
+                      </div>}
                   />
                 </div>
               </Card>

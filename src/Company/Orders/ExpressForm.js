@@ -1,5 +1,5 @@
 import {
- Modal, Form, Input, Icon,
+  Modal, Form, Input, Icon,
 } from 'antd';
 import React, { Component } from 'react';
 

@@ -12,29 +12,29 @@ const { confirm } = Modal;
 
 const Address = (address) => {
   if (address) {
-      return (
-          <Tooltip
-              title={
-                  `${address.province} 
+    return (
+      <Tooltip
+        title={
+          `${address.province} 
                   ${address.city} 
                   ${address.district} 
                   ${address.street} 
                   ${address.details}`
-              }
-          ><span>{address.province} {address.city} {address.district} {address.street}</span>
-          </Tooltip>
+        }
+      ><span>{address.province} {address.city} {address.district} {address.street}</span>
+      </Tooltip>
 
-      );
+    );
   }
   return null;
 };
 
 const insideColumns = [
-    { title: '名称', dataIndex: 'name', key: 'name' },
-    { title: '数量', dataIndex: 'num', key: 'num' },
-    { title: '单价', dataIndex: 'price', key: 'price' },
-    { title: '总价', dataIndex: 'totalPrice', key: 'totalPrice' },
-  ];
+  { title: '名称', dataIndex: 'name', key: 'name' },
+  { title: '数量', dataIndex: 'num', key: 'num' },
+  { title: '单价', dataIndex: 'price', key: 'price' },
+  { title: '总价', dataIndex: 'totalPrice', key: 'totalPrice' },
+];
 
 const ProductList = (orderDetails) => {
   const data = [];
@@ -45,8 +45,8 @@ const ProductList = (orderDetails) => {
         key: index,
         name: <Link to={`/products/${productInfo.no}`}>{productInfo.name}</Link>,
         num: product.amount, // int
-        price: productInfo.price, // float
-        totalPrice: product.totalMoney, // *
+        price: productInfo.price.toFixed(2), // float
+        totalPrice: product.totalMoney.toFixed(2), // *
       });
       return true;
     });
@@ -158,16 +158,18 @@ class Orders extends Component {
         value: 9,
       }],
       filterMultiple: true,
-      onFilter: (value, record) => String(record.statusNum) === value },
+      onFilter: (value, record) => String(record.statusNum) === value,
+    },
     { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
-    { title: '操作',
+    {
+      title: '操作',
       key: 'operation',
       render: (record) => {
         if (record.statusNum === 3) {
           return (
             <Button
-                type="primary"
-                onClick={this.comfirmOrder.bind(this, record.id)}
+              type="primary"
+              onClick={this.comfirmOrder.bind(this, record.id)}
             >确认收货
             </Button>
           );
@@ -176,8 +178,8 @@ class Orders extends Component {
           return (
             <div>
               <Button
-                  type="primary"
-                  onClick={this.handleShowModal.bind(this, record.id)}
+                type="primary"
+                onClick={this.handleShowModal.bind(this, record.id)}
               >付款
               </Button>
               <Pay
@@ -186,6 +188,7 @@ class Orders extends Component {
                 onCancel={this.handleCancel}
                 onCreate={this.handleCreate}
                 order={record.order}
+                confirmLoading={this.props.Pay.isFetching}
               />
             </div>
           );
@@ -207,7 +210,9 @@ class Orders extends Component {
   }
 
   handleCancel = () => {
+    const { form } = this.formRef.props;
     this.setState({ visible: false });
+    form.resetFields();
   }
 
   handleCreate = () => {
@@ -224,9 +229,6 @@ class Orders extends Component {
       payOrder({ id: this.state.selectId, password, status: 1, fetchOrders });
       form.resetFields();
       this.setState({ visible: false });
-      // console.log('Received values of form: ', values);
-      // form.resetFields();
-      // this.setState({ visible: false });
     });
   }
 
@@ -234,16 +236,16 @@ class Orders extends Component {
     this.formRef = formRef;
   }
 
-  comfirmOrder (id) {
+  comfirmOrder(id) {
     confirm({
-        title: '是否确认收货？',
-        onOk: () => {
-            const {
-                updateOrderStatus,
-                fetchOrders,
-            } = this.props;
-            updateOrderStatus({ id, status: 5, fetchOrders });
-        },
+      title: '是否确认收货？',
+      onOk: () => {
+        const {
+          updateOrderStatus,
+          fetchOrders,
+        } = this.props;
+        updateOrderStatus({ id, status: 5, fetchOrders });
+      },
     });
   }
 
@@ -251,19 +253,19 @@ class Orders extends Component {
   render() {
     const { orders, isFetching } = this.props.Orders;
     return (
-          <Table
-            loading={isFetching}
-            className="orderList"
-            columns={this.columns}
-            expandedRowRender={record => <Table
-                className="products"
-                columns={insideColumns}
-                dataSource={record.products}
-                pagination={false}
-              />}
-            dataSource={orderData(orders)}
-            style={{ backgroundColor: 'white', width: 1250 }}
-          />
+      <Table
+        loading={isFetching}
+        className="orderList"
+        columns={this.columns}
+        expandedRowRender={record => <Table
+          className="products"
+          columns={insideColumns}
+          dataSource={record.products}
+          pagination={false}
+        />}
+        dataSource={orderData(orders)}
+        style={{ backgroundColor: 'white', width: 1250 }}
+      />
 
     );
   }
@@ -273,6 +275,7 @@ Orders.propTypes = {
   fetchOrders: func,
   isResolved: bool,
   Orders: object,
+  Pay: object,
   payOrder: func,
   updateOrderStatus: func,
 };
