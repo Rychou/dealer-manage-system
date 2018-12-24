@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { object } from 'prop-types';
-import { Form, Button, InputNumber, Radio } from 'antd';
+import { Form, Button, InputNumber, Radio, message } from 'antd';
 import { hot } from 'react-hot-loader';
 import { withRouter } from 'react-router-dom';
 import { addProduct } from '../ShoppingCart/actions';
@@ -18,7 +18,11 @@ class BuyForm extends Component {
     } = this.props;
     validateFields((err, values) => {
       if (!err) {
-        push('/newOrder/confirm', { products: [{ ...values, ...product }] });
+        if (product.stocks > 0) {
+          push('/newOrder/confirm', { products: [{ ...values, ...product }] });
+        } else {
+          message.info('该商品没库存了哦！');
+        }
       }
     });
   };
@@ -32,7 +36,11 @@ class BuyForm extends Component {
 
     validateFields((err, values) => {
       if (!err) {
-        addProduct({ ...product, ...values });
+        if (product.stocks > 0) {
+          addProduct({ ...product, ...values });
+        } else {
+          message.info('该商品没库存了哦！');
+        }
       }
     });
   };
@@ -85,7 +93,13 @@ class BuyForm extends Component {
                 type: 'number',
               },
             ],
-          })(<InputNumber formatter={value => `${value} 件`} min={1} max={product.stocks} />)}
+          })(
+            <InputNumber
+              formatter={value => `${value} 件`}
+              min={1}
+              max={product.stocks}
+            />,
+          )}
           <span className="stocks">库存：{product.stocks} 件</span>
         </FormItem>
         <FormItem>
