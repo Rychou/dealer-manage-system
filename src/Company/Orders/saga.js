@@ -20,7 +20,7 @@ function* doCompanyUpdateOrderStatus(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { orderStatus: action.payload.status },
+      data: { orderStatus: String(action.payload.status) },
     });
     yield put(updateCompanyOrderStatus.success({ isSuccess: data }));
     action.payload.fetchOrders();
@@ -35,7 +35,7 @@ function* doLinkExpress(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { expressNumber: action.payload.expressNumber, orderStatus: action.payload.status },
+      data: { expressNumber: action.payload.expressNumber, orderStatus: String(action.payload.status) },
     });
     action.payload.fetchOrders();
     message.success('关联物流成功');

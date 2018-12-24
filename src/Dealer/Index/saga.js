@@ -22,7 +22,7 @@ function* doUpdateOrderStatus(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { orderStatus: action.payload.status },
+      data: { orderStatus: String(action.payload.status) },
     });
     yield put(updateOrderStatus.success({ isSuccess: data }));
     message.success('已成功收货');
@@ -37,7 +37,7 @@ function* dopayOrder(action) {
     const { data } = yield call(request, {
       method: 'patch',
       url: `/orders/${action.payload.id}`,
-      data: { orderStatus: action.payload.status },
+      data: { orderStatus: String(action.payload.status) },
     });
     yield put(updateOrderStatus.success({ isSuccess: data }));
     message.success('付款成功');
