@@ -146,7 +146,8 @@ class OrderDetail extends Component {
               {
                 order.orderStatus > 0 ?
                   <div>
-                    <h3>付款时间：{moment(order.paidAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
+                    {/* <h3>付款时间：{moment(order.paidAt).format('YYYY-MM-DD HH:mm:ss')}</h3> */}
+                    <h3>付款时间：{moment(new Date()).format('YYYY-MM-DD HH:mm:ss')} </h3>
                   </div>
                   : null
               }
