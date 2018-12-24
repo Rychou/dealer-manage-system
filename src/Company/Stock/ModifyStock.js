@@ -25,6 +25,10 @@ class ModifyStock extends Component {
     e.preventDefault();
     const {
       form: { validateFields },
+      setStock,
+      fetchStocks,
+      hideModal,
+      form: { resetFields },
     } = this.props;
     const {
       stock: { productNo, stock: currentStock, warehouseId },
@@ -35,7 +39,18 @@ class ModifyStock extends Component {
         if (values.stock === currentStock) {
           message.info('您要修改的库存量和原来的是一样的噢！');
         } else {
-          this.setStock(productNo, values.stock, warehouseId);
+          setStock({
+            postData: {
+              productNo,
+              stock: values.stock,
+              warehouseId,
+            },
+            method: {
+              fetchStocks,
+              hideModal,
+              resetFields,
+            },
+          });
         }
       }
     });
@@ -73,6 +88,7 @@ class ModifyStock extends Component {
   render() {
     const {
       visible,
+      setStockState,
       form: { getFieldDecorator },
     } = this.props;
     const { stock } = this.state;
@@ -82,7 +98,11 @@ class ModifyStock extends Component {
         visible={visible}
         onOk={this.handleModifyStock}
         onCancel={this.handleCancel}
-        okButtonProps={{ htmlType: 'submit', onClick: this.handleModifyStock }}
+        okButtonProps={{
+          htmlType: 'submit',
+          onClick: this.handleModifyStock,
+          loading: setStockState.isFetching,
+        }}
       >
         <Form layout="inline" onSubmit={this.handleModifyStock}>
           <FormItem label="库存量">

@@ -20,34 +20,6 @@ class Pay extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         pay({ orderId: id, updateCurrentStep, history });
-
-        // this.setState({
-        //   paying: true,
-        // });
-        // setTimeout(() => {
-        //   this.setState({ paying: false }, () => {
-        //     request({
-        //       method: 'put',
-        //       url: '/orders',
-        //       data: {
-        //         orderId: this.props.newOrder.orderId,
-        //         status: 1,
-        //       },
-        //     })
-        //       .then(res => {
-        //         console.log(res);
-        //         this.props.history.push('/newOrder/result', {
-        //           payDate: new Date(),
-        //         });
-        //         message.success('支付成功！');
-        //         this.props.updateCurrentStep(2);
-        //       })
-        //       .catch(err => {
-        //         message.error('支付失败！');
-        //         console.log(err);
-        //       });
-        //   });
-        // }, 3000);
       }
     });
   };
@@ -61,11 +33,7 @@ class Pay extends React.Component {
     } = this.props;
     return (
       <div>
-        <Alert
-          message="确认转账后，资金将直接打入对方账户，无法退回。"
-          type="info"
-          showIcon
-        />
+        <Alert message="确认转账后，资金将直接打入对方账户，无法退回。" type="info" showIcon />
         <div className="pay-order-detail">
           <div className="pay-order-detail-item">
             <span className="label">付款账户：</span>

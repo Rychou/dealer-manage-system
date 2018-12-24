@@ -37,7 +37,7 @@ class User extends Component {
             <div>
               <Avatar
                 style={{
-                  backgroundColor: type === 'dealer' ? 'black' : 'green',
+                  backgroundColor: type === 'dealer' ? 'black' : '#6d01b5',
                 }}
               >
                 {type === 'company' ? '集团' : '经销商'}

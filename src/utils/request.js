@@ -30,13 +30,18 @@ instance.interceptors.response.use(
     console.group('错误');
     console.error(error);
     console.groupEnd();
-    message.error('请求错误，请刷新页面重试！', 5);
     // 默认除了2XX之外的都是错误的，就会走这里
     if (error.response) {
       switch (error.response.status) {
         // case 403:
         //   window.location.pathname = '/login';
         //   break;
+        case 400:
+          message.error('请求错误，找不到资源！', 3);
+          break;
+        case 500:
+          message.error('服务器似乎出问题了！');
+          break;
         default:
           break;
       }

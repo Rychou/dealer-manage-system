@@ -25,7 +25,7 @@ function* doPay(action) {
     const { data } = yield call(request, {
       method: 'PATCH',
       url: `/orders/${orderId}`,
-      data: { orderStatus: 1 },
+      data: { orderStatus: '1' },
     });
     yield put(pay.success(data));
     message.success('支付成功');

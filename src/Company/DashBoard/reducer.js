@@ -44,11 +44,9 @@ const computeRecent = recent => {
   const reverseRecent = recent.reverse();
   const beginDay = new Date().getTime();
 
-  for (let i = 0; i < reverseRecent.length; i += 1) {
+  for (let i = reverseRecent.length - 1; i >= 0; i -= 1) {
     arr.push({
-      x: moment(new Date(beginDay - 1000 * 60 * 60 * 24 * (i + 1))).format(
-        'YYYY-MM-DD',
-      ),
+      x: moment(new Date(beginDay - 1000 * 60 * 60 * 24 * (i + 1))).format('YYYY-MM-DD'),
       y: reverseRecent[i],
     });
   }
@@ -112,10 +110,7 @@ const amountReducer = (state = initState.amountWrapper, action) => {
   }
 };
 
-const amountCategoryReducer = (
-  state = initState.amountCategoryWrapper,
-  action,
-) => {
+const amountCategoryReducer = (state = initState.amountCategoryWrapper, action) => {
   switch (action.type) {
     case fetchAmountCategory.TYPE:
       return {
@@ -198,12 +193,8 @@ const dealerRankReducer = (state = initState.dealerRankWrapper, action) => {
         isResolved: true,
         dealerRank: {
           ...state.dealerRank,
-          year: action.payload.dealerRank.year.sort(
-            (a, b) => a.amount - b.amount,
-          ),
-          month: action.payload.dealerRank.month.sort(
-            (a, b) => a.amount - b.amount,
-          ),
+          year: action.payload.dealerRank.year.sort((a, b) => a.amount - b.amount),
+          month: action.payload.dealerRank.month.sort((a, b) => a.amount - b.amount),
         },
       };
     case fetchDealerRank.FAILURE:
@@ -217,10 +208,7 @@ const dealerRankReducer = (state = initState.dealerRankWrapper, action) => {
   }
 };
 
-const quantityCategoryReducer = (
-  state = initState.quantityCategoryWrapper,
-  action,
-) => {
+const quantityCategoryReducer = (state = initState.quantityCategoryWrapper, action) => {
   switch (action.type) {
     case fetchQuantityCategory.TYPE:
       return {

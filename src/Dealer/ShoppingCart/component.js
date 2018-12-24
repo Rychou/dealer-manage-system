@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Drawer, InputNumber, Button, Tooltip, Table, Row, Col, message } from 'antd';
+import {
+  Drawer,
+  InputNumber,
+  Button,
+  Tooltip,
+  Table,
+  Row,
+  Col,
+  message,
+} from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import { hot } from 'react-hot-loader';
 import './index.less';
@@ -16,10 +25,12 @@ class ShoppingCart extends Component {
       history: { push },
       selectedProducts,
       toggleVisible,
+      clearShoppingCart,
     } = this.props;
     if (selectedAmount) {
       toggleVisible();
       push('/newOrder/confirm', { products: selectedProducts });
+      clearShoppingCart();
     } else {
       message.info('请选择需要结算的商品噢！');
     }
@@ -39,7 +50,10 @@ class ShoppingCart extends Component {
         title: '预览图',
         dataIndex: 'carouselImages',
         render: (text, record) => (
-          <img style={{ width: 40, height: 40 }} src={record.carouselImages[0]} />
+          <img
+            style={{ width: 40, height: 40 }}
+            src={record.carouselImages[0]}
+          />
         ),
       },
       {
@@ -58,13 +72,17 @@ class ShoppingCart extends Component {
       {
         title: '分类',
         dataIndex: 'categories',
-        render: (text, record) => <span>{record.categories[record.category]}</span>,
+        render: (text, record) => (
+          <span>{record.categories[record.category]}</span>
+        ),
         width: 80,
       },
       {
         title: '价格',
         dataIndex: 'price',
-        render: (price, record) => <span>￥{(price * record.amount).toFixed(2)}</span>,
+        render: (price, record) => (
+          <span>￥{(price * record.amount).toFixed(2)}</span>
+        ),
         width: 100,
       },
       {
@@ -133,7 +151,8 @@ class ShoppingCart extends Component {
               件商品
             </Col>
             <Col span={8}>
-              总价：<span style={{ fontSize: 24, color: 'red' }}>￥{totalPrice}</span>
+              总价：
+              <span style={{ fontSize: 24, color: 'red' }}>￥{totalPrice}</span>
             </Col>
             <Col span={4}>
               <Button type="primary" onClick={this.linkToNewProduct}>

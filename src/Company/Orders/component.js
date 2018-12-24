@@ -10,26 +10,26 @@ import './index.less';
 
 const Confirm = Modal.confirm;
 
-const Address = (address) => {
+const Address = address => {
   if (address) {
     return (
       <Tooltip
-        title={
-          `${address.province} 
+        title={`${address.province} 
                   ${address.city} 
                   ${address.district} 
                   ${address.street} 
-                  ${address.details}`
-        }
-      ><span>{address.province} {address.city} {address.district} {address.street}</span>
+                  ${address.details}`}
+      >
+        <span>
+          {address.province} {address.city} {address.district} {address.street}
+        </span>
       </Tooltip>
-
     );
   }
   return null;
 };
 
-const orderData = (orders) => {
+const orderData = orders => {
   const data = [];
   if (orders.length) {
     orders.map((order, index) => {
@@ -70,44 +70,63 @@ class Orders extends Component {
       dataIndex: 'name',
       key: 'name',
       filterDropdown: ({
-        setSelectedKeys, selectedKeys, confirm, clearFilters,
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
       }) => (
-          <div className="custom-filter-dropdown">
-            <Input
-              ref={(ele) => { this.searchInput = ele; return true; }}
-              placeholder="Search name"
-              value={selectedKeys[0]}
-              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={this.handleSearch(selectedKeys, confirm)}
-            />
-            <Button
-              type="primary"
-              onClick={this.handleSearch(selectedKeys, confirm)}
-            >Search
-            </Button>
-            <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
-          </div>
-        ),
-      filterIcon: filtered =>
-        <Icon type="smile-o" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
-      onFilter: (value, record) => record.name.toLowerCase().includes(value.toLowerCase()),
-      onFilterDropdownVisibleChange: (visible) => {
+        <div className="custom-filter-dropdown">
+          <Input
+            ref={ele => {
+              this.searchInput = ele;
+              return true;
+            }}
+            placeholder="Search name"
+            value={selectedKeys[0]}
+            onChange={e =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={this.handleSearch(selectedKeys, confirm)}
+          />
+          <Button
+            type="primary"
+            onClick={this.handleSearch(selectedKeys, confirm)}
+          >
+            Search
+          </Button>
+          <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+        </div>
+      ),
+      filterIcon: filtered => (
+        <Icon type="smile-o" style={{ color: filtered ? '#108ee9' : '#aaa' }} />
+      ),
+      onFilter: (value, record) =>
+        record.name.toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownVisibleChange: visible => {
         if (visible) {
           setTimeout(() => {
             this.searchInput.focus();
           });
         }
       },
-      render: (text) => {
+      render: text => {
         const { searchText } = this.state;
         return searchText ? (
           <span>
-            {text.split(new RegExp(`(${searchText})`, 'gi')).map((fragment, i) => (
-              fragment.toLowerCase() === searchText.toLowerCase()
-                ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-            ))}
+            {text.split(new RegExp(`(${searchText})`, 'gi')).map(
+              (fragment, i) =>
+                fragment.toLowerCase() === searchText.toLowerCase() ? (
+                  <span key={i} className="highlight">
+                    {fragment}
+                  </span>
+                ) : (
+                  fragment
+                ), // eslint-disable-line
+            )}
           </span>
-        ) : text;
+        ) : (
+          text
+        );
       },
     },
     { title: '联系电话', dataIndex: 'phone', key: 'phone' },
@@ -116,49 +135,65 @@ class Orders extends Component {
       title: '订单状态',
       dataIndex: 'status',
       key: 'status',
-      filters: [{
-        text: '未付款',
-        value: 0,
-      }, {
-        text: '已付款',
-        value: 1,
-      }, {
-        text: '集团已确认',
-        value: 2,
-      }, {
-        text: '已发货',
-        value: 3,
-      }, {
-        text: '交易完成',
-        value: 5,
-      }, {
-        text: '退货申请中',
-        value: 6,
-      }, {
-        text: '退货中',
-        value: 7,
-      }, {
-        text: '已退货',
-        value: 8,
-      }, {
-        text: '取消交易',
-        value: 9,
-      }],
+      filters: [
+        {
+          text: '未付款',
+          value: 0,
+        },
+        {
+          text: '已付款',
+          value: 1,
+        },
+        {
+          text: '集团已确认',
+          value: 2,
+        },
+        {
+          text: '已发货',
+          value: 3,
+        },
+        {
+          text: '交易完成',
+          value: 5,
+        },
+        // {
+        //   text: '退货申请中',
+        //   value: 6,
+        // },
+        // {
+        //   text: '退货中',
+        //   value: 7,
+        // },
+        // {
+        //   text: '已退货',
+        //   value: 8,
+        // },
+        // {
+        //   text: '取消交易',
+        //   value: 9,
+        // },
+      ],
+      onFilter: (value, record) => String(record.statusNum) === value,
       filterMultiple: true,
       onFilter: (value, record) => String(record.statusNum) === value,
     },
-    { title: '详细信息', key: 'info', render: (record) => <Link to={`/orders/${record.id}`}>详情</Link> },
+    {
+      title: '详细信息',
+      key: 'info',
+      render: record => <Link to={`/orders/${record.id}`}>详情</Link>,
+    },
     {
       title: '操作',
       key: 'operation',
-      render: (record) => {
+      render: record => {
         if (record.statusNum === 1) {
           return (
             <Button
               type="primary"
               id="comfirmed"
               onClick={this.confirmOrder.bind(this, record.id)}
-            >确认订单
+            >
+              确认订单
             </Button>
           );
         }
@@ -169,7 +204,8 @@ class Orders extends Component {
                 type="primary"
                 id="link"
                 onClick={this.handleShowModal.bind(this, record.id)}
-              >关联物流
+              >
+                关联物流
               </Button>
               <ExpressForm
                 wrappedComponentRef={this.saveFormRef}
@@ -198,7 +234,6 @@ class Orders extends Component {
     }
   }
 
-
   handleSearch = (selectedKeys, confirm) => () => {
     confirm();
     this.setState({ searchText: selectedKeys[0] });
@@ -209,13 +244,13 @@ class Orders extends Component {
     this.setState({ searchText: '' });
   };
 
-  handleShowModal = (id) => {
+  handleShowModal = id => {
     this.setState({ visible: true, selectedId: id });
-  }
+  };
 
   handleCancel = () => {
     this.setState({ visible: false });
-  }
+  };
 
   handleCreate = () => {
     const form = this.formRef.props.form;
@@ -223,35 +258,38 @@ class Orders extends Component {
       if (err) {
         return;
       }
-      const {
-        linkExpress,
-        fetchOrders,
-      } = this.props;
+      const { linkExpress, fetchOrders } = this.props;
       const id = this.state.selectedId;
       const { expressNumber } = values;
       linkExpress({ id, expressNumber, status: 3, fetchOrders });
       form.resetFields();
       this.setState({ visible: false });
     });
-  }
+  };
 
-  saveFormRef = (formRef) => {
+  saveFormRef = formRef => {
     this.formRef = formRef;
-  }
+  };
 
   confirmOrder = id => {
     Confirm({
       title: '是否确认订单？',
       onOk: () => {
-        const {
-          updateCompanyOrderStatus,
-          fetchOrders,
-        } = this.props;
+        const { updateCompanyOrderStatus, fetchOrders } = this.props;
         updateCompanyOrderStatus({ id, status: 2, fetchOrders });
       },
     });
-  }
+  };
 
+  confirmOrder = id => {
+    Confirm({
+      title: '是否确认订单？',
+      onOk: () => {
+        const { updateCompanyOrderStatus, fetchOrders } = this.props;
+        updateCompanyOrderStatus({ id, status: 2, fetchOrders });
+      },
+    });
+  };
 
   render() {
     const { orders, isFetching } = this.props.CompanyOrders;
@@ -261,7 +299,7 @@ class Orders extends Component {
         className="orderList"
         columns={this.columns}
         dataSource={orderData(orders)}
-        style={{ width: 1250 }}
+        style={{ width: 1250, background: '#fff' }}
       />
     );
   }

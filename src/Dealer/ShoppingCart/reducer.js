@@ -3,6 +3,7 @@ import {
   SELECT_PRODUCT,
   ADD_PRODUCT,
   UPDATE_PRODUCT_AMOUNT,
+  CLEAR_SHOPPING_CART,
 } from './actions';
 import { message } from 'antd';
 
@@ -66,6 +67,8 @@ const computeSelectedProducts = (selectedRowKeys, products) => {
 
 const ShoppingCart = (state = initState, action) => {
   switch (action.type) {
+    case CLEAR_SHOPPING_CART:
+      return initState;
     case TOGGLE_VISIBLE:
       return {
         ...state,

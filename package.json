@@ -14,7 +14,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "ant-design-pro": "^2.1.0",
-    "antd": "^3.10.0",
+    "antd": "3.11.4",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "china-division": "^2.1.1",

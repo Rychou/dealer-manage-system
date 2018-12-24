@@ -5,8 +5,8 @@ import qs from 'qs';
 import async from './actions';
 import { message } from 'antd';
 
-
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.post['Content-Type'] =
+  'application/x-www-form-urlencoded';
 
 const { fetchOrderDetail, updateDetailOrderStatus, payDetailOrder } = async;
 
@@ -14,23 +14,23 @@ function* doFetchOrderDetail(action) {
   try {
     const { data } = yield call(request.get, `/orders/${action.payload.id}`);
     if (data.expressNumber) {
-      const { data: expressData } = yield call(axios,
-        {
-          method: 'post',
-          url: 'http://api.shujuzhihui.cn/api/sjzhApi/searchExpress',
-          data: qs.stringify({
-            appKey: '1b4e55f6371b4e92adbaaf154bf17f0c',
-            expressNo: data.expressNumber,
-          }),
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+      const { data: expressData } = yield call(axios, {
+        method: 'post',
+        url: 'http://api.shujuzhihui.cn/api/sjzhApi/searchExpress',
+        data: qs.stringify({
+          appKey: '1b4e55f6371b4e92adbaaf154bf17f0c',
+          expressNo: data.expressNumber,
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-      );
+      });
       if (expressData.ERRORCODE !== '0') {
         message.error('物流单号错误');
       }
-      yield put(fetchOrderDetail.success({ order: data, express: expressData }));
+      yield put(
+        fetchOrderDetail.success({ order: data, express: expressData }),
+      );
     } else yield put(fetchOrderDetail.success({ order: data }));
     // delete next line
     // yield put(fetchOrderDetail.success({ order: data }));
