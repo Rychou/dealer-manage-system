@@ -15,26 +15,26 @@ const { confirm } = Modal;
 
 
 const Address = (address) => {
-    if (address) {
-        return (
-            <Tooltip
-                title={
-                    `${address.province} 
+  if (address) {
+    return (
+      <Tooltip
+        title={
+          `${address.province} 
                     ${address.city} 
                     ${address.district} 
                     ${address.street} 
                     ${address.details}`
-                }
-            ><span>{address.province} {address.city} {address.district} {address.street}</span>
-            </Tooltip>
+        }
+      ><span>{address.province} {address.city} {address.district} {address.street}</span>
+      </Tooltip>
 
-        );
-    }
-    return null;
+    );
+  }
+  return null;
 };
 
 Address.prototype = {
-    address: object,
+  address: object,
 };
 
 
@@ -85,102 +85,102 @@ class OrderDetail extends Component {
     this.formRef = formRef;
   }
 
-    confirmOrder = id => {
-        // const id = props.id || {};
-        confirm({
-            title: '是否确认订单？',
-            onOk: () => {
-                const {
-                    updateCompanyOrderStatus,
-                    fetchCompanyOrderDetail,
-                } = this.props;
-                updateCompanyOrderStatus({ id, status: 2, fetchCompanyOrderDetail });
-            },
-        });
-    }
+  confirmOrder = id => {
+    // const id = props.id || {};
+    confirm({
+      title: '是否确认订单？',
+      onOk: () => {
+        const {
+          updateCompanyOrderStatus,
+          fetchCompanyOrderDetail,
+        } = this.props;
+        updateCompanyOrderStatus({ id, status: 2, fetchCompanyOrderDetail });
+      },
+    });
+  }
 
   render() {
     const { order, express, isFetching } = this.props.OrderDetail;
     return (
-    <Spin spinning={isFetching}>
-      <div id="main">
-        <h2 style={{ marginTop: 20 }}>
-          <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
-          <div className="button">
-            {
+      <Spin spinning={isFetching}>
+        <div id="main">
+          <h2 style={{ marginTop: 20 }}>
+            <Icon type="reconciliation" theme="twoTone" style={{ fontSize: 30 }} /> 订单编号：{order.id}
+            <div className="button">
+              {
 
                 order.orderStatus === 1 ?
-                    <Button
-                        type="primary"
-                        id="comfirmed"
-                        onClick={this.confirmOrder.bind(this, order.id)}
-                    >确认订单
-                    </Button>
-                    : null
-            }
-            {
+                  <Button
+                    type="primary"
+                    id="comfirmed"
+                    onClick={this.confirmOrder.bind(this, order.id)}
+                  >确认订单
+                  </Button>
+                  : null
+              }
+              {
 
                 order.orderStatus === 2 ?
-                <div>
+                  <div>
                     <Button
-                        type="primary"
-                        id="link"
-                        onClick={this.handleShowModal}
+                      type="primary"
+                      id="link"
+                      onClick={this.handleShowModal}
                     >关联物流
                     </Button>
                     <ExpressForm
-                        wrappedComponentRef={this.saveFormRef}
-                        visible={this.state.visible}
-                        onCancel={this.handleCancel}
-                        onCreate={this.handleCreate}
+                      wrappedComponentRef={this.saveFormRef}
+                      visible={this.state.visible}
+                      onCancel={this.handleCancel}
+                      onCreate={this.handleCreate}
                     />
-                </div>
-                : null
-            }
-          </div>
-        </h2>
-        <Divider />
-        <div>
+                  </div>
+                  : null
+              }
+            </div>
+          </h2>
+          <Divider />
+          <div>
             <div style={{ float: 'left', marginLeft: 100 }}>
-            <h3>下单时间：{moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
-                {
-                    order.orderStatus > 0 ?
-                        <div>
-                            <h3>付款时间：{moment(order.paidAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
-                        </div>
-                        : null
-                }
-                <h3>订单状态：{orderStatus(order.orderStatus)}</h3>
+              <h3>下单时间：{moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
+              {
+                order.orderStatus > 0 ?
+                  <div>
+                    <h3>付款时间：{moment(order.paidAt).format('YYYY-MM-DD HH:mm:ss')}</h3>
+                  </div>
+                  : null
+              }
+              <h3>订单状态：{orderStatus(order.orderStatus)}</h3>
             </div>
             <div style={{ float: 'right', marginRight: 300 }}>
-                <h3>收货人：{order.dealer ? order.dealer.name : null}</h3>
-                <h3>联系电话：{order.phone}</h3>
-                <h3>收货地址：{Address(order.address)}</h3>
+              <h3>收货人：{order.dealer ? order.dealer.name : null}</h3>
+              <h3>联系电话：{order.phone}</h3>
+              <h3>收货地址：{Address(order.address)}</h3>
             </div>
-        </div>
-        <Divider />
-        {
+          </div>
+          <Divider />
+          {
             order.orderStatus >= 3 && order.orderStatus <= 5 ?
-                Express(express)
-                : null
-        }
-        <br />
-        <h2 style={{ marginBottom: -20 }}>订购产品</h2>
-        <Divider />
-        <Products products={order.orderDetails} />
-        <Divider />
-      </div>
-    </Spin>
+              Express(express)
+              : null
+          }
+          <br />
+          <h2 style={{ marginBottom: -20 }}>订购产品</h2>
+          <Divider />
+          <Products products={order.orderDetails} />
+          <Divider />
+        </div>
+      </Spin>
     );
   }
 }
 
 OrderDetail.propTypes = {
-    fetchCompanyOrderDetail: func,
-    linkExpress: func,
-    match: object,
-    OrderDetail: object,
-    updateCompanyOrderStatus: func,
+  fetchCompanyOrderDetail: func,
+  linkExpress: func,
+  match: object,
+  OrderDetail: object,
+  updateCompanyOrderStatus: func,
 };
 
 

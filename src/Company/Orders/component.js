@@ -80,7 +80,11 @@ class Orders extends Component {
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
-            <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+            <Button
+              type="primary"
+              onClick={this.handleSearch(selectedKeys, confirm)}
+            >Search
+            </Button>
             <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
           </div>
         ),
@@ -265,7 +269,6 @@ class Orders extends Component {
 
 Orders.propTypes = {
   CompanyOrders: object,
-  fetchCompanyOrders: func,
   fetchOrders: func,
   isResolved: bool,
   linkExpress: func,

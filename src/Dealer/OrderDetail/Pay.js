@@ -2,6 +2,7 @@ import {
   Modal, Form, Input, Divider,
 } from 'antd';
 import React, { Component } from 'react';
+import { bool, func, object } from 'prop-types';
 
 const FormItem = Form.Item;
 
@@ -45,39 +46,60 @@ const Message = (order) => {
   );
 };
 
-export default Form.create()(
-  // eslint-disable-next-line
-  class extends Component {
-    render() {
-      const {
-        visible, onCancel, onCreate, form, order, confirmLoading,
-      } = this.props;
-      const { getFieldDecorator } = form;
-      return (
-        <Modal
-          visible={visible}
-          title={Message(order)}
-          onCancel={onCancel}
-          onOk={onCreate}
-          confirmLoading={confirmLoading}
-          cancelText="取消"
-          okText="支付"
-        >
-          <Form layout="vertical">
-            <FormItem label="支付密码">
-              {getFieldDecorator('password', {
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入支付密码',
-                  },
-                ],
-              })(<Input type="password" />)}
-            </FormItem>
-          </Form>
-        </Modal>
 
-      );
-    }
-  },
-);
+class PayForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+
+    };
+  }
+
+  componentDidMount() {
+
+  }
+
+  render() {
+    const {
+      visible, onCancel, onCreate, form, order, confirmLoading,
+    } = this.props;
+    const { getFieldDecorator } = form;
+    return (
+      <Modal
+        visible={visible}
+        title={Message(order)}
+        onCancel={onCancel}
+        onOk={onCreate}
+        confirmLoading={confirmLoading}
+        cancelText="取消"
+        okText="支付"
+      >
+        <Form layout="vertical">
+          <FormItem label="支付密码">
+            {getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入支付密码',
+                },
+              ],
+            })(<Input type="password" />)}
+          </FormItem>
+        </Form>
+      </Modal>
+
+    );
+  }
+}
+
+PayForm.propTypes = {
+  confirmLoading: bool,
+  form: object,
+  onCancel: func,
+  onCreate: func,
+  order: object,
+  visible: bool,
+};
+
+export default Form.create()(PayForm);

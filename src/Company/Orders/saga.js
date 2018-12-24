@@ -37,11 +37,6 @@ function* doLinkExpress(action) {
       url: `/orders/${action.payload.id}`,
       data: { expressNumber: action.payload.expressNumber, orderStatus: action.payload.status },
     });
-    // yield call(request, {
-    //   method: 'patch',
-    //   url: `/orders/${action.payload.id}`,
-    //   data: { status: action.payload.status },
-    // });
     action.payload.fetchOrders();
     message.success('关联物流成功');
     yield put(linkExpress.success({ isSuccess: data }));

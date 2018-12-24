@@ -15,18 +15,18 @@ function* doFetchOrderDetail(action) {
     const { data } = yield call(request.get, `/orders/${action.payload.id}`);
     if (data.expressNumber) {
       const { data: expressData } = yield call(axios,
-          {
-            method: 'post',
-            url: 'http://api.shujuzhihui.cn/api/sjzhApi/searchExpress',
-            data: qs.stringify({
-              appKey: '1b4e55f6371b4e92adbaaf154bf17f0c',
-              expressNo: data.expressNumber,
-            }),
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
+        {
+          method: 'post',
+          url: 'http://api.shujuzhihui.cn/api/sjzhApi/searchExpress',
+          data: qs.stringify({
+            appKey: '1b4e55f6371b4e92adbaaf154bf17f0c',
+            expressNo: data.expressNumber,
+          }),
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-        );
+        },
+      );
       if (expressData.ERRORCODE !== '0') {
         message.error('物流单号错误');
       }

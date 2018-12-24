@@ -181,6 +181,7 @@ OrderDetail.propTypes = {
   fetchOrderDetail: func,
   match: object,
   OrderDetail: object,
+  payDetailOrder: func,
   payStatus: object,
   updateOrderStatus: func,
 };
