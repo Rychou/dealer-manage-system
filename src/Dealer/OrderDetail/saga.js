@@ -8,7 +8,7 @@ import { message } from 'antd';
 
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-const { fetchOrderDetail, updateDetailOrderStatus } = async;
+const { fetchOrderDetail, updateDetailOrderStatus, payDetailOrder } = async;
 
 function* doFetchOrderDetail(action) {
   try {
@@ -54,7 +54,23 @@ function* doUpdateOrderStatus(action) {
   }
 }
 
+function* doPayDetailOrder(action) {
+  try {
+    const { data } = yield call(request, {
+      method: 'patch',
+      url: `/orders/${action.payload.id}`,
+      data: { orderStatus: action.payload.status },
+    });
+    yield put(updateDetailOrderStatus.success({ isSuccess: data }));
+    message.success('付款成功');
+    action.payload.fetchOrderDetail({ id: action.payload.id });
+  } catch (err) {
+    yield put(updateDetailOrderStatus.failure(err));
+  }
+}
+
 export default function* () {
   yield takeEvery(fetchOrderDetail.TYPE, doFetchOrderDetail);
   yield takeEvery(updateDetailOrderStatus.TYPE, doUpdateOrderStatus);
+  yield takeEvery(payDetailOrder.TYPE, doPayDetailOrder);
 }

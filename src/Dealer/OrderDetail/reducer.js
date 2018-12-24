@@ -2,7 +2,7 @@ import async from './actions';
 import { fetchState } from 'utils';
 import { combineReducers } from 'redux';
 
-const { fetchOrderDetail, updateDetailOrderStatus } = async;
+const { fetchOrderDetail, updateDetailOrderStatus, payDetailOrder } = async;
 
 const initState = {
   orderDetail: {
@@ -11,6 +11,10 @@ const initState = {
     express: {},
   },
   orderStatus: {
+    ...fetchState,
+    isSuccess: {},
+  },
+  payStatus: {
     ...fetchState,
     isSuccess: {},
   },
@@ -68,7 +72,33 @@ const OrderStatusReducer = (state = initState.orderStatus, action) => {
   }
 };
 
+const PayDetailReducer = (state = initState.orderStatus, action) => {
+  switch (action.type) {
+    case payDetailOrder.TYPE:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case payDetailOrder.SUCCESS:
+      return {
+        ...state,
+        isSuccess: action.payload.isSuccess,
+        isFetching: false,
+        isResolved: true,
+      };
+    case payDetailOrder.FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isRejected: true,
+      };
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   OrderDetail: OrderDetailReducer,
   OrderStatus: OrderStatusReducer,
+  payStatus: PayDetailReducer,
 });

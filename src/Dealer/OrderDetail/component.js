@@ -8,6 +8,7 @@ import Products from './Products';
 import Express from './Express';
 import { orderStatus } from 'utils';
 import moment from 'moment';
+import Pay from './Pay';
 
 const { confirm } = Modal;
 
@@ -38,6 +39,10 @@ Address.prototype = {
 
 @hot(module)
 class OrderDetail extends Component {
+    state = {
+        visible: false,
+    };
+
   componentDidMount() {
     const {
     //   isResolve,
@@ -47,6 +52,41 @@ class OrderDetail extends Component {
       },
     } = this.props;
     fetchOrderDetail({ id });
+  }
+
+  handleShowModal = () => {
+    this.setState({ visible: true });
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      const {
+        payDetailOrder,
+        fetchOrderDetail,
+        match: {
+            params: { id },
+        },
+      } = this.props;
+      const { password } = values;
+      payDetailOrder({ id, password, status: 1, fetchOrderDetail });
+      form.resetFields();
+      this.setState({ visible: false });
+      // console.log('Received values of form: ', values);
+      // form.resetFields();
+      // this.setState({ visible: false });
+    });
+  }
+
+  saveFormRef = (formRef) => {
+    this.formRef = formRef;
   }
 
   comfirmOrder(id) {
@@ -79,6 +119,24 @@ class OrderDetail extends Component {
                         style={{ marginRight: 20 }}
                     >确认收货
                     </Button>
+                    : null
+                }
+                {
+                  order.orderStatus === 0 ?
+                  <div>
+                        <Button
+                            type="primary"
+                            onClick={this.handleShowModal.bind(this)}
+                        >付款
+                        </Button>
+                        <Pay
+                            wrappedComponentRef={this.saveFormRef}
+                            visible={this.state.visible}
+                            onCancel={this.handleCancel}
+                            onCreate={this.handleCreate}
+                            order={order}
+                    />
+                  </div>
                     : null
                 }
           </div>

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { orderStatus } from 'utils';
 import moment from 'moment';
 import './index.less';
+import Pay from './Pay';
 
 const { confirm } = Modal;
 
@@ -69,6 +70,7 @@ const orderData = (orders) => {
         if (status === '已发货') {
           data.push({
             key: index,
+            order,
             id: order.id,
             date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
             price: order.orderTotalPrice,
@@ -82,6 +84,7 @@ const orderData = (orders) => {
         } else {
           data.push({
             key: index,
+            order,
             id: order.id,
             date: moment(order.orderedAt).format('YYYY-MM-DD HH:mm:ss'),
             price: order.orderTotalPrice,
@@ -104,6 +107,12 @@ const orderData = (orders) => {
 
 @hot(module)
 class Orders extends Component {
+  state = {
+    visible: false,
+    selectId: {},
+  };
+
+
   columns = [
     {
       title: '下单日期',
@@ -163,6 +172,24 @@ class Orders extends Component {
             </Button>
           );
         }
+        if (record.statusNum === 0) {
+          return (
+            <div>
+              <Button
+                  type="primary"
+                  onClick={this.handleShowModal.bind(this, record.id)}
+              >付款
+              </Button>
+              <Pay
+                wrappedComponentRef={this.saveFormRef}
+                visible={this.state.visible}
+                onCancel={this.handleCancel}
+                onCreate={this.handleCreate}
+                order={record.order}
+              />
+            </div>
+          );
+        }
         return null;
       },
     },
@@ -173,6 +200,38 @@ class Orders extends Component {
     if (!isResolved) {
       fetchOrders();
     }
+  }
+
+  handleShowModal = (id) => {
+    this.setState({ visible: true, selectId: id });
+  }
+
+  handleCancel = () => {
+    this.setState({ visible: false });
+  }
+
+  handleCreate = () => {
+    const { form } = this.formRef.props;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+      const {
+        payOrder,
+        fetchOrders,
+      } = this.props;
+      const { password } = values;
+      payOrder({ id: this.state.selectId, password, status: 1, fetchOrders });
+      form.resetFields();
+      this.setState({ visible: false });
+      // console.log('Received values of form: ', values);
+      // form.resetFields();
+      // this.setState({ visible: false });
+    });
+  }
+
+  saveFormRef = (formRef) => {
+    this.formRef = formRef;
   }
 
   comfirmOrder (id) {
@@ -214,6 +273,7 @@ Orders.propTypes = {
   fetchOrders: func,
   isResolved: bool,
   Orders: object,
+  payOrder: func,
   updateOrderStatus: func,
 };
 
